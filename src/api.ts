@@ -541,10 +541,10 @@ export interface GetMyStatusParam {}
  */
 export interface GetMyTasksParam {
   /** タスクの依頼者のアカウントID */
-  assigned_by_account_id: number;
+  assigned_by_account_id?: number;
 
   /** タスクのステータス */
-  status: "open" | "done";
+  status?: "open" | "done";
 }
 
 /**
@@ -567,7 +567,7 @@ export interface PutRoomsWithRoomIdMembersParam {}
  */
 export interface PutRoomsWithRoomIdMessagesReadParam {
   /** ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400) */
-  message_id: string;
+  message_id?: string;
 }
 
 /**
@@ -601,7 +601,7 @@ export interface DeleteRoomsWithRoomIdMessagesWithMessageIdParam {}
  */
 export interface GetRoomsWithRoomIdMessagesParam {
   /** 未取得にかかわらず最新の100件を取得するか */
-  force: boolean;
+  force?: boolean;
 }
 
 /**
@@ -612,7 +612,7 @@ export interface PostRoomsWithRoomIdMessagesParam {
   body: string;
 
   /** 追加したメッセージを自分から見て未読とするか */
-  self_unread: boolean;
+  self_unread?: boolean;
 }
 
 /**
@@ -633,13 +633,13 @@ export interface GetRoomsWithRoomIdTasksWithTaskIdParam {}
  */
 export interface GetRoomsWithRoomIdTasksParam {
   /** タスクの担当者のアカウントID */
-  account_id: number;
+  account_id?: number;
 
   /** タスクの依頼者のアカウントID */
-  assigned_by_account_id: number;
+  assigned_by_account_id?: number;
 
   /** タスクのステータス */
-  status: "open" | "done";
+  status?: "open" | "done";
 }
 
 /**
@@ -653,10 +653,10 @@ export interface PostRoomsWithRoomIdTasksParam {
   to_ids: string;
 
   /** タスクの期限 */
-  limit: number;
+  limit?: number;
 
   /** タスク期限の種別 */
-  limit_type: "none" | "date" | "time";
+  limit_type?: "none" | "date" | "time";
 }
 
 /**
@@ -664,7 +664,7 @@ export interface PostRoomsWithRoomIdTasksParam {
  */
 export interface GetRoomsWithRoomIdFilesWithFileIdParam {
   /** ダウンロードする為のURLを生成するか */
-  create_download_url: boolean;
+  create_download_url?: boolean;
 }
 
 /**
@@ -672,7 +672,7 @@ export interface GetRoomsWithRoomIdFilesWithFileIdParam {
  */
 export interface GetRoomsWithRoomIdFilesParam {
   /** アップロードしたユーザーのアカウントID */
-  account_id: number;
+  account_id?: number;
 }
 
 /**
@@ -690,13 +690,13 @@ export interface GetRoomsWithRoomIdLinkParam {}
  */
 export interface PostRoomsWithRoomIdLinkParam {
   /** リンク文字列 */
-  code: string;
+  code?: string;
 
   /** 承認要否 */
-  need_acceptance: boolean;
+  need_acceptance?: boolean;
 
   /** リンク説明文 */
-  description: string;
+  description?: string;
 }
 
 /**
@@ -704,13 +704,13 @@ export interface PostRoomsWithRoomIdLinkParam {
  */
 export interface PutRoomsWithRoomIdLinkParam {
   /** リンク文字列 */
-  code: string;
+  code?: string;
 
   /** 承認要否 */
-  need_acceptance: boolean;
+  need_acceptance?: boolean;
 
   /** リンク説明文 */
-  description: string;
+  description?: string;
 }
 
 /**
@@ -728,10 +728,10 @@ export interface GetRoomsWithRoomIdParam {}
  */
 export interface PutRoomsWithRoomIdParam {
   /** グループチャット名 */
-  name: string;
+  name?: string;
 
   /** チャット概要 */
-  description: string;
+  description?: string;
 }
 
 /**
@@ -755,16 +755,16 @@ export interface PostRoomsParam {
   name: string;
 
   /** チャット概要 */
-  description: string;
+  description?: string;
 
   /** 招待リンク作成 */
-  link: boolean;
+  link?: boolean;
 
   /** リンク文字列 */
-  link_code: string;
+  link_code?: string;
 
   /** 承認要否 */
-  link_need_acceptance: boolean;
+  link_need_acceptance?: boolean;
 }
 
 /**
