@@ -24,7 +24,7 @@ export default class ChatworkApi {
       headers: { "X-ChatWorkToken": this.api_token }
     });
 
-    return data;
+    return data as GetMyStatusResponse;
   }
 
   /**
@@ -86,7 +86,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdMembersResponse;
   }
 
   /**
@@ -106,7 +106,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdMessagesReadResponse;
   }
 
   /**
@@ -126,7 +126,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdMessagesUnreadResponse;
   }
 
   /**
@@ -166,7 +166,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdMessagesWithMessageIdResponse;
   }
 
   /**
@@ -185,7 +185,7 @@ export default class ChatworkApi {
       }
     );
 
-    return data;
+    return data as DeleteRoomsWithRoomIdMessagesWithMessageIdResponse;
   }
 
   /**
@@ -223,7 +223,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PostRoomsWithRoomIdMessagesResponse;
   }
 
   /**
@@ -244,7 +244,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdTasksWithTaskIdStatusResponse;
   }
 
   /**
@@ -301,7 +301,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PostRoomsWithRoomIdTasksResponse;
   }
 
   /**
@@ -358,7 +358,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PostRoomsWithRoomIdFilesResponse;
   }
 
   /**
@@ -396,7 +396,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PostRoomsWithRoomIdLinkResponse;
   }
 
   /**
@@ -416,7 +416,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdLinkResponse;
   }
 
   /**
@@ -434,7 +434,7 @@ export default class ChatworkApi {
       }
     );
 
-    return data;
+    return data as DeleteRoomsWithRoomIdLinkResponse;
   }
 
   /**
@@ -472,7 +472,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PutRoomsWithRoomIdResponse;
   }
 
   /**
@@ -519,7 +519,7 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data;
+    return data as PostRoomsResponse;
   }
 
   /**
