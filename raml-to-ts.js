@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
 const ejs = require("ejs");
+const camelCase = require("camelcase");
 const pascalCase = require("pascal-case");
 const prettier = require("prettier");
 const { json2ts } = require("json-ts");
@@ -15,8 +16,10 @@ const ramlStr = fs.readFileSync(
 
 const ramlData = yaml.safeLoad(prettier.format(ramlStr, { parser: "yaml" }));
 
-const generateMethodName = (method, uri) => {
-  return pascalCase([method, uri.replace(/\/{.*_id}/, "")].join("_"));
+const generateInterfaceName = (method, uri) => {
+  return pascalCase(
+    [method, uri.replace(/{/g, "_with_").replace(/}/g, "")].join("_")
+  );
 };
 
 const getQueryParameters = (queryParameters = {}) => {
@@ -34,7 +37,18 @@ const getResponses = (responses = {}) => {
 
 const parseMethod = (method, api, uri) => {
   const { description, queryParameters, responses, is } = api;
-  const name = generateMethodName(method, uri);
+  const name = generateInterfaceName(method, uri);
+  const funcName = camelCase(name);
+  const funcParams = [];
+  if (uri.includes("{room_id}")) funcParams.push("room_id");
+  if (uri.includes("{message_id}")) funcParams.push("message_id");
+  if (uri.includes("{task_id}")) funcParams.push("task_id");
+  if (uri.includes("{file_id}")) funcParams.push("file_id");
+  if (uri.includes("{request_id}")) funcParams.push("request_id");
+  const funcParamsWithTypes = funcParams.map(p => p + ": string");
+
+  const funcParam = funcName + "Param";
+  const funcParamWithTypes = funcName + "Param: " + name + "Param";
 
   const params = getQueryParameters(queryParameters);
   params.forEach(param => {
@@ -50,6 +64,11 @@ const parseMethod = (method, api, uri) => {
   return {
     method,
     name,
+    funcName,
+    funcParams,
+    funcParamsWithTypes,
+    funcParam,
+    funcParamWithTypes,
     api,
     uri,
     params,
@@ -98,23 +117,57 @@ const paramInterfaces = ejs.render(
  * <%- d.description %>
  */
 interface <%- d.name %>Param {
-    <% d.params.forEach(param => { %>
-    /** <%- param.displayName %> */
-    <%- param.name %>: <%- param.type %>
-    <% }); %>
+  <% d.params.forEach(param => { %>
+  /** <%- param.displayName %> */
+  <%- param.name %>: <%- param.type %>
+  <% }); %>
 }
 <% }); %>
   `,
   { data: data.filter(d => d.params) }
 );
 
-const interfaces = prettier.format(
-  paramInterfaces + responseInterfaces.join("\n"),
-  {
-    parser: "typescript"
+const apiFunctions = ejs.render(
+  `
+export default class ChatworkApi {
+
+  constructor(private api_token: string){}
+
+
+  <% data.forEach(d => { %>
+  /**
+   * <%- d.description %>
+   */
+  <%- d.funcName %>(<%- [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', '); %>) {
+    <% if(d.method === 'GET' || d.method === 'DELETE') { %>
+    return axios.<%- d.method.toLowerCase() %>(\`<%- d.uri.replace(/{/g, '\${') %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
+    <% } else if(d.method === 'POST' || d.method === 'PUT') { %>
+    return axios.<%- d.method.toLowerCase() %>(\`<%- d.uri.replace(/{/g, '\${') %>\`, <%- d.funcParam %>, { headers: { 'X-ChatWorkToken': this.api_token }});
+    <% } %>
   }
+  <% }); %>
+}
+`,
+  { data }
 );
 
-console.log(interfaces);
+const importData = `
+import axios from 'axios';
+`;
 
-fs.writeFileSync(path.join(__dirname, "src", "interfaces.ts"), interfaces);
+const tsData = (
+  importData +
+  apiFunctions +
+  paramInterfaces +
+  responseInterfaces.join("\n")
+)
+  .replace(/interface/g, "export interface")
+  .replace(/function/g, "export function");
+
+const prettifiedTsData = prettier.format(tsData, {
+  parser: "typescript"
+});
+
+// console.log(prettifiedTsData);
+
+fs.writeFileSync(path.join(__dirname, "src", "api.ts"), prettifiedTsData);
