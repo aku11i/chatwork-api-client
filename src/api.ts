@@ -6,7 +6,7 @@ export default class ChatworkApi {
   /**
    * 自分自身の情報を取得
    */
-  async getMe(getMeParam: GetMeParam) {
+  async getMe(getMeParam: GetMeParam = {}) {
     const { data } = await axios.get(`https://api.chatwork.com/v2/me`, {
       params: getMeParam,
       headers: { "X-ChatWorkToken": this.api_token }
@@ -18,7 +18,7 @@ export default class ChatworkApi {
   /**
    * 自分の未読数、未読To数、未完了タスク数を返す
    */
-  async getMyStatus(getMyStatusParam: GetMyStatusParam) {
+  async getMyStatus(getMyStatusParam: GetMyStatusParam = {}) {
     const { data } = await axios.get(`https://api.chatwork.com/v2/my/status`, {
       params: getMyStatusParam,
       headers: { "X-ChatWorkToken": this.api_token }
@@ -42,7 +42,7 @@ export default class ChatworkApi {
   /**
    * 自分のコンタクト一覧を取得
    */
-  async getContacts(getContactsParam: GetContactsParam) {
+  async getContacts(getContactsParam: GetContactsParam = {}) {
     const { data } = await axios.get(`https://api.chatwork.com/v2/contacts`, {
       params: getContactsParam,
       headers: { "X-ChatWorkToken": this.api_token }
@@ -56,7 +56,7 @@ export default class ChatworkApi {
    */
   async getRoomsWithRoomIdMembers(
     room_id: string,
-    getRoomsWithRoomIdMembersParam: GetRoomsWithRoomIdMembersParam
+    getRoomsWithRoomIdMembersParam: GetRoomsWithRoomIdMembersParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/members`,
@@ -74,7 +74,7 @@ export default class ChatworkApi {
    */
   async putRoomsWithRoomIdMembers(
     room_id: string,
-    putRoomsWithRoomIdMembersParam: PutRoomsWithRoomIdMembersParam
+    putRoomsWithRoomIdMembersParam: PutRoomsWithRoomIdMembersParam = {}
   ) {
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/members`,
@@ -123,7 +123,7 @@ export default class ChatworkApi {
   async getRoomsWithRoomIdMessagesWithMessageId(
     room_id: string,
     message_id: string,
-    getRoomsWithRoomIdMessagesWithMessageIdParam: GetRoomsWithRoomIdMessagesWithMessageIdParam
+    getRoomsWithRoomIdMessagesWithMessageIdParam: GetRoomsWithRoomIdMessagesWithMessageIdParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
@@ -159,7 +159,7 @@ export default class ChatworkApi {
   async deleteRoomsWithRoomIdMessagesWithMessageId(
     room_id: string,
     message_id: string,
-    deleteRoomsWithRoomIdMessagesWithMessageIdParam: DeleteRoomsWithRoomIdMessagesWithMessageIdParam
+    deleteRoomsWithRoomIdMessagesWithMessageIdParam: DeleteRoomsWithRoomIdMessagesWithMessageIdParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
@@ -229,7 +229,7 @@ export default class ChatworkApi {
   async getRoomsWithRoomIdTasksWithTaskId(
     room_id: string,
     task_id: string,
-    getRoomsWithRoomIdTasksWithTaskIdParam: GetRoomsWithRoomIdTasksWithTaskIdParam
+    getRoomsWithRoomIdTasksWithTaskIdParam: GetRoomsWithRoomIdTasksWithTaskIdParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}`,
@@ -318,7 +318,7 @@ export default class ChatworkApi {
    */
   async postRoomsWithRoomIdFiles(
     room_id: string,
-    postRoomsWithRoomIdFilesParam: PostRoomsWithRoomIdFilesParam
+    postRoomsWithRoomIdFilesParam: PostRoomsWithRoomIdFilesParam = {}
   ) {
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms/${room_id}/files`,
@@ -334,7 +334,7 @@ export default class ChatworkApi {
    */
   async getRoomsWithRoomIdLink(
     room_id: string,
-    getRoomsWithRoomIdLinkParam: GetRoomsWithRoomIdLinkParam
+    getRoomsWithRoomIdLinkParam: GetRoomsWithRoomIdLinkParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
@@ -384,7 +384,7 @@ export default class ChatworkApi {
    */
   async deleteRoomsWithRoomIdLink(
     room_id: string,
-    deleteRoomsWithRoomIdLinkParam: DeleteRoomsWithRoomIdLinkParam
+    deleteRoomsWithRoomIdLinkParam: DeleteRoomsWithRoomIdLinkParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
@@ -402,7 +402,7 @@ export default class ChatworkApi {
    */
   async getRoomsWithRoomId(
     room_id: string,
-    getRoomsWithRoomIdParam: GetRoomsWithRoomIdParam
+    getRoomsWithRoomIdParam: GetRoomsWithRoomIdParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}`,
@@ -452,7 +452,7 @@ export default class ChatworkApi {
   /**
    * 自分のチャット一覧の取得
    */
-  async getRooms(getRoomsParam: GetRoomsParam) {
+  async getRooms(getRoomsParam: GetRoomsParam = {}) {
     const { data } = await axios.get(`https://api.chatwork.com/v2/rooms`, {
       params: getRoomsParam,
       headers: { "X-ChatWorkToken": this.api_token }
@@ -479,7 +479,7 @@ export default class ChatworkApi {
    */
   async putIncomingRequestsWithRequestId(
     request_id: string,
-    putIncomingRequestsWithRequestIdParam: PutIncomingRequestsWithRequestIdParam
+    putIncomingRequestsWithRequestIdParam: PutIncomingRequestsWithRequestIdParam = {}
   ) {
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
@@ -495,7 +495,7 @@ export default class ChatworkApi {
    */
   async deleteIncomingRequestsWithRequestId(
     request_id: string,
-    deleteIncomingRequestsWithRequestIdParam: DeleteIncomingRequestsWithRequestIdParam
+    deleteIncomingRequestsWithRequestIdParam: DeleteIncomingRequestsWithRequestIdParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
@@ -512,7 +512,7 @@ export default class ChatworkApi {
    * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
   async getIncomingRequests(
-    getIncomingRequestsParam: GetIncomingRequestsParam
+    getIncomingRequestsParam: GetIncomingRequestsParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/incoming_requests`,
