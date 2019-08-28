@@ -190,7 +190,9 @@ export default class ChatworkApi {
     <% if(method === 'get' || method === 'delete') { %>
     const { data } = await axios.<%- method %>(\`<%- url %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
     <% } else if(method === 'post' || method === 'put') { %>
-    const { data } = await axios.<%- method %>(\`<%- url %>\`, <%- d.funcParam %>, { headers: { 'X-ChatWorkToken': this.api_token }});
+    const params = new URLSearchParams();
+    Object.entries(<%- d.funcParam %>).forEach(([key, value]) => params.set(key, value));
+    const { data } = await axios.<%- method %>(\`<%- url %>\`, params, { headers: { 'X-ChatWorkToken': this.api_token }});
     <% } %>
     return data;
   }

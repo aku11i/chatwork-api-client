@@ -76,9 +76,13 @@ export default class ChatworkApi {
     room_id: string,
     putRoomsWithRoomIdMembersParam: PutRoomsWithRoomIdMembersParam = {}
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdMembersParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/members`,
-      putRoomsWithRoomIdMembersParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -92,9 +96,13 @@ export default class ChatworkApi {
     room_id: string,
     putRoomsWithRoomIdMessagesReadParam: PutRoomsWithRoomIdMessagesReadParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdMessagesReadParam).forEach(
+      ([key, value]) => params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/read`,
-      putRoomsWithRoomIdMessagesReadParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -108,9 +116,13 @@ export default class ChatworkApi {
     room_id: string,
     putRoomsWithRoomIdMessagesUnreadParam: PutRoomsWithRoomIdMessagesUnreadParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdMessagesUnreadParam).forEach(
+      ([key, value]) => params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/unread`,
-      putRoomsWithRoomIdMessagesUnreadParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -144,9 +156,13 @@ export default class ChatworkApi {
     message_id: string,
     putRoomsWithRoomIdMessagesWithMessageIdParam: PutRoomsWithRoomIdMessagesWithMessageIdParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdMessagesWithMessageIdParam).forEach(
+      ([key, value]) => params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
-      putRoomsWithRoomIdMessagesWithMessageIdParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -197,9 +213,13 @@ export default class ChatworkApi {
     room_id: string,
     postRoomsWithRoomIdMessagesParam: PostRoomsWithRoomIdMessagesParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(postRoomsWithRoomIdMessagesParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages`,
-      postRoomsWithRoomIdMessagesParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -214,9 +234,13 @@ export default class ChatworkApi {
     task_id: string,
     putRoomsWithRoomIdTasksWithTaskIdStatusParam: PutRoomsWithRoomIdTasksWithTaskIdStatusParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdTasksWithTaskIdStatusParam).forEach(
+      ([key, value]) => params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}/status`,
-      putRoomsWithRoomIdTasksWithTaskIdStatusParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -267,9 +291,13 @@ export default class ChatworkApi {
     room_id: string,
     postRoomsWithRoomIdTasksParam: PostRoomsWithRoomIdTasksParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(postRoomsWithRoomIdTasksParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks`,
-      postRoomsWithRoomIdTasksParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -320,9 +348,13 @@ export default class ChatworkApi {
     room_id: string,
     postRoomsWithRoomIdFilesParam: PostRoomsWithRoomIdFilesParam = {}
   ) {
+    const params = new URLSearchParams();
+    Object.entries(postRoomsWithRoomIdFilesParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms/${room_id}/files`,
-      postRoomsWithRoomIdFilesParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -354,9 +386,13 @@ export default class ChatworkApi {
     room_id: string,
     postRoomsWithRoomIdLinkParam: PostRoomsWithRoomIdLinkParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(postRoomsWithRoomIdLinkParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
-      postRoomsWithRoomIdLinkParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -370,9 +406,13 @@ export default class ChatworkApi {
     room_id: string,
     putRoomsWithRoomIdLinkParam: PutRoomsWithRoomIdLinkParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdLinkParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
-      putRoomsWithRoomIdLinkParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -422,9 +462,13 @@ export default class ChatworkApi {
     room_id: string,
     putRoomsWithRoomIdParam: PutRoomsWithRoomIdParam
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putRoomsWithRoomIdParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}`,
-      putRoomsWithRoomIdParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -465,9 +509,13 @@ export default class ChatworkApi {
    * グループチャットを新規作成
    */
   async postRooms(postRoomsParam: PostRoomsParam) {
+    const params = new URLSearchParams();
+    Object.entries(postRoomsParam).forEach(([key, value]) =>
+      params.set(key, value)
+    );
     const { data } = await axios.post(
       `https://api.chatwork.com/v2/rooms`,
-      postRoomsParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
@@ -481,9 +529,13 @@ export default class ChatworkApi {
     request_id: string,
     putIncomingRequestsWithRequestIdParam: PutIncomingRequestsWithRequestIdParam = {}
   ) {
+    const params = new URLSearchParams();
+    Object.entries(putIncomingRequestsWithRequestIdParam).forEach(
+      ([key, value]) => params.set(key, value)
+    );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
-      putIncomingRequestsWithRequestIdParam,
+      params,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
