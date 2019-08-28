@@ -9,8 +9,16 @@ const API_TOKEN = getApiToken();
 const api = new ChatworkApi(API_TOKEN);
 
 (async () => {
-  const me = await api.getMe();
-  console.log(me);
+  const rooms = await api.getRooms();
+  const myRoom = rooms.find((room: any) => room.type === "my");
+  const { room_id } = myRoom;
+  const { message_id } = await api.postRoomsWithRoomIdMessages(room_id, {
+    body: "[info][title]chatwork-api-client[/title]test[/info]"
+  });
+  const result = await api.deleteRoomsWithRoomIdMessagesWithMessageId(
+    room_id,
+    message_id
+  );
 })();
 
 function getApiToken() {
