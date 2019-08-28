@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "Run RAML Parser",
-      "args": ["${workspaceFolder}/raml-to-interface.js"],
+      "args": ["${workspaceFolder}/raml-to-ts.js"],
       "runtimeArgs": [],
       "sourceMaps": true,
       "protocol": "inspector",
