@@ -2,7 +2,7 @@
   "name": "chatwork-api-client",
   "version": "0.0.1",
   "main": "dist/index.js",
-  "author": "akutagw <54097100+akutagw@users.noreply.github.com>",
+  "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
     "prebuild": "run-s clean generate",
