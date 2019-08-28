@@ -10,6 +10,17 @@
       "sourceMaps": true,
       "protocol": "inspector",
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Test",
+      "args": ["${workspaceFolder}/dist/test.js"],
+      "runtimeArgs": [],
+      "sourceMaps": true,
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build"
     }
   ]
 }
