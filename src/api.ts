@@ -653,7 +653,7 @@ export interface DeleteRoomsWithRoomIdMessagesWithMessageIdParam {}
  */
 export interface GetRoomsWithRoomIdMessagesParam {
   /** 未取得にかかわらず最新の100件を取得するか */
-  force?: boolean;
+  force?: 0 | 1;
 }
 
 /**
@@ -664,7 +664,7 @@ export interface PostRoomsWithRoomIdMessagesParam {
   body: string;
 
   /** 追加したメッセージを自分から見て未読とするか */
-  self_unread?: boolean;
+  self_unread?: 0 | 1;
 }
 
 /**
@@ -716,7 +716,7 @@ export interface PostRoomsWithRoomIdTasksParam {
  */
 export interface GetRoomsWithRoomIdFilesWithFileIdParam {
   /** ダウンロードする為のURLを生成するか */
-  create_download_url?: boolean;
+  create_download_url?: 0 | 1;
 }
 
 /**
@@ -745,7 +745,7 @@ export interface PostRoomsWithRoomIdLinkParam {
   code?: string;
 
   /** 承認要否 */
-  need_acceptance?: boolean;
+  need_acceptance?: 0 | 1;
 
   /** リンク説明文 */
   description?: string;
@@ -759,7 +759,7 @@ export interface PutRoomsWithRoomIdLinkParam {
   code?: string;
 
   /** 承認要否 */
-  need_acceptance?: boolean;
+  need_acceptance?: 0 | 1;
 
   /** リンク説明文 */
   description?: string;
@@ -810,13 +810,13 @@ export interface PostRoomsParam {
   description?: string;
 
   /** 招待リンク作成 */
-  link?: boolean;
+  link?: 0 | 1;
 
   /** リンク文字列 */
   link_code?: string;
 
   /** 承認要否 */
-  link_need_acceptance?: boolean;
+  link_need_acceptance?: 0 | 1;
 }
 
 /**
