@@ -139,7 +139,7 @@ export default class ChatworkApi {
   /**
    * <%- d.description %>
    */
-  async <%- d.funcName %>(<%- [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', '); %>) {
+  async <%- d.funcName %>(<%- [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', '); %><% if(!d.params || d.params.length === 0) { %> = {}<% } %>) {
     <% if(d.method === 'GET' || d.method === 'DELETE') { %>
     const {data} = await axios.<%- d.method.toLowerCase() %>(\`${CHATWORK_URL}<%- d.uri.replace(/{/g, '\${') %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
     <% } else if(d.method === 'POST' || d.method === 'PUT') { %>
