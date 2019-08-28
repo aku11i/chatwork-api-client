@@ -41,7 +41,7 @@ import axios from 'axios';
     parser: "typescript"
   });
 
-  console.log(prettifiedTsData);
+  // console.log(prettifiedTsData);
 
   fs.writeFileSync(path.join(__dirname, "src", "api.ts"), prettifiedTsData);
 })();
