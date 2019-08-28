@@ -113,6 +113,7 @@ function getQueryParameters(queryParameters = {}) {
     if (param.displayName) {
       param.displayName = param.displayName.replace(/\n/g, "");
     }
+    if (!param.required) param.name += "?";
   });
 
   return params;
