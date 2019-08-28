@@ -6,407 +6,523 @@ export default class ChatworkApi {
   /**
    * 自分自身の情報を取得
    */
-  getMe(getMeParam: GetMeParam) {
-    return axios.get(`/me`, {
+  async getMe(getMeParam: GetMeParam) {
+    const { data } = await axios.get(`https://api.chatwork.com/v2/me`, {
       params: getMeParam,
       headers: { "X-ChatWorkToken": this.api_token }
     });
+
+    return data;
   }
 
   /**
    * 自分の未読数、未読To数、未完了タスク数を返す
    */
-  getMyStatus(getMyStatusParam: GetMyStatusParam) {
-    return axios.get(`/my/status`, {
+  async getMyStatus(getMyStatusParam: GetMyStatusParam) {
+    const { data } = await axios.get(`https://api.chatwork.com/v2/my/status`, {
       params: getMyStatusParam,
       headers: { "X-ChatWorkToken": this.api_token }
     });
+
+    return data;
   }
 
   /**
    * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  getMyTasks(getMyTasksParam: GetMyTasksParam) {
-    return axios.get(`/my/tasks`, {
+  async getMyTasks(getMyTasksParam: GetMyTasksParam) {
+    const { data } = await axios.get(`https://api.chatwork.com/v2/my/tasks`, {
       params: getMyTasksParam,
       headers: { "X-ChatWorkToken": this.api_token }
     });
+
+    return data;
   }
 
   /**
    * 自分のコンタクト一覧を取得
    */
-  getContacts(getContactsParam: GetContactsParam) {
-    return axios.get(`/contacts`, {
+  async getContacts(getContactsParam: GetContactsParam) {
+    const { data } = await axios.get(`https://api.chatwork.com/v2/contacts`, {
       params: getContactsParam,
       headers: { "X-ChatWorkToken": this.api_token }
     });
+
+    return data;
   }
 
   /**
    * チャットのメンバー一覧を取得
    */
-  getRoomsWithRoomIdMembers(
+  async getRoomsWithRoomIdMembers(
     room_id: string,
     getRoomsWithRoomIdMembersParam: GetRoomsWithRoomIdMembersParam
   ) {
-    return axios.get(`/rooms/${room_id}/members`, {
-      params: getRoomsWithRoomIdMembersParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/members`,
+      {
+        params: getRoomsWithRoomIdMembersParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットのメンバーを一括変更
    */
-  putRoomsWithRoomIdMembers(
+  async putRoomsWithRoomIdMembers(
     room_id: string,
     putRoomsWithRoomIdMembersParam: PutRoomsWithRoomIdMembersParam
   ) {
-    return axios.put(
-      `/rooms/${room_id}/members`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/members`,
       putRoomsWithRoomIdMembersParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * メッセージを既読にする
    */
-  putRoomsWithRoomIdMessagesRead(
+  async putRoomsWithRoomIdMessagesRead(
     room_id: string,
     putRoomsWithRoomIdMessagesReadParam: PutRoomsWithRoomIdMessagesReadParam
   ) {
-    return axios.put(
-      `/rooms/${room_id}/messages/read`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages/read`,
       putRoomsWithRoomIdMessagesReadParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * メッセージを未読にする
    */
-  putRoomsWithRoomIdMessagesUnread(
+  async putRoomsWithRoomIdMessagesUnread(
     room_id: string,
     putRoomsWithRoomIdMessagesUnreadParam: PutRoomsWithRoomIdMessagesUnreadParam
   ) {
-    return axios.put(
-      `/rooms/${room_id}/messages/unread`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages/unread`,
       putRoomsWithRoomIdMessagesUnreadParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * メッセージ情報を取得
    */
-  getRoomsWithRoomIdMessagesWithMessageId(
+  async getRoomsWithRoomIdMessagesWithMessageId(
     room_id: string,
     message_id: string,
     getRoomsWithRoomIdMessagesWithMessageIdParam: GetRoomsWithRoomIdMessagesWithMessageIdParam
   ) {
-    return axios.get(`/rooms/${room_id}/messages/${message_id}`, {
-      params: getRoomsWithRoomIdMessagesWithMessageIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
+      {
+        params: getRoomsWithRoomIdMessagesWithMessageIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットのメッセージを更新する。
    */
-  putRoomsWithRoomIdMessagesWithMessageId(
+  async putRoomsWithRoomIdMessagesWithMessageId(
     room_id: string,
     message_id: string,
     putRoomsWithRoomIdMessagesWithMessageIdParam: PutRoomsWithRoomIdMessagesWithMessageIdParam
   ) {
-    return axios.put(
-      `/rooms/${room_id}/messages/${message_id}`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
       putRoomsWithRoomIdMessagesWithMessageIdParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * メッセージを削除
    */
-  deleteRoomsWithRoomIdMessagesWithMessageId(
+  async deleteRoomsWithRoomIdMessagesWithMessageId(
     room_id: string,
     message_id: string,
     deleteRoomsWithRoomIdMessagesWithMessageIdParam: DeleteRoomsWithRoomIdMessagesWithMessageIdParam
   ) {
-    return axios.delete(`/rooms/${room_id}/messages/${message_id}`, {
-      params: deleteRoomsWithRoomIdMessagesWithMessageIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.delete(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
+      {
+        params: deleteRoomsWithRoomIdMessagesWithMessageIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
    */
-  getRoomsWithRoomIdMessages(
+  async getRoomsWithRoomIdMessages(
     room_id: string,
     getRoomsWithRoomIdMessagesParam: GetRoomsWithRoomIdMessagesParam
   ) {
-    return axios.get(`/rooms/${room_id}/messages`, {
-      params: getRoomsWithRoomIdMessagesParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages`,
+      {
+        params: getRoomsWithRoomIdMessagesParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットに新しいメッセージを追加
    */
-  postRoomsWithRoomIdMessages(
+  async postRoomsWithRoomIdMessages(
     room_id: string,
     postRoomsWithRoomIdMessagesParam: PostRoomsWithRoomIdMessagesParam
   ) {
-    return axios.post(
-      `/rooms/${room_id}/messages`,
+    const { data } = await axios.post(
+      `https://api.chatwork.com/v2/rooms/${room_id}/messages`,
       postRoomsWithRoomIdMessagesParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * タスク完了状態を変更する
    */
-  putRoomsWithRoomIdTasksWithTaskIdStatus(
+  async putRoomsWithRoomIdTasksWithTaskIdStatus(
     room_id: string,
     task_id: string,
     putRoomsWithRoomIdTasksWithTaskIdStatusParam: PutRoomsWithRoomIdTasksWithTaskIdStatusParam
   ) {
-    return axios.put(
-      `/rooms/${room_id}/tasks/${task_id}/status`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}/status`,
       putRoomsWithRoomIdTasksWithTaskIdStatusParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * タスク情報を取得
    */
-  getRoomsWithRoomIdTasksWithTaskId(
+  async getRoomsWithRoomIdTasksWithTaskId(
     room_id: string,
     task_id: string,
     getRoomsWithRoomIdTasksWithTaskIdParam: GetRoomsWithRoomIdTasksWithTaskIdParam
   ) {
-    return axios.get(`/rooms/${room_id}/tasks/${task_id}`, {
-      params: getRoomsWithRoomIdTasksWithTaskIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}`,
+      {
+        params: getRoomsWithRoomIdTasksWithTaskIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  getRoomsWithRoomIdTasks(
+  async getRoomsWithRoomIdTasks(
     room_id: string,
     getRoomsWithRoomIdTasksParam: GetRoomsWithRoomIdTasksParam
   ) {
-    return axios.get(`/rooms/${room_id}/tasks`, {
-      params: getRoomsWithRoomIdTasksParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/tasks`,
+      {
+        params: getRoomsWithRoomIdTasksParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットに新しいタスクを追加
    */
-  postRoomsWithRoomIdTasks(
+  async postRoomsWithRoomIdTasks(
     room_id: string,
     postRoomsWithRoomIdTasksParam: PostRoomsWithRoomIdTasksParam
   ) {
-    return axios.post(
-      `/rooms/${room_id}/tasks`,
+    const { data } = await axios.post(
+      `https://api.chatwork.com/v2/rooms/${room_id}/tasks`,
       postRoomsWithRoomIdTasksParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * ファイル情報を取得
    */
-  getRoomsWithRoomIdFilesWithFileId(
+  async getRoomsWithRoomIdFilesWithFileId(
     room_id: string,
     file_id: string,
     getRoomsWithRoomIdFilesWithFileIdParam: GetRoomsWithRoomIdFilesWithFileIdParam
   ) {
-    return axios.get(`/rooms/${room_id}/files/${file_id}`, {
-      params: getRoomsWithRoomIdFilesWithFileIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/files/${file_id}`,
+      {
+        params: getRoomsWithRoomIdFilesWithFileIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  getRoomsWithRoomIdFiles(
+  async getRoomsWithRoomIdFiles(
     room_id: string,
     getRoomsWithRoomIdFilesParam: GetRoomsWithRoomIdFilesParam
   ) {
-    return axios.get(`/rooms/${room_id}/files`, {
-      params: getRoomsWithRoomIdFilesParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/files`,
+      {
+        params: getRoomsWithRoomIdFilesParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットに新しいファイルをアップロード
    */
-  postRoomsWithRoomIdFiles(
+  async postRoomsWithRoomIdFiles(
     room_id: string,
     postRoomsWithRoomIdFilesParam: PostRoomsWithRoomIdFilesParam
   ) {
-    return axios.post(
-      `/rooms/${room_id}/files`,
+    const { data } = await axios.post(
+      `https://api.chatwork.com/v2/rooms/${room_id}/files`,
       postRoomsWithRoomIdFilesParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * 招待リンクを取得する
    */
-  getRoomsWithRoomIdLink(
+  async getRoomsWithRoomIdLink(
     room_id: string,
     getRoomsWithRoomIdLinkParam: GetRoomsWithRoomIdLinkParam
   ) {
-    return axios.get(`/rooms/${room_id}/link`, {
-      params: getRoomsWithRoomIdLinkParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}/link`,
+      {
+        params: getRoomsWithRoomIdLinkParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * 招待リンクを作成する
    */
-  postRoomsWithRoomIdLink(
+  async postRoomsWithRoomIdLink(
     room_id: string,
     postRoomsWithRoomIdLinkParam: PostRoomsWithRoomIdLinkParam
   ) {
-    return axios.post(`/rooms/${room_id}/link`, postRoomsWithRoomIdLinkParam, {
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.post(
+      `https://api.chatwork.com/v2/rooms/${room_id}/link`,
+      postRoomsWithRoomIdLinkParam,
+      { headers: { "X-ChatWorkToken": this.api_token } }
+    );
+
+    return data;
   }
 
   /**
    * 招待リンクの情報を変更する
    */
-  putRoomsWithRoomIdLink(
+  async putRoomsWithRoomIdLink(
     room_id: string,
     putRoomsWithRoomIdLinkParam: PutRoomsWithRoomIdLinkParam
   ) {
-    return axios.put(`/rooms/${room_id}/link`, putRoomsWithRoomIdLinkParam, {
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}/link`,
+      putRoomsWithRoomIdLinkParam,
+      { headers: { "X-ChatWorkToken": this.api_token } }
+    );
+
+    return data;
   }
 
   /**
    * 招待リンクを削除する
    */
-  deleteRoomsWithRoomIdLink(
+  async deleteRoomsWithRoomIdLink(
     room_id: string,
     deleteRoomsWithRoomIdLinkParam: DeleteRoomsWithRoomIdLinkParam
   ) {
-    return axios.delete(`/rooms/${room_id}/link`, {
-      params: deleteRoomsWithRoomIdLinkParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.delete(
+      `https://api.chatwork.com/v2/rooms/${room_id}/link`,
+      {
+        params: deleteRoomsWithRoomIdLinkParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットの名前、アイコン、種類(my/direct/group)を取得
    */
-  getRoomsWithRoomId(
+  async getRoomsWithRoomId(
     room_id: string,
     getRoomsWithRoomIdParam: GetRoomsWithRoomIdParam
   ) {
-    return axios.get(`/rooms/${room_id}`, {
-      params: getRoomsWithRoomIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/rooms/${room_id}`,
+      {
+        params: getRoomsWithRoomIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * チャットの名前、アイコンをアップデート
    */
-  putRoomsWithRoomId(
+  async putRoomsWithRoomId(
     room_id: string,
     putRoomsWithRoomIdParam: PutRoomsWithRoomIdParam
   ) {
-    return axios.put(`/rooms/${room_id}`, putRoomsWithRoomIdParam, {
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/rooms/${room_id}`,
+      putRoomsWithRoomIdParam,
+      { headers: { "X-ChatWorkToken": this.api_token } }
+    );
+
+    return data;
   }
 
   /**
    * グループチャットを退席/削除する
    */
-  deleteRoomsWithRoomId(
+  async deleteRoomsWithRoomId(
     room_id: string,
     deleteRoomsWithRoomIdParam: DeleteRoomsWithRoomIdParam
   ) {
-    return axios.delete(`/rooms/${room_id}`, {
-      params: deleteRoomsWithRoomIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.delete(
+      `https://api.chatwork.com/v2/rooms/${room_id}`,
+      {
+        params: deleteRoomsWithRoomIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * 自分のチャット一覧の取得
    */
-  getRooms(getRoomsParam: GetRoomsParam) {
-    return axios.get(`/rooms`, {
+  async getRooms(getRoomsParam: GetRoomsParam) {
+    const { data } = await axios.get(`https://api.chatwork.com/v2/rooms`, {
       params: getRoomsParam,
       headers: { "X-ChatWorkToken": this.api_token }
     });
+
+    return data;
   }
 
   /**
    * グループチャットを新規作成
    */
-  postRooms(postRoomsParam: PostRoomsParam) {
-    return axios.post(`/rooms`, postRoomsParam, {
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+  async postRooms(postRoomsParam: PostRoomsParam) {
+    const { data } = await axios.post(
+      `https://api.chatwork.com/v2/rooms`,
+      postRoomsParam,
+      { headers: { "X-ChatWorkToken": this.api_token } }
+    );
+
+    return data;
   }
 
   /**
    * 自分に対するコンタクト承認依頼を承認する
    */
-  putIncomingRequestsWithRequestId(
+  async putIncomingRequestsWithRequestId(
     request_id: string,
     putIncomingRequestsWithRequestIdParam: PutIncomingRequestsWithRequestIdParam
   ) {
-    return axios.put(
-      `/incoming_requests/${request_id}`,
+    const { data } = await axios.put(
+      `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
       putIncomingRequestsWithRequestIdParam,
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
+
+    return data;
   }
 
   /**
    * 自分に対するコンタクト承認依頼をキャンセルする
    */
-  deleteIncomingRequestsWithRequestId(
+  async deleteIncomingRequestsWithRequestId(
     request_id: string,
     deleteIncomingRequestsWithRequestIdParam: DeleteIncomingRequestsWithRequestIdParam
   ) {
-    return axios.delete(`/incoming_requests/${request_id}`, {
-      params: deleteIncomingRequestsWithRequestIdParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+    const { data } = await axios.delete(
+      `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
+      {
+        params: deleteIncomingRequestsWithRequestIdParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 
   /**
    * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  getIncomingRequests(getIncomingRequestsParam: GetIncomingRequestsParam) {
-    return axios.get(`/incoming_requests`, {
-      params: getIncomingRequestsParam,
-      headers: { "X-ChatWorkToken": this.api_token }
-    });
+  async getIncomingRequests(
+    getIncomingRequestsParam: GetIncomingRequestsParam
+  ) {
+    const { data } = await axios.get(
+      `https://api.chatwork.com/v2/incoming_requests`,
+      {
+        params: getIncomingRequestsParam,
+        headers: { "X-ChatWorkToken": this.api_token }
+      }
+    );
+
+    return data;
   }
 }
 
