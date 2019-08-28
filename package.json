@@ -5,6 +5,7 @@
   "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
   "license": "MIT",
   "scripts": {
+    "prepublishOnly": "run-s build test",
     "prebuild": "run-s clean generate",
     "build": "tsc",
     "clean": "rimraf ./dist",
