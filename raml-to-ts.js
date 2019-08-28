@@ -109,6 +109,7 @@ function getQueryParameters(queryParameters = {}) {
 
   params.forEach(param => {
     if (param.type === "integer") param.type = "number";
+    if (param.type === "boolean") param.type = "0|1";
     if (param.enum) param.type = `'${param.enum.join(`'|'`)}'`;
     if (param.displayName) {
       param.displayName = param.displayName.replace(/\n/g, "");
