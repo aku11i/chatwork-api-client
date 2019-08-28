@@ -7,10 +7,11 @@ const pascalCase = require("pascal-case");
 const prettier = require("prettier");
 const { json2ts } = require("json-ts");
 
-const lang = "ja";
+const LANG = "ja";
+const CHATWORK_URL = "https://api.chatwork.com/v2";
 
 const ramlStr = fs.readFileSync(
-  path.join(__dirname, "api", "RAML", `api-${lang}.raml`),
+  path.join(__dirname, "api", "RAML", `api-${LANG}.raml`),
   { encoding: "utf8" }
 );
 
@@ -138,12 +139,13 @@ export default class ChatworkApi {
   /**
    * <%- d.description %>
    */
-  <%- d.funcName %>(<%- [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', '); %>) {
+  async <%- d.funcName %>(<%- [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', '); %>) {
     <% if(d.method === 'GET' || d.method === 'DELETE') { %>
-    return axios.<%- d.method.toLowerCase() %>(\`<%- d.uri.replace(/{/g, '\${') %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
+    const {data} = await axios.<%- d.method.toLowerCase() %>(\`${CHATWORK_URL}<%- d.uri.replace(/{/g, '\${') %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
     <% } else if(d.method === 'POST' || d.method === 'PUT') { %>
-    return axios.<%- d.method.toLowerCase() %>(\`<%- d.uri.replace(/{/g, '\${') %>\`, <%- d.funcParam %>, { headers: { 'X-ChatWorkToken': this.api_token }});
+    const {data} = await axios.<%- d.method.toLowerCase() %>(\`${CHATWORK_URL}<%- d.uri.replace(/{/g, '\${') %>\`, <%- d.funcParam %>, { headers: { 'X-ChatWorkToken': this.api_token }});
     <% } %>
+    return data;
   }
   <% }); %>
 }
