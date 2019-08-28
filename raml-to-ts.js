@@ -195,7 +195,7 @@ export default class ChatworkApi {
     Object.entries(<%- d.funcParam %>).forEach(([key, value]) => params.set(key, value));
     const { data } = await axios.<%- method %>(\`<%- url %>\`, params, { headers: { 'X-ChatWorkToken': this.api_token }});
     <% } %>
-    return data;
+    return <%- d.res ? 'data as ' + d.ifName + 'Response' : 'data' %>;
   }
   <% }); %>
 }
