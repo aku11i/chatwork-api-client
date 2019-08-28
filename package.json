@@ -8,7 +8,8 @@
     "prebuild": "run-s clean generate",
     "build": "tsc",
     "clean": "rimraf ./dist",
-    "generate": "node ./raml-to-ts.js"
+    "generate": "node ./raml-to-ts.js",
+    "test": "node ./dist/test.js"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
