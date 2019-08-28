@@ -11,6 +11,10 @@
     "generate": "node ./raml-to-ts.js",
     "test": "node ./dist/test.js"
   },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/ejs": "^2.6.3",
