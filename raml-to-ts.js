@@ -169,9 +169,12 @@ function getResponses(responses = {}) {
 
 function renderParamInterfaces(data) {
   return ejs.render(
-    fs.readFileSync(path.join(__dirname, "templates", "_paramInterface.ejs"), {
-      encoding: "utf8"
-    }),
+    fs.readFileSync(
+      path.join(__dirname, "__templates", "__paramInterface.ejs"),
+      {
+        encoding: "utf8"
+      }
+    ),
     { data: data.filter(d => d.params) }
   );
 }
@@ -190,7 +193,7 @@ function renderResponsesInterfaces(data) {
 
 function renderApiClass(data, ramlData) {
   return ejs.render(
-    fs.readFileSync(path.join(__dirname, "templates", "_class.ejs"), {
+    fs.readFileSync(path.join(__dirname, "__templates", "__class.ejs"), {
       encoding: "utf8"
     }),
     { data, ramlData, CHATWORK_URL }
