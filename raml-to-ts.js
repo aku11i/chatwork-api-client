@@ -10,6 +10,35 @@ const { json2ts } = require("json-ts");
 const LANG = "ja";
 const CHATWORK_URL = "https://api.chatwork.com/v2";
 
+const NAME_MAPPER = {
+  getRoomsMembers: "getRoomMembers",
+  putRoomsMembers: "putRoomMembers",
+  putRoomsMessagesRead: "putRoomMessagesRead",
+  putRoomsMessagesUnread: "putRoomMessagesUnread",
+  getRoomsMessagesInfo: "getRoomMessage",
+  putRoomsMessagesInfo: "putRoomMessage",
+  deleteRoomsMessagesInfo: "deleteRoomMessage",
+  getRoomsMessages: "getRoomMessages",
+  postRoomsMessages: "postRoomMessage",
+  putRoomsTasksStatus: "putRoomTaskStatus",
+  getRoomsTasksInfo: "getRoomTask",
+  getRoomsTasks: "getRoomTasks",
+  postRoomsTasks: "postRoomTask",
+  getRoomsFilesInfo: "getRoomFileInfo",
+  getRoomsFiles: "getRoomFiles",
+  postRoomsFiles: "postRoomFile",
+  getRoomsLink: "getRoomLink",
+  postRoomsLink: "postRoomLink",
+  putRoomsLink: "putRoomLink",
+  deleteRoomsLink: "deleteRoomLink",
+  getRoomsInfo: "getRoom",
+  putRoomsInfo: "putRoom",
+  deleteRoomsInfo: "deleteRoom",
+  postRooms: "postRoom",
+  putIncomingRequestsInfo: "putIncomingRequest",
+  deleteIncomingRequestsInfo: "deleteIncomingRequest"
+};
+
 (function main() {
   const ramlStr = fs.readFileSync(
     path.join(__dirname, "api", "RAML", `api-${LANG}.raml`),
@@ -129,7 +158,9 @@ function getFuncName(method, uri) {
   if (isQueryLast) uris.push("info");
   uris = uris.filter(uri => !uri.match(/^{.*}$/));
 
-  return camelCase([method, uris.join("_")].join("_"));
+  const funcName = camelCase([method, uris.join("_")].join("_"));
+
+  return NAME_MAPPER[funcName] || funcName;
 }
 
 function getQueryParameters(queryParameters = {}) {

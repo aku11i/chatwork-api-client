@@ -23,18 +23,18 @@ test("API Connection Test (GET,POST,PUT,DELETE)", async () => {
   if (!myRoom) throw new Error("My Room is not found.");
   const { room_id } = myRoom;
 
-  const message = await api.postRoomsMessages(room_id, {
+  const message = await api.postRoomMessage(room_id, {
     body: "[info][title]chatwork-api-client[/title]test[/info]"
   });
   expect(message).toHaveProperty("message_id");
   const { message_id } = message;
 
-  const putResult = await api.putRoomsMessagesInfo(room_id, message_id, {
+  const putResult = await api.putRoomMessage(room_id, message_id, {
     body: "[info][title]chatwork-api-client[/title]test(edited)[/info]"
   });
   expect(putResult).toHaveProperty("message_id");
 
-  const deleteResult = await api.deleteRoomsMessagesInfo(room_id, message_id);
+  const deleteResult = await api.deleteRoomMessage(room_id, message_id);
   expect(deleteResult).toHaveProperty("message_id");
 });
 
