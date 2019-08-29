@@ -13,15 +13,7 @@ test("API Token", () => {
 test("API Connection Test (GET,POST,PUT,DELETE)", async () => {
   const api = new ChatworkApi(API_TOKEN);
 
-  const rooms = await api.getRooms();
-  expect(Array.isArray(rooms)).toBeTruthy();
-  expect(rooms.length).toBeGreaterThanOrEqual(1);
-
-  const myRoom = rooms.find(room => room.type === "my");
-  expect(myRoom).toBeDefined();
-  expect(myRoom).toHaveProperty("room_id");
-  if (!myRoom) throw new Error("My Room is not found.");
-  const { room_id } = myRoom;
+  const { room_id } = await api.getMe();
 
   const message = await api.postRoomMessage(room_id, {
     body: "[info][title]chatwork-api-client[/title]test[/info]"
