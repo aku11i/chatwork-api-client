@@ -14,8 +14,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "run-s generate build test",
-    "prebuild": "run-s clean",
+    "prepublishOnly": "npm-run-all generate build test",
+    "prebuild": "npm run clean",
     "build": "tsc",
     "clean": "rimraf ./dist",
     "generate": "node ./raml-to-ts.js",
