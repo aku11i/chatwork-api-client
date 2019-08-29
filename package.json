@@ -1,6 +1,6 @@
 {
   "name": "chatwork-api-client",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/index.js",
   "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
   "repository": {
