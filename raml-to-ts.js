@@ -92,8 +92,8 @@ function parseEndpoint(api, uri) {
 
 function parseMethod(method, api, uri) {
   const { description, queryParameters, responses, is } = api;
-  const ifName = getInterfaceName(method, uri);
-  const funcName = camelCase(ifName);
+  const funcName = getFuncName(method, uri);
+  const ifName = pascalCase(funcName);
   const funcParams = getFuncParams(uri);
   const funcParamsWithTypes = funcParams.map(
     param => param + ": number|string"
@@ -123,13 +123,13 @@ function parseMethod(method, api, uri) {
   };
 }
 
-function getInterfaceName(method, uri) {
+function getFuncName(method, uri) {
   let uris = uri.split("/").filter(uri => uri);
   const isQueryLast = uris[uris.length - 1].match(/^{.*}$/);
   if (isQueryLast) uris.push("info");
   uris = uris.filter(uri => !uri.match(/^{.*}$/));
 
-  return pascalCase([method, uris.join("_")].join("_"));
+  return camelCase([method, uris.join("_")].join("_"));
 }
 
 function getQueryParameters(queryParameters = {}) {
