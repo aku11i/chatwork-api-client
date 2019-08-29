@@ -96,9 +96,12 @@ function parseMethod(method, api, uri) {
 }
 
 function getInterfaceName(method, uri) {
-  return pascalCase(
-    [method, uri.replace(/{/g, "_with_").replace(/}/g, "")].join("_")
-  );
+  let uris = uri.split("/").filter(uri => uri);
+  const isQueryLast = uris[uris.length - 1].match(/^{.*}$/);
+  if (isQueryLast) uris.push("info");
+  uris = uris.filter(uri => !uri.match(/^{.*}$/));
+
+  return pascalCase([method, uris.join("_")].join("_"));
 }
 
 function getQueryParameters(queryParameters = {}) {
