@@ -13,7 +13,9 @@ test("API Token", () => {
 test("API Connection Test (GET,POST,PUT,DELETE)", async () => {
   const api = new ChatworkApi(API_TOKEN);
 
-  const { room_id } = await api.getMe();
+  const me = await api.getMe();
+  expect(me).toHaveProperty("room_id");
+  const { room_id } = me;
 
   const message = await api.postRoomMessage(room_id, {
     body: "[info][title]chatwork-api-client[/title]test[/info]"
