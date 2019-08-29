@@ -169,19 +169,9 @@ function getResponses(responses = {}) {
 
 function renderParamInterfaces(data) {
   return ejs.render(
-    `
-<% data.forEach(d => { %>
-/**
- * <%- d.description %>
- */
-interface <%- d.ifName %>Param {
-  <% d.params.forEach(param => { %>
-  /** <%- param.displayName %> */
-  <%- param.name %>: <%- param.type %>
-  <% }); %>
-}
-<% }); %>
-  `,
+    fs.readFileSync(path.join(__dirname, "templates", "_paramInterface.ejs"), {
+      encoding: "utf8"
+    }),
     { data: data.filter(d => d.params) }
   );
 }
@@ -200,41 +190,10 @@ function renderResponsesInterfaces(data) {
 
 function renderApiClass(data, ramlData) {
   return ejs.render(
-    `
-/**
- * <%- ramlData.title %> <%- ramlData.version %>
- */
-export default class ChatworkApi {
-
-  constructor(private api_token: string){}
-
-
-  <% data.forEach(d => { %>
-  <%
-  let params = [...d.funcParamsWithTypes, d.funcParamWithTypes].join(', ');
-  if(!d.params || d.params.length === 0) {
-    params += ' = {}';
-  }
-  const url = '${CHATWORK_URL}' + d.uri.replace(/{/g, '\${');
-  const method = d.method.toLowerCase();
-  %>
-  /**
-   * <%- d.description %>
-   */
-  async <%- d.funcName %>(<%- params %>) {
-    <% if(method === 'get' || method === 'delete') { %>
-    const { data } = await axios.<%- method %>(\`<%- url %>\`, { params: <%- d.funcParam %>, headers: { 'X-ChatWorkToken': this.api_token }});
-    <% } else if(method === 'post' || method === 'put') { %>
-    const params = new URLSearchParams();
-    Object.entries(<%- d.funcParam %>).forEach(([key, value]) => params.set(key, value));
-    const { data } = await axios.<%- method %>(\`<%- url %>\`, params, { headers: { 'X-ChatWorkToken': this.api_token }});
-    <% } %>
-    return <%- d.res ? 'data as ' + d.ifName + 'Response' : 'data' %>;
-  }
-  <% }); %>
-}
-`,
-    { data, ramlData }
+    fs.readFileSync(path.join(__dirname, "templates", "_class.ejs"), {
+      encoding: "utf8"
+    }),
+    { data, ramlData, CHATWORK_URL }
   );
 }
 
