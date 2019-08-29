@@ -14,8 +14,8 @@
   ],
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "run-s build test",
-    "prebuild": "run-s clean generate",
+    "prepublishOnly": "run-s generate build test",
+    "prebuild": "run-s clean",
     "build": "tsc",
     "clean": "rimraf ./dist",
     "generate": "node ./raml-to-ts.js",
@@ -27,7 +27,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "yarn test"
+      "pre-commit": "npm run build"
     }
   },
   "devDependencies": {
