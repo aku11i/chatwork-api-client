@@ -1,0 +1,11 @@
+<% data.forEach(d => { %>
+/**
+ * <%- d.description %>
+ */
+interface <%- d.ifName %>Param {
+  <% d.params.forEach(param => { %>
+  /** <%- param.displayName %> */
+  <%- param.name %>: <%- param.type %>
+  <% }); %>
+}
+<% }); %>
