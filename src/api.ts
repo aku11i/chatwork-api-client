@@ -54,14 +54,14 @@ export default class ChatworkApi {
   /**
    * チャットのメンバー一覧を取得
    */
-  async getRoomsWithRoomIdMembers(
+  async getRoomsMembers(
     room_id: string,
-    getRoomsWithRoomIdMembersParam: GetRoomsWithRoomIdMembersParam = {}
+    getRoomsMembersParam: GetRoomsMembersParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/members`,
       {
-        params: getRoomsWithRoomIdMembersParam,
+        params: getRoomsMembersParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -72,12 +72,12 @@ export default class ChatworkApi {
   /**
    * チャットのメンバーを一括変更
    */
-  async putRoomsWithRoomIdMembers(
+  async putRoomsMembers(
     room_id: string,
-    putRoomsWithRoomIdMembersParam: PutRoomsWithRoomIdMembersParam = {}
+    putRoomsMembersParam: PutRoomsMembersParam = {}
   ) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdMembersParam).forEach(([key, value]) =>
+    Object.entries(putRoomsMembersParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.put(
@@ -86,19 +86,19 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdMembersResponse;
+    return data as PutRoomsMembersResponse;
   }
 
   /**
    * メッセージを既読にする
    */
-  async putRoomsWithRoomIdMessagesRead(
+  async putRoomsMessagesRead(
     room_id: string,
-    putRoomsWithRoomIdMessagesReadParam: PutRoomsWithRoomIdMessagesReadParam
+    putRoomsMessagesReadParam: PutRoomsMessagesReadParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdMessagesReadParam).forEach(
-      ([key, value]) => params.set(key, value)
+    Object.entries(putRoomsMessagesReadParam).forEach(([key, value]) =>
+      params.set(key, value)
     );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/read`,
@@ -106,19 +106,19 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdMessagesReadResponse;
+    return data as PutRoomsMessagesReadResponse;
   }
 
   /**
    * メッセージを未読にする
    */
-  async putRoomsWithRoomIdMessagesUnread(
+  async putRoomsMessagesUnread(
     room_id: string,
-    putRoomsWithRoomIdMessagesUnreadParam: PutRoomsWithRoomIdMessagesUnreadParam
+    putRoomsMessagesUnreadParam: PutRoomsMessagesUnreadParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdMessagesUnreadParam).forEach(
-      ([key, value]) => params.set(key, value)
+    Object.entries(putRoomsMessagesUnreadParam).forEach(([key, value]) =>
+      params.set(key, value)
     );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/unread`,
@@ -126,21 +126,21 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdMessagesUnreadResponse;
+    return data as PutRoomsMessagesUnreadResponse;
   }
 
   /**
    * メッセージ情報を取得
    */
-  async getRoomsWithRoomIdMessagesWithMessageId(
+  async getRoomsMessagesInfo(
     room_id: string,
     message_id: string,
-    getRoomsWithRoomIdMessagesWithMessageIdParam: GetRoomsWithRoomIdMessagesWithMessageIdParam = {}
+    getRoomsMessagesInfoParam: GetRoomsMessagesInfoParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
       {
-        params: getRoomsWithRoomIdMessagesWithMessageIdParam,
+        params: getRoomsMessagesInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -151,14 +151,14 @@ export default class ChatworkApi {
   /**
    * チャットのメッセージを更新する。
    */
-  async putRoomsWithRoomIdMessagesWithMessageId(
+  async putRoomsMessagesInfo(
     room_id: string,
     message_id: string,
-    putRoomsWithRoomIdMessagesWithMessageIdParam: PutRoomsWithRoomIdMessagesWithMessageIdParam
+    putRoomsMessagesInfoParam: PutRoomsMessagesInfoParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdMessagesWithMessageIdParam).forEach(
-      ([key, value]) => params.set(key, value)
+    Object.entries(putRoomsMessagesInfoParam).forEach(([key, value]) =>
+      params.set(key, value)
     );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
@@ -166,39 +166,39 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdMessagesWithMessageIdResponse;
+    return data as PutRoomsMessagesInfoResponse;
   }
 
   /**
    * メッセージを削除
    */
-  async deleteRoomsWithRoomIdMessagesWithMessageId(
+  async deleteRoomsMessagesInfo(
     room_id: string,
     message_id: string,
-    deleteRoomsWithRoomIdMessagesWithMessageIdParam: DeleteRoomsWithRoomIdMessagesWithMessageIdParam = {}
+    deleteRoomsMessagesInfoParam: DeleteRoomsMessagesInfoParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages/${message_id}`,
       {
-        params: deleteRoomsWithRoomIdMessagesWithMessageIdParam,
+        params: deleteRoomsMessagesInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
 
-    return data as DeleteRoomsWithRoomIdMessagesWithMessageIdResponse;
+    return data as DeleteRoomsMessagesInfoResponse;
   }
 
   /**
    * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
    */
-  async getRoomsWithRoomIdMessages(
+  async getRoomsMessages(
     room_id: string,
-    getRoomsWithRoomIdMessagesParam: GetRoomsWithRoomIdMessagesParam
+    getRoomsMessagesParam: GetRoomsMessagesParam
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/messages`,
       {
-        params: getRoomsWithRoomIdMessagesParam,
+        params: getRoomsMessagesParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -209,12 +209,12 @@ export default class ChatworkApi {
   /**
    * チャットに新しいメッセージを追加
    */
-  async postRoomsWithRoomIdMessages(
+  async postRoomsMessages(
     room_id: string,
-    postRoomsWithRoomIdMessagesParam: PostRoomsWithRoomIdMessagesParam
+    postRoomsMessagesParam: PostRoomsMessagesParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(postRoomsWithRoomIdMessagesParam).forEach(([key, value]) =>
+    Object.entries(postRoomsMessagesParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.post(
@@ -223,20 +223,20 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PostRoomsWithRoomIdMessagesResponse;
+    return data as PostRoomsMessagesResponse;
   }
 
   /**
    * タスク完了状態を変更する
    */
-  async putRoomsWithRoomIdTasksWithTaskIdStatus(
+  async putRoomsTasksStatus(
     room_id: string,
     task_id: string,
-    putRoomsWithRoomIdTasksWithTaskIdStatusParam: PutRoomsWithRoomIdTasksWithTaskIdStatusParam
+    putRoomsTasksStatusParam: PutRoomsTasksStatusParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdTasksWithTaskIdStatusParam).forEach(
-      ([key, value]) => params.set(key, value)
+    Object.entries(putRoomsTasksStatusParam).forEach(([key, value]) =>
+      params.set(key, value)
     );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}/status`,
@@ -244,21 +244,21 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdTasksWithTaskIdStatusResponse;
+    return data as PutRoomsTasksStatusResponse;
   }
 
   /**
    * タスク情報を取得
    */
-  async getRoomsWithRoomIdTasksWithTaskId(
+  async getRoomsTasksInfo(
     room_id: string,
     task_id: string,
-    getRoomsWithRoomIdTasksWithTaskIdParam: GetRoomsWithRoomIdTasksWithTaskIdParam = {}
+    getRoomsTasksInfoParam: GetRoomsTasksInfoParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks/${task_id}`,
       {
-        params: getRoomsWithRoomIdTasksWithTaskIdParam,
+        params: getRoomsTasksInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -269,14 +269,11 @@ export default class ChatworkApi {
   /**
    * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  async getRoomsWithRoomIdTasks(
-    room_id: string,
-    getRoomsWithRoomIdTasksParam: GetRoomsWithRoomIdTasksParam
-  ) {
+  async getRoomsTasks(room_id: string, getRoomsTasksParam: GetRoomsTasksParam) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/tasks`,
       {
-        params: getRoomsWithRoomIdTasksParam,
+        params: getRoomsTasksParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -287,12 +284,12 @@ export default class ChatworkApi {
   /**
    * チャットに新しいタスクを追加
    */
-  async postRoomsWithRoomIdTasks(
+  async postRoomsTasks(
     room_id: string,
-    postRoomsWithRoomIdTasksParam: PostRoomsWithRoomIdTasksParam
+    postRoomsTasksParam: PostRoomsTasksParam
   ) {
     const params = new URLSearchParams();
-    Object.entries(postRoomsWithRoomIdTasksParam).forEach(([key, value]) =>
+    Object.entries(postRoomsTasksParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.post(
@@ -301,21 +298,21 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PostRoomsWithRoomIdTasksResponse;
+    return data as PostRoomsTasksResponse;
   }
 
   /**
    * ファイル情報を取得
    */
-  async getRoomsWithRoomIdFilesWithFileId(
+  async getRoomsFilesInfo(
     room_id: string,
     file_id: string,
-    getRoomsWithRoomIdFilesWithFileIdParam: GetRoomsWithRoomIdFilesWithFileIdParam
+    getRoomsFilesInfoParam: GetRoomsFilesInfoParam
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/files/${file_id}`,
       {
-        params: getRoomsWithRoomIdFilesWithFileIdParam,
+        params: getRoomsFilesInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -326,14 +323,11 @@ export default class ChatworkApi {
   /**
    * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  async getRoomsWithRoomIdFiles(
-    room_id: string,
-    getRoomsWithRoomIdFilesParam: GetRoomsWithRoomIdFilesParam
-  ) {
+  async getRoomsFiles(room_id: string, getRoomsFilesParam: GetRoomsFilesParam) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/files`,
       {
-        params: getRoomsWithRoomIdFilesParam,
+        params: getRoomsFilesParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -344,12 +338,12 @@ export default class ChatworkApi {
   /**
    * チャットに新しいファイルをアップロード
    */
-  async postRoomsWithRoomIdFiles(
+  async postRoomsFiles(
     room_id: string,
-    postRoomsWithRoomIdFilesParam: PostRoomsWithRoomIdFilesParam = {}
+    postRoomsFilesParam: PostRoomsFilesParam = {}
   ) {
     const params = new URLSearchParams();
-    Object.entries(postRoomsWithRoomIdFilesParam).forEach(([key, value]) =>
+    Object.entries(postRoomsFilesParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.post(
@@ -358,20 +352,20 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PostRoomsWithRoomIdFilesResponse;
+    return data as PostRoomsFilesResponse;
   }
 
   /**
    * 招待リンクを取得する
    */
-  async getRoomsWithRoomIdLink(
+  async getRoomsLink(
     room_id: string,
-    getRoomsWithRoomIdLinkParam: GetRoomsWithRoomIdLinkParam = {}
+    getRoomsLinkParam: GetRoomsLinkParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
       {
-        params: getRoomsWithRoomIdLinkParam,
+        params: getRoomsLinkParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -382,12 +376,9 @@ export default class ChatworkApi {
   /**
    * 招待リンクを作成する
    */
-  async postRoomsWithRoomIdLink(
-    room_id: string,
-    postRoomsWithRoomIdLinkParam: PostRoomsWithRoomIdLinkParam
-  ) {
+  async postRoomsLink(room_id: string, postRoomsLinkParam: PostRoomsLinkParam) {
     const params = new URLSearchParams();
-    Object.entries(postRoomsWithRoomIdLinkParam).forEach(([key, value]) =>
+    Object.entries(postRoomsLinkParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.post(
@@ -396,18 +387,15 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PostRoomsWithRoomIdLinkResponse;
+    return data as PostRoomsLinkResponse;
   }
 
   /**
    * 招待リンクの情報を変更する
    */
-  async putRoomsWithRoomIdLink(
-    room_id: string,
-    putRoomsWithRoomIdLinkParam: PutRoomsWithRoomIdLinkParam
-  ) {
+  async putRoomsLink(room_id: string, putRoomsLinkParam: PutRoomsLinkParam) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdLinkParam).forEach(([key, value]) =>
+    Object.entries(putRoomsLinkParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.put(
@@ -416,38 +404,38 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdLinkResponse;
+    return data as PutRoomsLinkResponse;
   }
 
   /**
    * 招待リンクを削除する
    */
-  async deleteRoomsWithRoomIdLink(
+  async deleteRoomsLink(
     room_id: string,
-    deleteRoomsWithRoomIdLinkParam: DeleteRoomsWithRoomIdLinkParam = {}
+    deleteRoomsLinkParam: DeleteRoomsLinkParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/rooms/${room_id}/link`,
       {
-        params: deleteRoomsWithRoomIdLinkParam,
+        params: deleteRoomsLinkParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
 
-    return data as DeleteRoomsWithRoomIdLinkResponse;
+    return data as DeleteRoomsLinkResponse;
   }
 
   /**
    * チャットの名前、アイコン、種類(my/direct/group)を取得
    */
-  async getRoomsWithRoomId(
+  async getRoomsInfo(
     room_id: string,
-    getRoomsWithRoomIdParam: GetRoomsWithRoomIdParam = {}
+    getRoomsInfoParam: GetRoomsInfoParam = {}
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}`,
       {
-        params: getRoomsWithRoomIdParam,
+        params: getRoomsInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -458,12 +446,9 @@ export default class ChatworkApi {
   /**
    * チャットの名前、アイコンをアップデート
    */
-  async putRoomsWithRoomId(
-    room_id: string,
-    putRoomsWithRoomIdParam: PutRoomsWithRoomIdParam
-  ) {
+  async putRoomsInfo(room_id: string, putRoomsInfoParam: PutRoomsInfoParam) {
     const params = new URLSearchParams();
-    Object.entries(putRoomsWithRoomIdParam).forEach(([key, value]) =>
+    Object.entries(putRoomsInfoParam).forEach(([key, value]) =>
       params.set(key, value)
     );
     const { data } = await axios.put(
@@ -472,20 +457,20 @@ export default class ChatworkApi {
       { headers: { "X-ChatWorkToken": this.api_token } }
     );
 
-    return data as PutRoomsWithRoomIdResponse;
+    return data as PutRoomsInfoResponse;
   }
 
   /**
    * グループチャットを退席/削除する
    */
-  async deleteRoomsWithRoomId(
+  async deleteRoomsInfo(
     room_id: string,
-    deleteRoomsWithRoomIdParam: DeleteRoomsWithRoomIdParam
+    deleteRoomsInfoParam: DeleteRoomsInfoParam
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/rooms/${room_id}`,
       {
-        params: deleteRoomsWithRoomIdParam,
+        params: deleteRoomsInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -525,13 +510,13 @@ export default class ChatworkApi {
   /**
    * 自分に対するコンタクト承認依頼を承認する
    */
-  async putIncomingRequestsWithRequestId(
+  async putIncomingRequestsInfo(
     request_id: string,
-    putIncomingRequestsWithRequestIdParam: PutIncomingRequestsWithRequestIdParam = {}
+    putIncomingRequestsInfoParam: PutIncomingRequestsInfoParam = {}
   ) {
     const params = new URLSearchParams();
-    Object.entries(putIncomingRequestsWithRequestIdParam).forEach(
-      ([key, value]) => params.set(key, value)
+    Object.entries(putIncomingRequestsInfoParam).forEach(([key, value]) =>
+      params.set(key, value)
     );
     const { data } = await axios.put(
       `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
@@ -545,14 +530,14 @@ export default class ChatworkApi {
   /**
    * 自分に対するコンタクト承認依頼をキャンセルする
    */
-  async deleteIncomingRequestsWithRequestId(
+  async deleteIncomingRequestsInfo(
     request_id: string,
-    deleteIncomingRequestsWithRequestIdParam: DeleteIncomingRequestsWithRequestIdParam = {}
+    deleteIncomingRequestsInfoParam: DeleteIncomingRequestsInfoParam = {}
   ) {
     const { data } = await axios.delete(
       `https://api.chatwork.com/v2/incoming_requests/${request_id}`,
       {
-        params: deleteIncomingRequestsWithRequestIdParam,
+        params: deleteIncomingRequestsInfoParam,
         headers: { "X-ChatWorkToken": this.api_token }
       }
     );
@@ -607,17 +592,17 @@ export interface GetContactsParam {}
 /**
  * チャットのメンバー一覧を取得
  */
-export interface GetRoomsWithRoomIdMembersParam {}
+export interface GetRoomsMembersParam {}
 
 /**
  * チャットのメンバーを一括変更
  */
-export interface PutRoomsWithRoomIdMembersParam {}
+export interface PutRoomsMembersParam {}
 
 /**
  * メッセージを既読にする
  */
-export interface PutRoomsWithRoomIdMessagesReadParam {
+export interface PutRoomsMessagesReadParam {
   /** ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400) */
   message_id?: string;
 }
@@ -625,7 +610,7 @@ export interface PutRoomsWithRoomIdMessagesReadParam {
 /**
  * メッセージを未読にする
  */
-export interface PutRoomsWithRoomIdMessagesUnreadParam {
+export interface PutRoomsMessagesUnreadParam {
   /** ここで指定するIDのメッセージ以降を未読にする */
   message_id: string;
 }
@@ -633,12 +618,12 @@ export interface PutRoomsWithRoomIdMessagesUnreadParam {
 /**
  * メッセージ情報を取得
  */
-export interface GetRoomsWithRoomIdMessagesWithMessageIdParam {}
+export interface GetRoomsMessagesInfoParam {}
 
 /**
  * チャットのメッセージを更新する。
  */
-export interface PutRoomsWithRoomIdMessagesWithMessageIdParam {
+export interface PutRoomsMessagesInfoParam {
   /** 更新するメッセージ本文 */
   body: string;
 }
@@ -646,12 +631,12 @@ export interface PutRoomsWithRoomIdMessagesWithMessageIdParam {
 /**
  * メッセージを削除
  */
-export interface DeleteRoomsWithRoomIdMessagesWithMessageIdParam {}
+export interface DeleteRoomsMessagesInfoParam {}
 
 /**
  * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
  */
-export interface GetRoomsWithRoomIdMessagesParam {
+export interface GetRoomsMessagesParam {
   /** 未取得にかかわらず最新の100件を取得するか */
   force?: 0 | 1;
 }
@@ -659,7 +644,7 @@ export interface GetRoomsWithRoomIdMessagesParam {
 /**
  * チャットに新しいメッセージを追加
  */
-export interface PostRoomsWithRoomIdMessagesParam {
+export interface PostRoomsMessagesParam {
   /** メッセージ本文 */
   body: string;
 
@@ -670,7 +655,7 @@ export interface PostRoomsWithRoomIdMessagesParam {
 /**
  * タスク完了状態を変更する
  */
-export interface PutRoomsWithRoomIdTasksWithTaskIdStatusParam {
+export interface PutRoomsTasksStatusParam {
   /** タスク完了状態 */
   body: "open" | "done";
 }
@@ -678,12 +663,12 @@ export interface PutRoomsWithRoomIdTasksWithTaskIdStatusParam {
 /**
  * タスク情報を取得
  */
-export interface GetRoomsWithRoomIdTasksWithTaskIdParam {}
+export interface GetRoomsTasksInfoParam {}
 
 /**
  * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
  */
-export interface GetRoomsWithRoomIdTasksParam {
+export interface GetRoomsTasksParam {
   /** タスクの担当者のアカウントID */
   account_id?: number;
 
@@ -697,7 +682,7 @@ export interface GetRoomsWithRoomIdTasksParam {
 /**
  * チャットに新しいタスクを追加
  */
-export interface PostRoomsWithRoomIdTasksParam {
+export interface PostRoomsTasksParam {
   /** タスクの内容 */
   body: string;
 
@@ -714,7 +699,7 @@ export interface PostRoomsWithRoomIdTasksParam {
 /**
  * ファイル情報を取得
  */
-export interface GetRoomsWithRoomIdFilesWithFileIdParam {
+export interface GetRoomsFilesInfoParam {
   /** ダウンロードする為のURLを生成するか */
   create_download_url?: 0 | 1;
 }
@@ -722,7 +707,7 @@ export interface GetRoomsWithRoomIdFilesWithFileIdParam {
 /**
  * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
  */
-export interface GetRoomsWithRoomIdFilesParam {
+export interface GetRoomsFilesParam {
   /** アップロードしたユーザーのアカウントID */
   account_id?: number;
 }
@@ -730,17 +715,17 @@ export interface GetRoomsWithRoomIdFilesParam {
 /**
  * チャットに新しいファイルをアップロード
  */
-export interface PostRoomsWithRoomIdFilesParam {}
+export interface PostRoomsFilesParam {}
 
 /**
  * 招待リンクを取得する
  */
-export interface GetRoomsWithRoomIdLinkParam {}
+export interface GetRoomsLinkParam {}
 
 /**
  * 招待リンクを作成する
  */
-export interface PostRoomsWithRoomIdLinkParam {
+export interface PostRoomsLinkParam {
   /** リンク文字列 */
   code?: string;
 
@@ -754,7 +739,7 @@ export interface PostRoomsWithRoomIdLinkParam {
 /**
  * 招待リンクの情報を変更する
  */
-export interface PutRoomsWithRoomIdLinkParam {
+export interface PutRoomsLinkParam {
   /** リンク文字列 */
   code?: string;
 
@@ -768,17 +753,17 @@ export interface PutRoomsWithRoomIdLinkParam {
 /**
  * 招待リンクを削除する
  */
-export interface DeleteRoomsWithRoomIdLinkParam {}
+export interface DeleteRoomsLinkParam {}
 
 /**
  * チャットの名前、アイコン、種類(my/direct/group)を取得
  */
-export interface GetRoomsWithRoomIdParam {}
+export interface GetRoomsInfoParam {}
 
 /**
  * チャットの名前、アイコンをアップデート
  */
-export interface PutRoomsWithRoomIdParam {
+export interface PutRoomsInfoParam {
   /** グループチャット名 */
   name?: string;
 
@@ -789,7 +774,7 @@ export interface PutRoomsWithRoomIdParam {
 /**
  * グループチャットを退席/削除する
  */
-export interface DeleteRoomsWithRoomIdParam {
+export interface DeleteRoomsInfoParam {
   /** 退席するか、削除するか */
   action_type: "leave" | "delete";
 }
@@ -822,12 +807,12 @@ export interface PostRoomsParam {
 /**
  * 自分に対するコンタクト承認依頼を承認する
  */
-export interface PutIncomingRequestsWithRequestIdParam {}
+export interface PutIncomingRequestsInfoParam {}
 
 /**
  * 自分に対するコンタクト承認依頼をキャンセルする
  */
-export interface DeleteIncomingRequestsWithRequestIdParam {}
+export interface DeleteIncomingRequestsInfoParam {}
 
 /**
  * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
@@ -843,65 +828,65 @@ export interface GetMyStatusResponse {
   mytask_num: number;
 }
 
-export interface PutRoomsWithRoomIdMembersResponse {
+export interface PutRoomsMembersResponse {
   admin: number[];
   member: number[];
   readonly: number[];
 }
 
-export interface PutRoomsWithRoomIdMessagesReadResponse {
+export interface PutRoomsMessagesReadResponse {
   unread_num: number;
   mention_num: number;
 }
 
-export interface PutRoomsWithRoomIdMessagesUnreadResponse {
+export interface PutRoomsMessagesUnreadResponse {
   unread_num: number;
   mention_num: number;
 }
 
-export interface PutRoomsWithRoomIdMessagesWithMessageIdResponse {
+export interface PutRoomsMessagesInfoResponse {
   message_id: string;
 }
 
-export interface DeleteRoomsWithRoomIdMessagesWithMessageIdResponse {
+export interface DeleteRoomsMessagesInfoResponse {
   message_id: string;
 }
 
-export interface PostRoomsWithRoomIdMessagesResponse {
+export interface PostRoomsMessagesResponse {
   message_id: string;
 }
 
-export interface PutRoomsWithRoomIdTasksWithTaskIdStatusResponse {
+export interface PutRoomsTasksStatusResponse {
   task_id: number;
 }
 
-export interface PostRoomsWithRoomIdTasksResponse {
+export interface PostRoomsTasksResponse {
   task_ids: number[];
 }
 
-export interface PostRoomsWithRoomIdFilesResponse {
+export interface PostRoomsFilesResponse {
   file_id: number;
 }
 
-export interface PostRoomsWithRoomIdLinkResponse {
+export interface PostRoomsLinkResponse {
   public: boolean;
   url: string;
   need_acceptance: boolean;
   description: string;
 }
 
-export interface PutRoomsWithRoomIdLinkResponse {
+export interface PutRoomsLinkResponse {
   public: boolean;
   url: string;
   need_acceptance: boolean;
   description: string;
 }
 
-export interface DeleteRoomsWithRoomIdLinkResponse {
+export interface DeleteRoomsLinkResponse {
   public: boolean;
 }
 
-export interface PutRoomsWithRoomIdResponse {
+export interface PutRoomsInfoResponse {
   room_id: number;
 }
 
