@@ -18,7 +18,10 @@ const CHATWORK_URL = "https://api.chatwork.com/v2";
 
   const ramlData = yaml.safeLoad(prettier.format(ramlStr, { parser: "yaml" }));
 
+  ramlData.traits = parseTraits(ramlData);
+
   const data = parseApi(ramlData);
+  mapTraits(ramlData.traits, data);
   // console.log(data);
 
   const responseInterfaces = renderResponsesInterfaces(data);
@@ -46,6 +49,26 @@ import axios from 'axios';
   fs.writeFileSync(path.join(__dirname, "src", "api.ts"), prettifiedTsData);
 })();
 
+function parseTraits(ramlData) {
+  const { traits } = ramlData;
+  return traits.reduce((pre, cur) => Object.assign(pre, cur), {});
+}
+
+function mapTraits(traits, data) {
+  data
+    .filter(data => !data.res && Array.isArray(data.is))
+    .forEach(data => {
+      data.is.forEach(is => {
+        if (traits[is]["responses"]["200"]) {
+          data.res =
+            traits[is]["responses"]["200"]["body"]["application/json"][
+              "example"
+            ];
+        }
+      });
+    });
+}
+
 function parseApi(ramlData, prefix = "") {
   return Object.keys(ramlData)
     .filter(key => key.match(/^\//))
@@ -66,11 +89,13 @@ function parseEndpoint(api, uri) {
 }
 
 function parseMethod(method, api, uri) {
-  const { description, queryParameters, responses } = api;
+  const { description, queryParameters, responses, is } = api;
   const ifName = getInterfaceName(method, uri);
   const funcName = camelCase(ifName);
   const funcParams = getFuncParams(uri);
-  const funcParamsWithTypes = funcParams.map(param => param + ": string");
+  const funcParamsWithTypes = funcParams.map(
+    param => param + ": number|string"
+  );
   const funcParam = funcName + "Param";
   const funcParamWithTypes = funcParam + ": " + ifName + "Param";
   const params = getQueryParameters(queryParameters);
@@ -89,6 +114,7 @@ function parseMethod(method, api, uri) {
     uri,
     params,
     res,
+    is,
     description: description
       ? description.replace(/^\|\s+/, "").replace(/\n/g, "")
       : ""

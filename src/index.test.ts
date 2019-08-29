@@ -17,9 +17,10 @@ test("API Connection", async () => {
   expect(Array.isArray(rooms)).toBeTruthy();
   expect(rooms.length).toBeGreaterThanOrEqual(1);
 
-  const myRoom = rooms.find((room: any) => room.type === "my");
+  const myRoom = rooms.find(room => room.type === "my");
   expect(myRoom).toBeDefined();
   expect(myRoom).toHaveProperty("room_id");
+  if (!myRoom) throw new Error("My Room is not found.");
   const { room_id } = myRoom;
 
   const message = await api.postRoomsMessages(room_id, {
