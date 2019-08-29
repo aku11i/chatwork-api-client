@@ -3,6 +3,15 @@
   "version": "0.0.7",
   "main": "dist/index.js",
   "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akutagw/chatwork-api-client.git"
+  },
+  "keywords": [
+    "chatwork",
+    "api",
+    "client"
+  ],
   "license": "MIT",
   "scripts": {
     "prepublishOnly": "run-s build test",
