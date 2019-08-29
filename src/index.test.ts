@@ -22,16 +22,13 @@ test("API Connection", async () => {
   expect(myRoom).toHaveProperty("room_id");
   const { room_id } = myRoom;
 
-  const message = await api.postRoomsWithRoomIdMessages(room_id, {
+  const message = await api.postRoomsMessages(room_id, {
     body: "[info][title]chatwork-api-client[/title]test[/info]"
   });
   expect(message).toHaveProperty("message_id");
   const { message_id } = message;
 
-  const deleteResult = await api.deleteRoomsWithRoomIdMessagesWithMessageId(
-    room_id,
-    message_id
-  );
+  const deleteResult = await api.deleteRoomsMessagesInfo(room_id, message_id);
   expect(deleteResult).toHaveProperty("message_id");
 });
 
