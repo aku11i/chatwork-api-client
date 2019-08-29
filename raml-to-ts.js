@@ -28,7 +28,7 @@ const CHATWORK_URL = "https://api.chatwork.com/v2";
 
   const paramInterfaces = renderParamInterfaces(data);
 
-  const apiClass = renderApiClass(data);
+  const apiClass = renderApiClass(data, ramlData);
 
   const importData = `
 import axios from 'axios';
@@ -196,9 +196,12 @@ function renderResponsesInterfaces(data) {
     .join("\n");
 }
 
-function renderApiClass(data) {
+function renderApiClass(data, ramlData) {
   return ejs.render(
     `
+/**
+ * <%- ramlData.title %> <%- ramlData.version %>
+ */
 export default class ChatworkApi {
 
   constructor(private api_token: string){}
@@ -229,7 +232,7 @@ export default class ChatworkApi {
   <% }); %>
 }
 `,
-    { data }
+    { data, ramlData }
   );
 }
 
