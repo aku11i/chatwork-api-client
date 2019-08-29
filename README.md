@@ -46,11 +46,19 @@ git submodule update --init
 npm install
 ```
 
-### Run
+### Build
 
 ```sh
-npm run generate # generate src/api.ts from RAML
+npm run generate # Generates src/api.ts from RAML
 npm run build
+```
+
+### Test
+
+ルートディレクトリに `API_TOKEN` ファイルを作成する必要があります。<br>
+[こちら](https://github.com/akutagw/chatwork-api-client/blob/master/_API_TOKEN) を参照してください。
+
+```sh
 npm run test
 ```
 
