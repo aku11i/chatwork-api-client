@@ -30,7 +30,11 @@ import ChatworkApi from "chatwork-api-client";
 // const ChatworkApi = require("chatwork-api-client").default;
 
 const api = new ChatworkApi("YOUR_API_TOKEN");
-const { name, account_id } = await api.getMe();
+
+(async () => {
+  const me = await api.getMe();
+  const { name, account_id } = me;
+})();
 ```
 
 ## Development
