@@ -1,5 +1,8 @@
 import axios from "axios";
 
+/**
+ * Chatwork API v2
+ */
 export default class ChatworkApi {
   constructor(private api_token: string) {}
 
