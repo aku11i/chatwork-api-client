@@ -318,20 +318,20 @@ export default class ChatworkApi {
   /**
    * ファイル情報を取得
    */
-  async getRoomFileInfo(
+  async getRoomFile(
     room_id: number | string,
     file_id: number | string,
-    getRoomFileInfoParam: GetRoomFileInfoParam,
+    getRoomFileParam: GetRoomFileParam,
   ) {
     const { data } = await axios.get(
       `https://api.chatwork.com/v2/rooms/${room_id}/files/${file_id}`,
       {
-        params: getRoomFileInfoParam,
+        params: getRoomFileParam,
         headers: { 'X-ChatWorkToken': this.api_token },
       },
     );
 
-    return data as GetRoomFileInfoResponse;
+    return data as GetRoomFileResponse;
   }
 
   /**
@@ -719,7 +719,7 @@ export interface PostRoomTaskParam {
 /**
  * ファイル情報を取得
  */
-export interface GetRoomFileInfoParam {
+export interface GetRoomFileParam {
   /** ダウンロードする為のURLを生成するか */
   create_download_url?: 0 | 1;
 }
@@ -1214,7 +1214,7 @@ export interface PostRoomTaskResponse {
 /**
  * ファイル情報を取得
  */
-export interface GetRoomFileInfoAccountResponse {
+export interface GetRoomFileAccountResponse {
   account_id: number;
 
   name: string;
@@ -1225,10 +1225,10 @@ export interface GetRoomFileInfoAccountResponse {
 /**
  * ファイル情報を取得
  */
-export interface GetRoomFileInfoResponse {
+export interface GetRoomFileResponse {
   file_id: number;
 
-  account: GetRoomFileInfoAccountResponse;
+  account: GetRoomFileAccountResponse;
 
   message_id: string;
 
