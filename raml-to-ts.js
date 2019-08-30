@@ -72,6 +72,7 @@ import axios from 'axios';
     addExport(responseInterfaces);
 
   const prettifiedTsData = prettier.format(tsData, {
+    ...require(path.join(__dirname, '.prettierrc.json')),
     parser: 'typescript',
   });
 
