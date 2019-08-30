@@ -24,7 +24,7 @@ const NAME_MAPPER = {
   getRoomsTasksInfo: 'getRoomTask',
   getRoomsTasks: 'getRoomTasks',
   postRoomsTasks: 'postRoomTask',
-  getRoomsFilesInfo: 'getRoomFileInfo',
+  getRoomsFilesInfo: 'getRoomFile',
   getRoomsFiles: 'getRoomFiles',
   postRoomsFiles: 'postRoomFile',
   getRoomsLink: 'getRoomLink',
