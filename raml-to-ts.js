@@ -87,11 +87,11 @@ function parseTraits(ramlData) {
 
 function mapTraits(traits, data) {
   data
-    .filter(data => !data.res && Array.isArray(data.is))
+    .filter(data => !data.example && Array.isArray(data.is))
     .forEach(data => {
       data.is.forEach(is => {
         if (traits[is]['responses']['200']) {
-          data.res =
+          data.example =
             traits[is]['responses']['200']['body']['application/json'][
               'example'
             ];
@@ -131,7 +131,7 @@ function parseMethod(method, api, uri) {
   const funcParamWithTypes = funcParam + ': ' + ifName + 'Param';
   const params = getQueryParameters(queryParameters);
 
-  const res = getResponses(responses);
+  const example = getExample(responses);
 
   return {
     method,
@@ -144,7 +144,7 @@ function parseMethod(method, api, uri) {
     api,
     uri,
     params,
-    res,
+    example,
     is,
     description: description
       ? description.replace(/^\|\s+/, '').replace(/\n/g, '')
@@ -192,7 +192,7 @@ function getFuncParams(uri) {
   return funcParams;
 }
 
-function getResponses(responses = {}) {
+function getExample(responses = {}) {
   if (!responses['200']) return;
   const example = responses['200']['body']['application/json']['example'];
   return example ? example.replace(/^\|/, '') : undefined;
@@ -212,9 +212,9 @@ function renderParamInterfaces(data) {
 
 function renderResponsesInterfaces(data) {
   return data
-    .filter(d => d.res)
+    .filter(d => d.example)
     .map(d =>
-      json2ts(d.res, {
+      json2ts(d.example, {
         rootName: d.ifName + 'Response',
         prefix: '',
       }),
