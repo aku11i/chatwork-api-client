@@ -25,11 +25,11 @@ npm install --save chatwork-api-client
 ブラウザやバージョンの低い Node.js で動作させる場合は Babel や TypeScript で ES5 にトランスパイルしてください。
 
 ```typescript
-import ChatworkApi from "chatwork-api-client";
+import ChatworkApi from 'chatwork-api-client';
 // or
 // const ChatworkApi = require("chatwork-api-client").default;
 
-const api = new ChatworkApi("YOUR_API_TOKEN");
+const api = new ChatworkApi('YOUR_API_TOKEN');
 
 (async () => {
   const me = await api.getMe();

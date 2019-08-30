@@ -1,51 +1,51 @@
-const fs = require("fs");
-const path = require("path");
-const yaml = require("js-yaml");
-const ejs = require("ejs");
-const camelCase = require("camelcase");
-const pascalCase = require("pascal-case");
-const prettier = require("prettier");
-const { json2ts } = require("json-ts");
+const fs = require('fs');
+const path = require('path');
+const yaml = require('js-yaml');
+const ejs = require('ejs');
+const camelCase = require('camelcase');
+const pascalCase = require('pascal-case');
+const prettier = require('prettier');
+const { json2ts } = require('json-ts');
 
-const LANG = "ja";
-const CHATWORK_URL = "https://api.chatwork.com/v2";
+const LANG = 'ja';
+const CHATWORK_URL = 'https://api.chatwork.com/v2';
 
 const NAME_MAPPER = {
-  getRoomsMembers: "getRoomMembers",
-  putRoomsMembers: "putRoomMembers",
-  putRoomsMessagesRead: "putRoomMessagesRead",
-  putRoomsMessagesUnread: "putRoomMessagesUnread",
-  getRoomsMessagesInfo: "getRoomMessage",
-  putRoomsMessagesInfo: "putRoomMessage",
-  deleteRoomsMessagesInfo: "deleteRoomMessage",
-  getRoomsMessages: "getRoomMessages",
-  postRoomsMessages: "postRoomMessage",
-  putRoomsTasksStatus: "putRoomTaskStatus",
-  getRoomsTasksInfo: "getRoomTask",
-  getRoomsTasks: "getRoomTasks",
-  postRoomsTasks: "postRoomTask",
-  getRoomsFilesInfo: "getRoomFileInfo",
-  getRoomsFiles: "getRoomFiles",
-  postRoomsFiles: "postRoomFile",
-  getRoomsLink: "getRoomLink",
-  postRoomsLink: "postRoomLink",
-  putRoomsLink: "putRoomLink",
-  deleteRoomsLink: "deleteRoomLink",
-  getRoomsInfo: "getRoom",
-  putRoomsInfo: "putRoom",
-  deleteRoomsInfo: "deleteRoom",
-  postRooms: "postRoom",
-  putIncomingRequestsInfo: "putIncomingRequest",
-  deleteIncomingRequestsInfo: "deleteIncomingRequest"
+  getRoomsMembers: 'getRoomMembers',
+  putRoomsMembers: 'putRoomMembers',
+  putRoomsMessagesRead: 'putRoomMessagesRead',
+  putRoomsMessagesUnread: 'putRoomMessagesUnread',
+  getRoomsMessagesInfo: 'getRoomMessage',
+  putRoomsMessagesInfo: 'putRoomMessage',
+  deleteRoomsMessagesInfo: 'deleteRoomMessage',
+  getRoomsMessages: 'getRoomMessages',
+  postRoomsMessages: 'postRoomMessage',
+  putRoomsTasksStatus: 'putRoomTaskStatus',
+  getRoomsTasksInfo: 'getRoomTask',
+  getRoomsTasks: 'getRoomTasks',
+  postRoomsTasks: 'postRoomTask',
+  getRoomsFilesInfo: 'getRoomFileInfo',
+  getRoomsFiles: 'getRoomFiles',
+  postRoomsFiles: 'postRoomFile',
+  getRoomsLink: 'getRoomLink',
+  postRoomsLink: 'postRoomLink',
+  putRoomsLink: 'putRoomLink',
+  deleteRoomsLink: 'deleteRoomLink',
+  getRoomsInfo: 'getRoom',
+  putRoomsInfo: 'putRoom',
+  deleteRoomsInfo: 'deleteRoom',
+  postRooms: 'postRoom',
+  putIncomingRequestsInfo: 'putIncomingRequest',
+  deleteIncomingRequestsInfo: 'deleteIncomingRequest',
 };
 
 (function main() {
   const ramlStr = fs.readFileSync(
-    path.join(__dirname, "api", "RAML", `api-${LANG}.raml`),
-    { encoding: "utf8" }
+    path.join(__dirname, 'api', 'RAML', `api-${LANG}.raml`),
+    { encoding: 'utf8' },
   );
 
-  const ramlData = yaml.safeLoad(prettier.format(ramlStr, { parser: "yaml" }));
+  const ramlData = yaml.safeLoad(prettier.format(ramlStr, { parser: 'yaml' }));
 
   ramlData.traits = parseTraits(ramlData);
 
@@ -72,12 +72,12 @@ import axios from 'axios';
     addExport(responseInterfaces);
 
   const prettifiedTsData = prettier.format(tsData, {
-    parser: "typescript"
+    parser: 'typescript',
   });
 
   // console.log(prettifiedTsData);
 
-  fs.writeFileSync(path.join(__dirname, "src", "api.ts"), prettifiedTsData);
+  fs.writeFileSync(path.join(__dirname, 'src', 'api.ts'), prettifiedTsData);
 })();
 
 function parseTraits(ramlData) {
@@ -90,24 +90,24 @@ function mapTraits(traits, data) {
     .filter(data => !data.res && Array.isArray(data.is))
     .forEach(data => {
       data.is.forEach(is => {
-        if (traits[is]["responses"]["200"]) {
+        if (traits[is]['responses']['200']) {
           data.res =
-            traits[is]["responses"]["200"]["body"]["application/json"][
-              "example"
+            traits[is]['responses']['200']['body']['application/json'][
+              'example'
             ];
         }
       });
     });
 }
 
-function parseApi(ramlData, prefix = "") {
+function parseApi(ramlData, prefix = '') {
   return Object.keys(ramlData)
     .filter(key => key.match(/^\//))
     .map(uri => {
       const api = ramlData[uri];
       return [
         ...parseApi(api, prefix + uri),
-        ...parseEndpoint(api, prefix + uri)
+        ...parseEndpoint(api, prefix + uri),
       ];
     })
     .reduce((pre, cur) => [...pre, ...cur], []);
@@ -125,10 +125,10 @@ function parseMethod(method, api, uri) {
   const ifName = pascalCase(funcName);
   const funcParams = getFuncParams(uri);
   const funcParamsWithTypes = funcParams.map(
-    param => param + ": number|string"
+    param => param + ': number|string',
   );
-  const funcParam = funcName + "Param";
-  const funcParamWithTypes = funcParam + ": " + ifName + "Param";
+  const funcParam = funcName + 'Param';
+  const funcParamWithTypes = funcParam + ': ' + ifName + 'Param';
   const params = getQueryParameters(queryParameters);
 
   const res = getResponses(responses);
@@ -147,18 +147,18 @@ function parseMethod(method, api, uri) {
     res,
     is,
     description: description
-      ? description.replace(/^\|\s+/, "").replace(/\n/g, "")
-      : ""
+      ? description.replace(/^\|\s+/, '').replace(/\n/g, '')
+      : '',
   };
 }
 
 function getFuncName(method, uri) {
-  let uris = uri.split("/").filter(uri => uri);
+  let uris = uri.split('/').filter(uri => uri);
   const isQueryLast = uris[uris.length - 1].match(/^{.*}$/);
-  if (isQueryLast) uris.push("info");
+  if (isQueryLast) uris.push('info');
   uris = uris.filter(uri => !uri.match(/^{.*}$/));
 
-  const funcName = camelCase([method, uris.join("_")].join("_"));
+  const funcName = camelCase([method, uris.join('_')].join('_'));
 
   return NAME_MAPPER[funcName] || funcName;
 }
@@ -166,17 +166,17 @@ function getFuncName(method, uri) {
 function getQueryParameters(queryParameters = {}) {
   const params = Object.keys(queryParameters).map(name => ({
     ...queryParameters[name],
-    name
+    name,
   }));
 
   params.forEach(param => {
-    if (param.type === "integer") param.type = "number";
-    if (param.type === "boolean") param.type = "0|1";
+    if (param.type === 'integer') param.type = 'number';
+    if (param.type === 'boolean') param.type = '0|1';
     if (param.enum) param.type = `'${param.enum.join(`'|'`)}'`;
     if (param.displayName) {
-      param.displayName = param.displayName.replace(/\n/g, "");
+      param.displayName = param.displayName.replace(/\n/g, '');
     }
-    if (!param.required) param.name += "?";
+    if (!param.required) param.name += '?';
   });
 
   return params;
@@ -184,29 +184,29 @@ function getQueryParameters(queryParameters = {}) {
 
 function getFuncParams(uri) {
   const funcParams = [];
-  if (uri.includes("{room_id}")) funcParams.push("room_id");
-  if (uri.includes("{message_id}")) funcParams.push("message_id");
-  if (uri.includes("{task_id}")) funcParams.push("task_id");
-  if (uri.includes("{file_id}")) funcParams.push("file_id");
-  if (uri.includes("{request_id}")) funcParams.push("request_id");
+  if (uri.includes('{room_id}')) funcParams.push('room_id');
+  if (uri.includes('{message_id}')) funcParams.push('message_id');
+  if (uri.includes('{task_id}')) funcParams.push('task_id');
+  if (uri.includes('{file_id}')) funcParams.push('file_id');
+  if (uri.includes('{request_id}')) funcParams.push('request_id');
   return funcParams;
 }
 
 function getResponses(responses = {}) {
-  if (!responses["200"]) return;
-  const example = responses["200"]["body"]["application/json"]["example"];
-  return example ? example.replace(/^\|/, "") : undefined;
+  if (!responses['200']) return;
+  const example = responses['200']['body']['application/json']['example'];
+  return example ? example.replace(/^\|/, '') : undefined;
 }
 
 function renderParamInterfaces(data) {
   return ejs.render(
     fs.readFileSync(
-      path.join(__dirname, "__templates", "__paramInterface.ejs"),
+      path.join(__dirname, '__templates', '__paramInterface.ejs'),
       {
-        encoding: "utf8"
-      }
+        encoding: 'utf8',
+      },
     ),
-    { data: data.filter(d => d.params) }
+    { data: data.filter(d => d.params) },
   );
 }
 
@@ -215,22 +215,22 @@ function renderResponsesInterfaces(data) {
     .filter(d => d.res)
     .map(d =>
       json2ts(d.res, {
-        rootName: d.ifName + "Response",
-        prefix: ""
-      })
+        rootName: d.ifName + 'Response',
+        prefix: '',
+      }),
     )
-    .join("\n");
+    .join('\n');
 }
 
 function renderApiClass(data, ramlData) {
   return ejs.render(
-    fs.readFileSync(path.join(__dirname, "__templates", "__class.ejs"), {
-      encoding: "utf8"
+    fs.readFileSync(path.join(__dirname, '__templates', '__class.ejs'), {
+      encoding: 'utf8',
     }),
-    { data, ramlData, CHATWORK_URL }
+    { data, ramlData, CHATWORK_URL },
   );
 }
 
 function addExport(tsData) {
-  return tsData.replace(/interface/g, "export interface");
+  return tsData.replace(/interface/g, 'export interface');
 }
