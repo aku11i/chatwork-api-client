@@ -839,227 +839,588 @@ export interface DeleteIncomingRequestParam {}
  */
 export interface GetIncomingRequestsParam {}
 
+/**
+ * 自分自身の情報を取得
+ */
 export interface GetMeResponse {
   account_id: number;
+
   room_id: number;
+
   name: string;
+
   chatwork_id: string;
+
   organization_id: number;
+
   organization_name: string;
+
   department: string;
+
   title: string;
+
   url: string;
+
   introduction: string;
+
   mail: string;
+
   tel_organization: string;
+
   tel_extension: string;
+
   tel_mobile: string;
+
   skype: string;
+
   facebook: string;
+
   twitter: string;
+
   avatar_image_url: string;
+
   login_mail: string;
 }
 
+/**
+ * 自分の未読数、未読To数、未完了タスク数を返す
+ */
 export interface GetMyStatusResponse {
   unread_room_num: number;
+
   mention_room_num: number;
+
   mytask_room_num: number;
+
   unread_num: number;
+
   mention_num: number;
+
   mytask_num: number;
 }
 
+/**
+ * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
 type GetMyTasksResponse = GetMyTasksResponseItem[];
-export interface GetMyTasksResponseItem {
-  task_id: number;
-  room: Room;
-  assigned_by_account: Assigned_by_account;
-  message_id: string;
-  body: string;
-  limit_time: number;
-  status: string;
-  limit_type: string;
-}
-export interface Room {
+
+/**
+ * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetMyTasksRoomResponse {
   room_id: number;
+
   name: string;
+
   icon_path: string;
 }
-export interface Assigned_by_account {
+
+/**
+ * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetMyTasksAssignedByAccountResponse {
   account_id: number;
+
   name: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetMyTasksResponseItem {
+  task_id: number;
+
+  room: GetMyTasksRoomResponse;
+
+  assigned_by_account: GetMyTasksAssignedByAccountResponse;
+
+  message_id: string;
+
+  body: string;
+
+  limit_time: number;
+
+  status: 'open' | 'done';
+
+  limit_type: 'none' | 'date' | 'time';
+}
+
+/**
+ * 自分のコンタクト一覧を取得
+ */
 type GetContactsResponse = GetContactsResponseItem[];
+
+/**
+ * 自分のコンタクト一覧を取得
+ */
 export interface GetContactsResponseItem {
   account_id: number;
+
   room_id: number;
+
   name: string;
+
   chatwork_id: string;
+
   organization_id: number;
+
   organization_name: string;
+
   department: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * チャットのメンバー一覧を取得
+ */
 type GetRoomMembersResponse = GetRoomMembersResponseItem[];
+
+/**
+ * チャットのメンバー一覧を取得
+ */
 export interface GetRoomMembersResponseItem {
   account_id: number;
-  role: string;
+
+  role: 'admin' | 'member' | 'readonly';
+
   name: string;
+
   chatwork_id: string;
+
   organization_id: number;
+
   organization_name: string;
+
   department: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * チャットのメンバーを一括変更
+ */
 export interface PutRoomMembersResponse {
   admin: number[];
+
   member: number[];
+
   readonly: number[];
 }
 
+/**
+ * メッセージを既読にする
+ */
 export interface PutRoomMessagesReadResponse {
   unread_num: number;
+
   mention_num: number;
 }
 
+/**
+ * メッセージを未読にする
+ */
 export interface PutRoomMessagesUnreadResponse {
   unread_num: number;
+
   mention_num: number;
 }
 
-export interface GetRoomMessageResponse {
-  message_id: string;
-  account: Account;
-  body: string;
-  send_time: number;
-  update_time: number;
-}
-export interface Account {
+/**
+ * メッセージ情報を取得
+ */
+export interface GetRoomMessageAccountResponse {
   account_id: number;
+
   name: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * メッセージ情報を取得
+ */
+export interface GetRoomMessageResponse {
+  message_id: string;
+
+  account: GetRoomMessageAccountResponse;
+
+  body: string;
+
+  send_time: number;
+
+  update_time: number;
+}
+
+/**
+ * チャットのメッセージを更新する。
+ */
 export interface PutRoomMessageResponse {
   message_id: string;
 }
 
+/**
+ * メッセージを削除
+ */
 export interface DeleteRoomMessageResponse {
   message_id: string;
 }
 
+/**
+ * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
+ */
 type GetRoomMessagesResponse = GetRoomMessagesResponseItem[];
-export interface GetRoomMessagesResponseItem {
-  message_id: string;
-  account: Account;
-  body: string;
-  send_time: number;
-  update_time: number;
-}
-export interface Account {
+
+/**
+ * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
+ */
+export interface GetRoomMessagesAccountResponse {
   account_id: number;
+
   name: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
+ */
+export interface GetRoomMessagesResponseItem {
+  message_id: string;
+
+  account: GetRoomMessagesAccountResponse;
+
+  body: string;
+
+  send_time: number;
+
+  update_time: number;
+}
+
+/**
+ * チャットに新しいメッセージを追加
+ */
 export interface PostRoomMessageResponse {
   message_id: string;
 }
 
+/**
+ * タスク完了状態を変更する
+ */
 export interface PutRoomTaskStatusResponse {
   task_id: number;
 }
 
+/**
+ * タスク情報を取得
+ */
+export interface GetRoomTaskAccountResponse {
+  account_id: number;
+
+  name: string;
+
+  avatar_image_url: string;
+}
+
+/**
+ * タスク情報を取得
+ */
+export interface GetRoomTaskAssignedByAccountResponse {
+  account_id: number;
+
+  name: string;
+
+  avatar_image_url: string;
+}
+
+/**
+ * タスク情報を取得
+ */
 export interface GetRoomTaskResponse {
   task_id: number;
-  account: Account;
-  assigned_by_account: Assigned_by_account;
+
+  account: GetRoomTaskAccountResponse;
+
+  assigned_by_account: GetRoomTaskAssignedByAccountResponse;
+
   message_id: string;
+
   body: string;
+
   limit_time: number;
-  status: string;
-  limit_type: string;
+
+  status: 'open' | 'done';
+
+  limit_type: 'none' | 'date' | 'time';
 }
-export interface Account {
+
+/**
+ * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+type GetRoomTasksResponse = GetRoomTasksResponseItem[];
+
+/**
+ * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetRoomTasksAccountResponse {
   account_id: number;
+
   name: string;
-  avatar_image_url: string;
-}
-export interface Assigned_by_account {
-  account_id: number;
-  name: string;
+
   avatar_image_url: string;
 }
 
-type GetRoomTasksResponse = GetRoomTasksResponseItem[];
+/**
+ * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetRoomTasksAssignedByAccountResponse {
+  account_id: number;
+
+  name: string;
+
+  avatar_image_url: string;
+}
+
+/**
+ * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
 export interface GetRoomTasksResponseItem {
   task_id: number;
-  account: Account;
-  assigned_by_account: Assigned_by_account;
+
+  account: GetRoomTasksAccountResponse;
+
+  assigned_by_account: GetRoomTasksAssignedByAccountResponse;
+
   message_id: string;
+
   body: string;
+
   limit_time: number;
-  status: string;
-  limit_type: string;
-}
-export interface Account {
-  account_id: number;
-  name: string;
-  avatar_image_url: string;
-}
-export interface Assigned_by_account {
-  account_id: number;
-  name: string;
-  avatar_image_url: string;
+
+  status: 'open' | 'done';
+
+  limit_type: 'none' | 'date' | 'time';
 }
 
+/**
+ * チャットに新しいタスクを追加
+ */
 export interface PostRoomTaskResponse {
   task_ids: number[];
 }
 
-export interface GetRoomFileInfoResponse {
-  file_id: number;
-  account: Account;
-  message_id: string;
-  filename: string;
-  filesize: number;
-  upload_time: number;
-}
-export interface Account {
+/**
+ * ファイル情報を取得
+ */
+export interface GetRoomFileInfoAccountResponse {
   account_id: number;
+
   name: string;
+
   avatar_image_url: string;
 }
 
+/**
+ * ファイル情報を取得
+ */
+export interface GetRoomFileInfoResponse {
+  file_id: number;
+
+  account: GetRoomFileInfoAccountResponse;
+
+  message_id: string;
+
+  filename: string;
+
+  filesize: number;
+
+  upload_time: number;
+
+  download_url: string;
+}
+
+/**
+ * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
 type GetRoomFilesResponse = GetRoomFilesResponseItem[];
+
+/**
+ * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetRoomFilesAccountResponse {
+  account_id: number;
+
+  name: string;
+
+  avatar_image_url: string;
+}
+
+/**
+ * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
 export interface GetRoomFilesResponseItem {
   file_id: number;
-  account: Account;
+
+  account: GetRoomFilesAccountResponse;
+
   message_id: string;
+
   filename: string;
+
   filesize: number;
+
   upload_time: number;
 }
-export interface Account {
-  account_id: number;
+
+/**
+ * 招待リンクを取得する
+ */
+export interface GetRoomLinkResponse {
+  public: 0 | 1;
+
+  url: string;
+
+  need_acceptance: 0 | 1;
+
+  description: string;
+}
+
+/**
+ * チャットの名前、アイコン、種類(my/direct/group)を取得
+ */
+export interface GetRoomResponse {
+  room_id: number;
+
   name: string;
+
+  type: 'my' | 'direct' | 'group';
+
+  role: 'admin' | 'member' | 'readonly';
+
+  sticky: 0 | 1;
+
+  unread_num: number;
+
+  mention_num: number;
+
+  mytask_num: number;
+
+  message_num: number;
+
+  file_num: number;
+
+  task_num: number;
+
+  icon_path: string;
+
+  last_update_time: number;
+
+  description: string;
+}
+
+/**
+ * チャットの名前、アイコンをアップデート
+ */
+export interface PutRoomResponse {
+  room_id: number;
+}
+
+/**
+ * 自分のチャット一覧の取得
+ */
+type GetRoomsResponse = GetRoomsResponseItem[];
+
+/**
+ * 自分のチャット一覧の取得
+ */
+export interface GetRoomsResponseItem {
+  room_id: number;
+
+  name: string;
+
+  type: 'my' | 'direct' | 'group';
+
+  role: 'admin' | 'member' | 'readonly';
+
+  sticky: 0 | 1;
+
+  unread_num: number;
+
+  mention_num: number;
+
+  mytask_num: number;
+
+  message_num: number;
+
+  file_num: number;
+
+  task_num: number;
+
+  icon_path: string;
+
+  last_update_time: number;
+}
+
+/**
+ * グループチャットを新規作成
+ */
+export interface PostRoomResponse {
+  room_id: number;
+}
+
+/**
+ * 自分に対するコンタクト承認依頼を承認する
+ */
+export interface PutIncomingRequestResponse {
+  account_id: number;
+
+  room_id: number;
+
+  name: string;
+
+  chatwork_id: string;
+
+  organization_id: number;
+
+  organization_name: string;
+
+  department: string;
+
+  avatar_image_url: string;
+}
+
+/**
+ * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+type GetIncomingRequestsResponse = GetIncomingRequestsResponseItem[];
+
+/**
+ * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+ */
+export interface GetIncomingRequestsResponseItem {
+  request_id: number;
+
+  account_id: number;
+
+  message: string;
+
+  name: string;
+
+  chatwork_id: string;
+
+  organization_id: number;
+
+  organization_name: string;
+
+  department: string;
+
   avatar_image_url: string;
 }
 
 export interface PostRoomFileResponse {
   file_id: number;
-}
-
-export interface GetRoomLinkResponse {
-  public: boolean;
-  url: string;
-  need_acceptance: boolean;
-  description: string;
 }
 
 export interface PostRoomLinkResponse {
@@ -1078,70 +1439,4 @@ export interface PutRoomLinkResponse {
 
 export interface DeleteRoomLinkResponse {
   public: boolean;
-}
-
-export interface GetRoomResponse {
-  room_id: number;
-  name: string;
-  type: string;
-  role: string;
-  sticky: boolean;
-  unread_num: number;
-  mention_num: number;
-  mytask_num: number;
-  message_num: number;
-  file_num: number;
-  task_num: number;
-  icon_path: string;
-  last_update_time: number;
-  description: string;
-}
-
-export interface PutRoomResponse {
-  room_id: number;
-}
-
-type GetRoomsResponse = GetRoomsResponseItem[];
-export interface GetRoomsResponseItem {
-  room_id: number;
-  name: string;
-  type: string;
-  role: string;
-  sticky: boolean;
-  unread_num: number;
-  mention_num: number;
-  mytask_num: number;
-  message_num: number;
-  file_num: number;
-  task_num: number;
-  icon_path: string;
-  last_update_time: number;
-}
-
-export interface PostRoomResponse {
-  room_id: number;
-}
-
-export interface PutIncomingRequestResponse {
-  account_id: number;
-  room_id: number;
-  name: string;
-  chatwork_id: string;
-  organization_id: number;
-  organization_name: string;
-  department: string;
-  avatar_image_url: string;
-}
-
-type GetIncomingRequestsResponse = GetIncomingRequestsResponseItem[];
-export interface GetIncomingRequestsResponseItem {
-  request_id: number;
-  account_id: number;
-  message: string;
-  name: string;
-  chatwork_id: string;
-  organization_id: number;
-  organization_name: string;
-  department: string;
-  avatar_image_url: string;
 }
