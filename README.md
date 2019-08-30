@@ -62,9 +62,3 @@ See [here](https://github.com/akutagw/chatwork-api-client/blob/master/_API_TOKEN
 ```sh
 npm run test
 ```
-
-## Todos
-
-- [ ] English Supports (Comments, ~~README~~)
-- [ ] Add [HTTP response header](http://developer.chatwork.com/ja/endpoints.html) to the return value.
-- [ ] Authentication with [OAuth code](http://developer.chatwork.com/ja/oauth.html)
