@@ -10,7 +10,6 @@
 
 ## Work In Progress
 
-- 開発中ですが、基本的に動作します
 - テストが不十分です。動作確認していないメソッドがあります
 
 ## Installation
@@ -68,4 +67,4 @@ npm run test
 ## Todo
 
 - [ ] English Support (Comment, README)
-- [ ] 定義書から API レスポンスの enum 定義を反映する
+- [x] ~~定義書から API レスポンスの enum 定義を反映する~~
