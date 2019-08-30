@@ -64,7 +64,9 @@ npm run build
 npm run test
 ```
 
-## Todo
+## Todo (そのうち)
 
-- [ ] English Support (Comment, README)
+- [ ] English Supports (Comment, README)
+- [ ] メソッドの戻り値に[HTTP レスポンスヘッダ](http://developer.chatwork.com/ja/endpoints.html)の情報を追加する
+- [ ] [OAuth 認可コードでの認証](http://developer.chatwork.com/ja/oauth.html)
 - [x] ~~定義書から API レスポンスの enum 定義を反映する~~
