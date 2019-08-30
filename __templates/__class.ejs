@@ -14,7 +14,7 @@ export default class ChatworkApi {
     }
     const url = CHATWORK_URL + d.uri.replace(/{/g, '\${');
     const method = d.method.toLowerCase();
-    const returnValue = d.res ? 'data as ' + d.ifName + 'Response' : 'data';
+    const returnValue = d.example ? 'data as ' + d.ifName + 'Response' : 'data';
   %>
 
   /**
