@@ -51,6 +51,8 @@ const NAME_MAPPER = {
 
   const data = parseApi(ramlData);
   mapTraits(ramlData.traits, data);
+  parseResponseSchema(data);
+  convertSchemaToInterfaces(data);
   // console.log(data);
 
   const responseInterfaces = renderResponsesInterfaces(data);
@@ -207,6 +209,86 @@ function getSchema(responses = {}) {
   return schema ? schema.replace(/^\|/, '') : undefined;
 }
 
+function parseResponseSchema(data) {
+  data
+    .filter(d => d.schema)
+    .forEach(d => {
+      if (d.schema) d.schema = parseSchema(d.schema);
+    });
+}
+
+function parseSchema(schema) {
+  const parse = schema => {
+    if (schema.type === 'array') {
+      return schema.items.map(item => parse(item));
+    } else {
+      Object.entries(schema.properties).forEach(([name, prop]) => {
+        prop.name = name;
+        if (prop.type === 'object')
+          schema.properties[name]['properties'] = parse(prop);
+        if (prop.type === 'integer') prop.type = 'number';
+        if (prop.type === 'boolean') prop.type = '0|1';
+        if (prop.enum) prop.type = `'${prop.enum.join(`'|'`)}'`;
+      });
+    }
+    return schema.properties;
+  };
+  return parse(JSON.parse(schema));
+}
+
+function convertSchemaToInterfaces(data) {
+  data
+    .filter(d => d.schema)
+    .forEach(d => {
+      convertSchemaToInterface(d);
+    });
+}
+
+function convertSchemaToInterface(d) {
+  if (d.ifName === 'GetMyTasks') {
+    console.log();
+  }
+  const interfaces = [];
+  const types = [];
+  const convert = ({ schema, ifName, addName = '', isItem = false }) => {
+    if (Array.isArray(schema)) {
+      convert({ schema: schema[0], ifName, addName, isItem: true });
+      types.push({
+        name: pascalCase([ifName, addName, 'Response'].join('_')),
+        itemName: pascalCase([ifName, addName, 'Response', 'Item']),
+      });
+    } else {
+      const properties = Object.values(schema);
+      properties.forEach(prop => {
+        if (prop.type === 'object') {
+          // addName = pascalCase([addName, prop.name].join('_'));
+          const objAddName = addName + pascalCase(prop.name);
+          convert({
+            schema: prop.properties,
+            ifName,
+            addName: objAddName,
+          });
+          prop.type = pascalCase([ifName, objAddName, 'Response'].join('_'));
+        } else if (prop.type === 'array') {
+          let type = prop.items[0].type;
+          if (type === 'integer') type = 'number';
+          prop.type = type + '[]';
+        }
+      });
+      interfaces.push({
+        name: pascalCase(
+          [ifName, addName, 'Response', isItem ? 'Item' : ''].join('_'),
+        ),
+        properties,
+      });
+    }
+  };
+  const { schema, ifName } = d;
+  convert({ schema, ifName });
+  d.interfaces = interfaces;
+  d.types = types;
+}
+
 function renderParamInterfaces(data) {
   return ejs.render(
     fs.readFileSync(
@@ -220,8 +302,26 @@ function renderParamInterfaces(data) {
 }
 
 function renderResponsesInterfaces(data) {
-  return data
-    .filter(d => d.example)
+  const schemaData = [];
+  const exampleData = [];
+
+  data.forEach(d => {
+    if (d.types || d.interfaces) {
+      schemaData.push(d);
+    } else if (d.example) {
+      if (d.example) exampleData.push(d);
+    }
+  });
+
+  const interfacesFromSchema = ejs.render(
+    fs.readFileSync(
+      path.join(__dirname, '__templates', '__responseInterface.ejs'),
+      { encoding: 'utf8' },
+    ),
+    { data: schemaData },
+  );
+
+  const interfacesFromExample = exampleData
     .map(d =>
       json2ts(d.example, {
         rootName: d.ifName + 'Response',
@@ -229,6 +329,8 @@ function renderResponsesInterfaces(data) {
       }),
     )
     .join('\n');
+
+  return interfacesFromSchema + interfacesFromExample;
 }
 
 function renderApiClass(data, ramlData) {
