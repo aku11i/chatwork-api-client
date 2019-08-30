@@ -91,10 +91,10 @@ function mapTraits(traits, data) {
     .forEach(data => {
       data.is.forEach(is => {
         if (traits[is]['responses']['200']) {
-          data.example =
-            traits[is]['responses']['200']['body']['application/json'][
-              'example'
-            ];
+          const example = getExample(traits[is]['responses']);
+          if (example) data.example = example.replace(/^\|/, '');
+          const schema = getSchema(traits[is]['responses']);
+          if (schema) data.schema = schema.replace(/^\|/, '');
         }
       });
     });
@@ -132,6 +132,7 @@ function parseMethod(method, api, uri) {
   const params = getQueryParameters(queryParameters);
 
   const example = getExample(responses);
+  const schema = getSchema(responses);
 
   return {
     method,
@@ -145,6 +146,7 @@ function parseMethod(method, api, uri) {
     uri,
     params,
     example,
+    schema,
     is,
     description: description
       ? description.replace(/^\|\s+/, '').replace(/\n/g, '')
@@ -196,6 +198,12 @@ function getExample(responses = {}) {
   if (!responses['200']) return;
   const example = responses['200']['body']['application/json']['example'];
   return example ? example.replace(/^\|/, '') : undefined;
+}
+
+function getSchema(responses = {}) {
+  if (!responses['200']) return;
+  const schema = responses['200']['body']['application/json']['schema'];
+  return schema ? schema.replace(/^\|/, '') : undefined;
 }
 
 function renderParamInterfaces(data) {
