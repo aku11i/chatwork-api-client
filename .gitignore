@@ -238,3 +238,5 @@ typings/
 
 /dist
 /API_TOKEN
+/yarn.lock
+/package-lock.json
