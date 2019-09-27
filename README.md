@@ -11,6 +11,7 @@
 
 - This library is not stable yet.
 - Some methods are not tested.
+  - `postRoomFile` is not working.
 
 ## Installation
 
