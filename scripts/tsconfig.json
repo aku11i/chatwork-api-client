@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "esnext",
+    "rootDir": "./",
+    "strict": true,
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  }
+}

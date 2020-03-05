@@ -1,0 +1,981 @@
+[
+  {
+    "method": "GET",
+    "uri": "/me",
+    "info": {
+      "description": "自分自身の情報を取得",
+      "is": ["my_account_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": { "scopes": ["users.all:read", "users.profile.me:read"] }
+        }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/my/status",
+    "info": {
+      "description": "自分の未読数、未読To数、未完了タスク数を返す\n",
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": { "scopes": ["users.all:read", "users.status.me:read"] }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                {\n                  \"$schema\": \"http://json-schema.org/schema#\",\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"unread_room_num\": {\n                      \"type\": \"integer\"\n                    },\n                    \"mention_room_num\": {\n                      \"type\": \"integer\"\n                    },\n                    \"mytask_room_num\": {\n                      \"type\": \"integer\"\n                    },\n                    \"unread_num\": {\n                      \"type\": \"integer\"\n                    },\n                    \"mention_num\": {\n                      \"type\": \"integer\"\n                    },\n                    \"mytask_num\": {\n                      \"type\": \"integer\"\n                    }\n                  },\n                  \"required\": [\n                    \"unread_room_num\",\n                    \"mention_room_num\",\n                    \"mytask_room_num\",\n                    \"unread_num\",\n                    \"mention_num\",\n                    \"mytask_num\"\n                  ]\n                }\n",
+              "example": "{\n  \"unread_room_num\": 2,\n  \"mention_room_num\": 1,\n  \"mytask_room_num\": 3,\n  \"unread_num\": 12,\n  \"mention_num\": 1,\n  \"mytask_num\": 8\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/my/tasks",
+    "info": {
+      "description": "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "queryParameters": {
+        "assigned_by_account_id": {
+          "displayName": "タスクの依頼者のアカウントID\n",
+          "type": "integer",
+          "example": 78
+        },
+        "status": {
+          "displayName": "タスクのステータス",
+          "type": "string",
+          "enum": ["open", "done"],
+          "default": "open",
+          "example": "done"
+        }
+      },
+      "is": ["my_task_list_response", "unauthorized_response"],
+      "securedBy": [
+        { "oauth_2_0": { "scopes": ["users.all:read", "users.tasks.me:read"] } }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/contacts",
+    "info": {
+      "description": "自分のコンタクト一覧を取得",
+      "is": ["account_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["contacts.all:read_write", "contacts.all:read"]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms",
+    "info": {
+      "description": "自分のチャット一覧の取得",
+      "is": ["room_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.info:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "POST",
+    "uri": "/rooms",
+    "info": {
+      "description": "グループチャットを新規作成",
+      "is": ["room_members", "room_icon", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["rooms.all:read_write", "rooms.all:write", "rooms:write"]
+          }
+        }
+      ],
+      "queryParameters": {
+        "name": {
+          "displayName": "グループチャット名",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "description": "作成したいグループチャットのチャット名\n",
+          "example": "Website renewal project",
+          "required": true
+        },
+        "description": {
+          "displayName": "チャット概要",
+          "type": "string",
+          "description": "グループチャットの概要説明テキスト\n",
+          "example": "group chat description"
+        },
+        "link": {
+          "displayName": "招待リンク作成",
+          "description": "招待リンクを作成するか",
+          "type": "boolean",
+          "required": false,
+          "default": false
+        },
+        "link_code": {
+          "displayName": "リンク文字列",
+          "description": "リンクのパス部分。省略するとランダムな文字列となる。\n",
+          "type": "string",
+          "required": false,
+          "minLength": 1,
+          "maxLength": 50,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "link_need_acceptance": {
+          "displayName": "承認要否",
+          "description": "参加に管理者の承認を必要とするか。\n",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        }
+      },
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n              {\n                \"$schema\": \"http://json-schema.org/schema#\",\n                \"type\": \"object\",\n                \"properties\": {\n                  \"room_id\": {\n                    \"type\": \"integer\"\n                  }\n                },\n                \"required\": [\n                  \"room_id\"\n                ]\n              }\n",
+              "example": "{\n  \"room_id\": 1234\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}",
+    "info": {
+      "description": "チャットの名前、アイコン、種類(my/direct/group)を取得\n",
+      "is": ["room_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.info:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}",
+    "info": {
+      "description": "チャットの名前、アイコンをアップデート\n",
+      "is": ["room_icon", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.info:write"
+            ]
+          }
+        }
+      ],
+      "queryParameters": {
+        "name": {
+          "displayName": "グループチャット名",
+          "type": "string",
+          "maxLength": 255,
+          "minLength": 1,
+          "description": "グループチャットのチャット名\n",
+          "example": "Website renewal project"
+        },
+        "description": {
+          "displayName": "チャット概要",
+          "type": "string",
+          "description": "グループチャットの概要説明テキスト\n",
+          "example": "group chat description"
+        }
+      },
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                {\n                  \"$schema\": \"http://json-schema.org/schema#\",\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"room_id\": {\n                      \"type\": \"integer\"\n                    }\n                  },\n                  \"required\": [\n                    \"room_id\"\n                  ]\n                }\n",
+              "example": "{\n  \"room_id\": 1234\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "DELETE",
+    "uri": "/rooms/{room_id}",
+    "info": {
+      "description": "グループチャットを退席/削除する\n",
+      "is": ["nocontent_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["rooms.all:read_write", "rooms.all:write", "rooms:write"]
+          }
+        }
+      ],
+      "queryParameters": {
+        "action_type": {
+          "displayName": "退席するか、削除するか",
+          "type": "string",
+          "enum": ["leave", "delete"],
+          "example": "leave",
+          "required": true,
+          "description": "退席すると、このグループチャットにある自分が担当のタスク、および自分が送信したファイルは削除されます。\n削除すると、このグループチャットに参加しているメンバー全員のメッセージ、タスク、ファイルはすべて削除されます。\n※一度削除すると元に戻せません！\n"
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/members",
+    "info": {
+      "description": "チャットのメンバー一覧を取得\n",
+      "is": ["room_member_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.members:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/members",
+    "info": {
+      "description": "チャットのメンバーを一括変更\n",
+      "is": ["room_members", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.members:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                  {\n                    \"$schema\": \"http://json-schema.org/schema#\",\n                    \"type\": \"object\",\n                    \"properties\": {\n                      \"admin\": {\n                        \"type\": \"array\",\n                        \"items\": [\n                          {\n                            \"type\": \"integer\"\n                          }\n                        ]\n                      },\n                      \"member\": {\n                        \"type\": \"array\",\n                        \"items\": [\n                          {\n                            \"type\": \"integer\"\n                          }\n                        ]\n                      },\n                      \"readonly\": {\n                        \"type\": \"array\",\n                        \"items\": [\n                          {\n                            \"type\": \"integer\"\n                          }\n                        ]\n                      }\n                    },\n                    \"required\": [\n                      \"admin\",\n                      \"member\",\n                      \"readonly\"\n                    ]\n                  }\n",
+              "example": "{\n  \"admin\": [123, 542, 1001],\n  \"member\": [10, 103],\n  \"readonly\": [6, 11]\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/messages",
+    "info": {
+      "queryParameters": {
+        "force": {
+          "displayName": "未取得にかかわらず最新の100件を取得するか\n",
+          "type": "boolean",
+          "description": "1を指定すると未取得にかかわらず最新の100件を取得します（デフォルトは0）\n",
+          "default": false,
+          "example": 0
+        }
+      },
+      "description": "|\n          チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)\n",
+      "is": ["message_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.messages:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "POST",
+    "uri": "/rooms/{room_id}/messages",
+    "info": {
+      "description": "チャットに新しいメッセージを追加\n",
+      "queryParameters": {
+        "body": {
+          "displayName": "メッセージ本文",
+          "type": "string",
+          "required": true,
+          "maxLength": 65535,
+          "minLength": 1,
+          "example": "Hello Chatwork!"
+        },
+        "self_unread": {
+          "displayName": "追加したメッセージを自分から見て未読とするか\n",
+          "description": "1を指定した場合、自分が追加したメッセージを自分から見て未読にします(デフォルトは0：既読にする)\n",
+          "type": "boolean",
+          "default": false,
+          "example": 0
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.messages:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                  {\n                    \"$schema\": \"http://json-schema.org/schema#\",\n                    \"type\": \"object\",\n                    \"properties\": {\n                      \"message_id\": {\n                        \"type\": \"string\"\n                      }\n                    },\n                    \"required\": [\n                      \"message_id\"\n                    ]\n                  }\n",
+              "example": "{\n  \"message_id\": \"1234\"\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/messages/read",
+    "info": {
+      "description": "メッセージを既読にする",
+      "queryParameters": {
+        "message_id": {
+          "displayName": "ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400)\n",
+          "type": "string",
+          "example": "101"
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.messages:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                    {\n                      \"$schema\": \"http://json-schema.org/schema#\",\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"unread_num\": {\n                          \"type\": \"integer\"\n                        },\n                        \"mention_num\": {\n                          \"type\": \"integer\"\n                        }\n                      },\n                      \"required\": [\n                        \"unread_num\",\n                        \"mention_num\"\n                      ]\n                    }\n",
+              "example": "{\n  \"unread_num\": 461,\n  \"mention_num\": 0\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/messages/unread",
+    "info": {
+      "description": "メッセージを未読にする",
+      "queryParameters": {
+        "message_id": {
+          "displayName": "ここで指定するIDのメッセージ以降を未読にする\n",
+          "type": "string",
+          "required": true,
+          "example": "101"
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.messages:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                    {\n                      \"$schema\": \"http://json-schema.org/schema#\",\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"unread_num\": {\n                          \"type\": \"integer\"\n                        },\n                        \"mention_num\": {\n                          \"type\": \"integer\"\n                        }\n                      },\n                      \"required\": [\n                        \"unread_num\",\n                        \"mention_num\"\n                      ]\n                    }\n",
+              "example": "{\n  \"unread_num\":  3,\n  \"mention_num\": 0\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "info": {
+      "description": "メッセージ情報を取得",
+      "is": ["message_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.messages:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "info": {
+      "description": "チャットのメッセージを更新する。\n",
+      "queryParameters": {
+        "body": {
+          "displayName": "更新するメッセージ本文",
+          "type": "string",
+          "required": true,
+          "maxLength": 65535,
+          "minLength": 1,
+          "example": "Hello Chatwork!"
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.messages:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                    {\n                      \"$schema\": \"http://json-schema.org/schema#\",\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"message_id\": {\n                          \"type\": \"string\"\n                        }\n                      },\n                      \"required\": [\n                        \"message_id\"\n                      ]\n                    }\n",
+              "example": "{\n  \"message_id\": \"1234\"\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "DELETE",
+    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "info": {
+      "description": "メッセージを削除",
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.messages:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                    {\n                      \"$schema\": \"http://json-schema.org/schema#\",\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"message_id\": {\n                          \"type\": \"string\"\n                        }\n                      },\n                      \"required\": [\n                        \"message_id\"\n                      ]\n                    }\n",
+              "example": "|\n                    {\n                      \"message_id\": \"1234\"\n                    }\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/tasks",
+    "info": {
+      "description": "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "queryParameters": {
+        "account_id": {
+          "displayName": "タスクの担当者のアカウントID\n",
+          "type": "integer",
+          "example": 101
+        },
+        "assigned_by_account_id": {
+          "displayName": "タスクの依頼者のアカウントID\n",
+          "type": "integer",
+          "example": 78
+        },
+        "status": {
+          "displayName": "タスクのステータス",
+          "type": "string",
+          "enum": ["open", "done"],
+          "default": "open",
+          "example": "done"
+        }
+      },
+      "is": ["room_task_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.tasks:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "POST",
+    "uri": "/rooms/{room_id}/tasks",
+    "info": {
+      "description": "チャットに新しいタスクを追加\n",
+      "queryParameters": {
+        "body": {
+          "displayName": "タスクの内容",
+          "type": "string",
+          "required": true,
+          "maxLength": 65535,
+          "example": "Buy milk"
+        },
+        "to_ids": {
+          "displayName": "担当者のアカウントID",
+          "description": "|\n              [string-list:type=integer]担当者のアカウントIDをカンマ区切りで\n",
+          "type": "string",
+          "required": true,
+          "example": "1,3,6"
+        },
+        "limit": {
+          "displayName": "タスクの期限",
+          "description": "|\n              Unix timeで入力してください\n",
+          "example": 1385996399,
+          "type": "integer"
+        },
+        "limit_type": {
+          "displayName": "タスク期限の種別",
+          "description": "|\n              'none'を指定した場合、期限なしのタスクを作成します。\n              'date'を指定した場合、日付期限のタスクを作成します。\n              'time'を指定した場合、時間期限のタスクを作成します。\n",
+          "type": "string",
+          "enum": ["none", "date", "time"],
+          "example": "time"
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.tasks:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                  {\n                    \"$schema\": \"http://json-schema.org/schema#\",\n                    \"type\": \"object\",\n                    \"properties\": {\n                      \"task_ids\": {\n                        \"type\": \"array\",\n                        \"items\": [\n                          {\n                            \"type\": \"integer\"\n                          }\n                        ]\n                      }\n                    },\n                    \"required\": [\n                      \"task_ids\"\n                    ]\n                  }\n",
+              "example": "{\n  \"task_ids\": [123,124]\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/tasks/{task_id}",
+    "info": {
+      "description": "タスク情報を取得",
+      "is": ["task_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.tasks:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/tasks/{task_id}/status",
+    "info": {
+      "description": "タスク完了状態を変更する",
+      "queryParameters": {
+        "body": {
+          "displayName": "タスク完了状態",
+          "type": "string",
+          "enum": ["open", "done"],
+          "required": true,
+          "example": "done",
+          "description": "'done'を指定した場合、未完了のタスクを完了にします。\n'open'を指定した場合、完了のタスクを未完了にします。\n"
+        }
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.tasks:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "schema": "|\n                      {\n                        \"$schema\": \"http://json-schema.org/schema#\",\n                        \"type\": \"object\",\n                        \"properties\": {\n                          \"task_id\": {\n                            \"type\": \"integer\"\n                          }\n                        },\n                        \"required\": [\n                          \"task_id\"\n                        ]\n                      }\n",
+              "example": "{\n  \"task_id\": 1234\n}\n"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/files",
+    "info": {
+      "description": "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "queryParameters": {
+        "account_id": {
+          "displayName": "アップロードしたユーザーのアカウントID\n",
+          "type": "integer",
+          "example": 101
+        }
+      },
+      "is": ["file_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.files:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "POST",
+    "uri": "/rooms/{room_id}/files",
+    "info": {
+      "description": "チャットに新しいファイルをアップロード\n",
+      "multipart/form-data": {
+        "formParameters": {
+          "file": {
+            "displayName": "アップロードするファイル（上限：5MB）\n",
+            "type": "file",
+            "required": true
+          },
+          "message": {
+            "displayName": "ファイルと一緒に投稿するメッセージの本文\n",
+            "type": "string",
+            "example": "I attached comment to chat."
+          }
+        },
+        "example": "--------------------------f295b94a5560e2eb\nContent-Disposition: form-data; name=\"file\"; filename=\"example.jpeg\"\nContent-Type: image/jpeg\n\nabc012....binarydata....789de\n...\n--------------------------f295b94a5560e2eb\nContent-Disposition: form-data; name=\"message\"\n\nI attached comment to chat.\n--------------------------f295b94a5560e2eb--\n"
+      },
+      "is": ["unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.files:write"
+            ]
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": { "example": "{\n  \"file_id\": 1234\n}\n" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/files/{file_id}",
+    "info": {
+      "description": "ファイル情報を取得",
+      "queryParameters": {
+        "create_download_url": {
+          "displayName": "ダウンロードする為のURLを生成するか\n",
+          "description": "30秒間だけダウンロード可能なURLを生成します\n",
+          "type": "boolean",
+          "default": false,
+          "example": 1
+        }
+      },
+      "is": ["file_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.files:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/rooms/{room_id}/link",
+    "info": {
+      "description": "招待リンクを取得する",
+      "is": ["unauthorized_response", "invitation_link_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:read",
+              "rooms.info:read"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "POST",
+    "uri": "/rooms/{room_id}/link",
+    "info": {
+      "description": "招待リンクを作成する",
+      "is": ["unauthorized_response", "invitation_link_response"],
+      "queryParameters": {
+        "code": {
+          "displayName": "リンク文字列",
+          "description": "リンクのパス部分。省略するとランダムな文字列となる。\n",
+          "type": "string",
+          "required": false,
+          "minLength": 1,
+          "maxLength": 50,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "example": "unique-link-name"
+        },
+        "need_acceptance": {
+          "displayName": "承認要否",
+          "description": "参加に管理者の承認を必要とするか。\n",
+          "type": "boolean",
+          "required": false,
+          "default": true
+        },
+        "description": {
+          "displayName": "リンク説明文",
+          "description": "リンクページに表示される説明文。\n",
+          "type": "string",
+          "required": false,
+          "example": "This is a public room for topic A."
+        }
+      },
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "example": "{\n  \"public\": true,\n  \"url\": \"https://example.chatwork.com/g/unique-link-name\",\n  \"need_acceptance\": true,\n  \"description\": \"This is a public room for topic A.\"\n}\n"
+            }
+          }
+        }
+      },
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.info:write"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/rooms/{room_id}/link",
+    "info": {
+      "description": "招待リンクの情報を変更する",
+      "is": ["unauthorized_response", "invitation_link_response"],
+      "queryParameters": {
+        "code": {
+          "displayName": "リンク文字列",
+          "description": "リンクのパス部分。省略するとランダムな文字列となる。\n",
+          "type": "string",
+          "required": false,
+          "minLength": 1,
+          "maxLength": 50,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "example": "another_link_name"
+        },
+        "need_acceptance": {
+          "displayName": "承認要否",
+          "description": "参加に管理者の承認を必要とするか。\n",
+          "type": "boolean",
+          "required": false,
+          "default": true,
+          "example": "0"
+        },
+        "description": {
+          "displayName": "リンク説明文",
+          "description": "リンクページに表示される説明文。\n",
+          "type": "string",
+          "required": false,
+          "example": "Public room for everybody"
+        }
+      },
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": {
+              "example": "{\n  \"public\": true,\n  \"url\": \"https://example.chatwork.com/g/another_link_name\",\n  \"need_acceptance\": false,\n  \"description\": \"Public room for everybody\"\n}\n"
+            }
+          }
+        }
+      },
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.info:write"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "DELETE",
+    "uri": "/rooms/{room_id}/link",
+    "info": {
+      "description": "招待リンクを削除する",
+      "is": ["unauthorized_response", "invitation_link_response"],
+      "responses": {
+        "200": {
+          "body": {
+            "application/json": { "example": "{\n  \"public\": false\n}\n" }
+          }
+        }
+      },
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": [
+              "rooms.all:read_write",
+              "rooms.all:write",
+              "rooms.info:write"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "GET",
+    "uri": "/incoming_requests",
+    "info": {
+      "description": "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "is": ["incoming_request_list_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["contacts.all:read_write", "contacts.all:read"]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "PUT",
+    "uri": "/incoming_requests/{request_id}",
+    "info": {
+      "description": "自分に対するコンタクト承認依頼を承認する\n",
+      "is": ["incoming_request_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["contacts.all:read_write", "contacts.all:write"]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "method": "DELETE",
+    "uri": "/incoming_requests/{request_id}",
+    "info": {
+      "description": "自分に対するコンタクト承認依頼をキャンセルする\n",
+      "is": ["nocontent_response", "unauthorized_response"],
+      "securedBy": [
+        {
+          "oauth_2_0": {
+            "scopes": ["contacts.all:read_write", "contacts.all:write"]
+          }
+        }
+      ]
+    }
+  }
+]
