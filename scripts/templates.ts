@@ -1,17 +1,12 @@
-import { format } from 'prettier';
-
 export function getClass(functions: string) {
-  return format(
-    `
+  return `
     export default class ChatworkApi {
 
       constructor(private api_token: string) {}
 
       ${functions}
     }
-    `,
-    { parser: 'typescript' },
-  );
+    `;
 }
 
 export function getFunction(
@@ -20,8 +15,7 @@ export function getFunction(
   paramType: string,
   returnType: string,
 ) {
-  return format(
-    `
+  return `
     export async ${functionName} (params: ${paramType}) {
       const {data} = await axios.get('https://api.chatwork.com/v2${uri}', {
         params,
@@ -30,8 +24,32 @@ export function getFunction(
 
       return {...data} as ${returnType};
     }
-    `,
-    { parser: 'typescript' },
-  );
+    `;
 }
 
+export type Property = {
+  name: string;
+  description?: string;
+  types: string;
+  enums?: string[];
+  children?: Property[];
+};
+
+function propToType({ name, description, types, enums }: Property) {
+  if (enums) {
+    const enumStr = enums.map(e => `"${e}"`).join(' | ');
+    return `
+    /** ${description || ''} */
+    ${name}: ${enumStr}
+    `;
+  }
+  return `${name}: ${types}`;
+}
+
+export function getType(typeName: string, props: Property[]) {
+  return `
+  export type ${typeName} = {
+    ${props.map(propToType).join('\n')}
+  }
+  `;
+}
