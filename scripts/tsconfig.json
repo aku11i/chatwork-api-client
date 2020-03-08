@@ -2,7 +2,7 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es2019",
     "rootDir": "./",
     "strict": true,
     "noImplicitAny": false,
