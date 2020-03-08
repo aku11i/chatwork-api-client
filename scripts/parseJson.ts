@@ -24,23 +24,28 @@ const queryParameters = traits
     {},
   );
 
-function parseSchemaJson(schema: string) {
-  const jsonString = schema.replace(/^\|/, '');
+function parseJson(text: string) {
+  const jsonString = text.replace(/^\|/, '');
   return JSON.parse(jsonString);
 }
 
+function parseResponsesJson(responses: any) {
+  const schema = responses?.['200']?.['body']['application/json']?.['schema'];
+  const example = responses?.['200']?.['body']['application/json']?.['example'];
+
+  return {
+    schema: schema ? parseJson(schema) : undefined,
+    example: example ? parseJson(example) : undefined,
+  };
+}
+
 const responses = traits
-  .filter(trait => trait['responses'] && trait['responses']['200'])
+  .filter(trait => trait['responses']?.['200'])
   .reduce(
     (obj, responses) => ({
       ...obj,
       [responses.key]: {
-        schema: parseSchemaJson(
-          responses['responses']['200']['body']['application/json']['schema'],
-        ),
-        example: JSON.parse(
-          responses['responses']['200']['body']['application/json']['example'],
-        ),
+        ...parseResponsesJson(responses?.responses),
       },
     }),
     {},
@@ -65,6 +70,39 @@ const endPoints = Object.entries(Api)
   .map(([key, value]) => getEndpoints(value, key))
   .flat();
 
-write('queryParameters.json', queryParameters);
-write('responses.json', responses);
+function mergeResponses(target: any, from: any) {
+  return Object.assign(target, from);
+}
+
+function mergeQueryParameters(target: any, from: any) {
+  return Object.assign(target, from);
+}
+
+endPoints.forEach(endPoint => {
+  if (endPoint?.info?.responses) {
+    endPoint.info.responses = parseResponsesJson(endPoint.info.responses);
+  }
+  if (Array.isArray(endPoint?.info?.is)) {
+    const is = endPoint.info.is.filter(
+      is => is !== 'unauthorized_response' && is !== 'nocontent_response',
+    );
+    endPoint.info.is = is.length ? is : undefined;
+  }
+  if (!endPoint?.info?.queryParameters) {
+    endPoint.info.queryParameters = {};
+  }
+  if (!endPoint?.info?.responses) {
+    endPoint.info.responses = {};
+  }
+  if (Array.isArray(endPoint?.info?.is)) {
+    endPoint.info.is.forEach(is => {
+      mergeQueryParameters(endPoint.info.queryParameters, queryParameters[is]);
+      mergeResponses(endPoint.info.responses, responses[is]);
+    });
+  }
+
+  delete endPoint?.info?.is;
+  delete endPoint?.info?.securedBy;
+});
+
 write('endPoints.json', endPoints);
