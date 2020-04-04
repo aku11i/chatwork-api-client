@@ -11,6 +11,10 @@ const EndPoints: typeof import('./endPoints.json') = require('./endPoints.json')
 
 const CHATWORK_URL = 'https://api.chatwork.com/v2';
 
+function log(...args: any[]) {
+  console.log(...args.map(v => format(JSON.stringify(v), { parser: 'json' })));
+}
+
 export function getFunctionName(endPoint: any) {
   const uri = endPoint.uri.replace(/\{.*\}/g, '');
   return pascalCase(`${endPoint.method}_${uri}`);
@@ -22,6 +26,11 @@ export function getParamTypeName(endPoint: any) {
 
 export function getResponseTypeName(endPoint: any) {
   return getFunctionName(endPoint) + 'Response';
+}
+
+export function getPropertyType(type: string) {
+  if (type === 'integer') return 'number';
+  return type;
 }
 
 export function queryParameterToProp(name: any, data: any): Property {
@@ -39,25 +48,63 @@ export function queryParametersToProps(queryParameters: any): Property[] {
   );
 }
 
-export function responseSchemaToProps(schema: any): Property[] {
-  return [];
+export function schemaPropertyToProperty(
+  property: any,
+  name: string,
+): Property {
+  return {
+    name,
+    types: getPropertyType(property.type),
+    enums: property.enum,
+  };
 }
 
-export function responseExampleToProps(example: any): Property[] {
-  return Object.entries(example).map(([name, value]) => ({
+export function responseSchemaToObjectProps(schema: any): Property {
+  const children = Object.entries(schema.properties).map(([name, property]) =>
+    schemaPropertyToProperty(property, name),
+  );
+  return {
+    types: 'object',
+    children,
+  };
+}
+
+export function responseSchemaToArrayProps(schema: any): Property {
+  return {
+    types: 'array',
+    children: schema.items.map(item => rootResponseSchemaToProps(item)),
+  };
+}
+
+export function rootResponseSchemaToProps(schema: any): Property {
+  if (schema.type === 'array') {
+    return responseSchemaToArrayProps(schema);
+  }
+  return responseSchemaToObjectProps(schema);
+}
+
+export function responseExampleToProps(example: any): Property {
+  const children = Object.entries(example).map(([name, value]) => ({
     name,
     description: '',
     types: typeof value,
   }));
+
+  return {
+    types: 'object',
+    children,
+  };
 }
 
-export function responsesToProps(responses: any): Property[] {
+export function responsesToProps(responses: any): Property {
   if (responses.schema) {
-    return responseSchemaToProps(responses.schema);
+    return rootResponseSchemaToProps(responses.schema);
   } else if (responses.example) {
     return responseExampleToProps(responses.example);
   }
-  return [];
+  return {
+    types: 'object',
+  };
 }
 
 const paramTypes = EndPoints.map(endPoint => ({
@@ -70,5 +117,5 @@ const responseTypes = EndPoints.map(endPoint => ({
   props: responsesToProps(endPoint.info.responses),
 }));
 
-console.log(paramTypes);
-console.log(responseTypes);
+log(paramTypes);
+log(responseTypes);

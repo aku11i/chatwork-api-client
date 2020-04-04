@@ -28,7 +28,7 @@ export function getFunction(
 }
 
 export type Property = {
-  name: string;
+  name?: string;
   description?: string;
   types: string;
   enums?: string[];
