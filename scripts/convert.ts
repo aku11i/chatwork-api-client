@@ -1,4 +1,4 @@
-import { Property } from './templates';
+import { Property, getType } from './templates';
 
 const { readFileSync, writeFileSync }: typeof import('fs') = require('fs');
 const { join, resolve }: typeof import('path') = require('path');
@@ -30,6 +30,7 @@ export function getResponseTypeName(endPoint: any) {
 
 export function getPropertyType(type: string) {
   if (type === 'integer') return 'number';
+  if (type === 'boolean') return '0|1';
   return type;
 }
 
@@ -37,7 +38,7 @@ export function queryParameterToProp(name: any, data: any): Property {
   return {
     name,
     description: data.displayName,
-    types: data.type,
+    types: getPropertyType(data.type),
     enums: data.enum,
   };
 }
@@ -52,14 +53,28 @@ export function schemaPropertyToProperty(
   property: any,
   name: string,
 ): Property {
+  const children =
+    property.type === 'object'
+      ? Object.entries(property.properties).map(([name, property]) =>
+          schemaPropertyToProperty(property, name),
+        )
+      : undefined;
+
+  const arrayProp =
+    property.type === 'array'
+      ? schemaPropertyToProperty(property.items[0], name)
+      : undefined;
+
   return {
     name,
     types: getPropertyType(property.type),
     enums: property.enum,
+    children,
+    arrayProp,
   };
 }
 
-export function responseSchemaToObjectProps(schema: any): Property {
+export function responseSchemaToObjectProp(schema: any): Property {
   const children = Object.entries(schema.properties).map(([name, property]) =>
     schemaPropertyToProperty(property, name),
   );
@@ -69,18 +84,18 @@ export function responseSchemaToObjectProps(schema: any): Property {
   };
 }
 
-export function responseSchemaToArrayProps(schema: any): Property {
+export function responseSchemaToArrayProp(schema: any): Property {
   return {
     types: 'array',
-    children: schema.items.map(item => rootResponseSchemaToProps(item)),
+    arrayProp: rootResponseSchemaToProp(schema.items[0]),
   };
 }
 
-export function rootResponseSchemaToProps(schema: any): Property {
+export function rootResponseSchemaToProp(schema: any): Property {
   if (schema.type === 'array') {
-    return responseSchemaToArrayProps(schema);
+    return responseSchemaToArrayProp(schema);
   }
-  return responseSchemaToObjectProps(schema);
+  return responseSchemaToObjectProp(schema);
 }
 
 export function responseExampleToProps(example: any): Property {
@@ -96,9 +111,9 @@ export function responseExampleToProps(example: any): Property {
   };
 }
 
-export function responsesToProps(responses: any): Property {
+export function responsesToProp(responses: any): Property {
   if (responses.schema) {
-    return rootResponseSchemaToProps(responses.schema);
+    return rootResponseSchemaToProp(responses.schema);
   } else if (responses.example) {
     return responseExampleToProps(responses.example);
   }
@@ -114,8 +129,23 @@ const paramTypes = EndPoints.map(endPoint => ({
 
 const responseTypes = EndPoints.map(endPoint => ({
   name: getResponseTypeName(endPoint),
-  props: responsesToProps(endPoint.info.responses),
+  props: responsesToProp(endPoint.info.responses),
 }));
 
+log(EndPoints);
 log(paramTypes);
 log(responseTypes);
+
+paramTypes.forEach(paramType => {
+  const types = format(getType(paramType.name, paramType.props), {
+    parser: 'typescript',
+  });
+  console.log(types);
+});
+
+responseTypes.forEach(responseType => {
+  const types = format(getType(responseType.name, responseType.props), {
+    parser: 'typescript',
+  });
+  console.log(types);
+});
