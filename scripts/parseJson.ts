@@ -15,7 +15,7 @@ const traits = Api.traits.reduce((traits, trait) => {
 }, [] as any);
 
 const queryParameters = traits
-  .filter(trait => trait['queryParameters'])
+  .filter((trait) => trait['queryParameters'])
   .reduce(
     (obj, queryParameter) => ({
       ...obj,
@@ -40,7 +40,7 @@ function parseResponsesJson(responses: any) {
 }
 
 const responses = traits
-  .filter(trait => trait['responses']?.['200'])
+  .filter((trait) => trait['responses']?.['200'])
   .reduce(
     (obj, responses) => ({
       ...obj,
@@ -78,24 +78,33 @@ function mergeQueryParameters(target: any, from: any) {
   return Object.assign(target, from);
 }
 
-endPoints.forEach(endPoint => {
+endPoints.forEach((endPoint) => {
+  if (endPoint?.uri) {
+    endPoint.uri = endPoint.uri.replace(/\{/g, '${');
+  }
   if (endPoint?.info?.responses) {
     endPoint.info.responses = parseResponsesJson(endPoint.info.responses);
   }
   if (Array.isArray(endPoint?.info?.is)) {
     const is = endPoint.info.is.filter(
-      is => is !== 'unauthorized_response' && is !== 'nocontent_response',
+      (is) => is !== 'unauthorized_response' && is !== 'nocontent_response',
     );
     endPoint.info.is = is.length ? is : undefined;
   }
   if (!endPoint?.info?.queryParameters) {
     endPoint.info.queryParameters = {};
   }
+  if (endPoint?.info?.queryParameters) {
+    const paramRequired = Object.entries(queryParameters).some(
+      ([name, queryParameter]) => (queryParameter as any).required,
+    );
+    endPoint.paramRequired = paramRequired;
+  }
   if (!endPoint?.info?.responses) {
     endPoint.info.responses = {};
   }
   if (Array.isArray(endPoint?.info?.is)) {
-    endPoint.info.is.forEach(is => {
+    endPoint.info.is.forEach((is) => {
       mergeQueryParameters(endPoint.info.queryParameters, queryParameters[is]);
       mergeResponses(endPoint.info.responses, responses[is]);
     });

@@ -74,7 +74,8 @@
           "login_mail": "account@example.com"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
@@ -112,7 +113,8 @@
         }
       },
       "queryParameters": {}
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
@@ -203,7 +205,8 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
@@ -253,7 +256,8 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
@@ -322,7 +326,8 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "POST",
@@ -422,11 +427,12 @@
         },
         "example": { "room_id": 1234 }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}",
+    "uri": "/rooms/${room_id}",
     "info": {
       "description": "チャットの名前、アイコン、種類(my/direct/group)を取得\n",
       "queryParameters": {},
@@ -487,11 +493,12 @@
           "description": "room description text"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}",
+    "uri": "/rooms/${room_id}",
     "info": {
       "description": "チャットの名前、アイコンをアップデート\n",
       "queryParameters": {
@@ -544,11 +551,12 @@
         },
         "example": { "room_id": 1234 }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "DELETE",
-    "uri": "/rooms/{room_id}",
+    "uri": "/rooms/${room_id}",
     "info": {
       "description": "グループチャットを退席/削除する\n",
       "queryParameters": {
@@ -562,11 +570,12 @@
         }
       },
       "responses": {}
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/members",
+    "uri": "/rooms/${room_id}/members",
     "info": {
       "description": "チャットのメンバー一覧を取得\n",
       "queryParameters": {},
@@ -615,11 +624,12 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/members",
+    "uri": "/rooms/${room_id}/members",
     "info": {
       "description": "チャットのメンバーを一括変更\n",
       "responses": {
@@ -660,11 +670,12 @@
           "example": "15,103"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/messages",
+    "uri": "/rooms/${room_id}/messages",
     "info": {
       "queryParameters": {
         "force": {
@@ -722,11 +733,12 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "POST",
-    "uri": "/rooms/{room_id}/messages",
+    "uri": "/rooms/${room_id}/messages",
     "info": {
       "description": "チャットに新しいメッセージを追加\n",
       "queryParameters": {
@@ -755,11 +767,12 @@
         },
         "example": { "message_id": "1234" }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/messages/read",
+    "uri": "/rooms/${room_id}/messages/read",
     "info": {
       "description": "メッセージを既読にする",
       "queryParameters": {
@@ -781,11 +794,12 @@
         },
         "example": { "unread_num": 461, "mention_num": 0 }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/messages/unread",
+    "uri": "/rooms/${room_id}/messages/unread",
     "info": {
       "description": "メッセージを未読にする",
       "queryParameters": {
@@ -808,11 +822,12 @@
         },
         "example": { "unread_num": 3, "mention_num": 0 }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "uri": "/rooms/${room_id}/messages/${message_id}",
     "info": {
       "description": "メッセージ情報を取得",
       "queryParameters": {},
@@ -855,11 +870,12 @@
           "update_time": 0
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "uri": "/rooms/${room_id}/messages/${message_id}",
     "info": {
       "description": "チャットのメッセージを更新する。\n",
       "queryParameters": {
@@ -881,11 +897,12 @@
         },
         "example": { "message_id": "1234" }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "DELETE",
-    "uri": "/rooms/{room_id}/messages/{message_id}",
+    "uri": "/rooms/${room_id}/messages/${message_id}",
     "info": {
       "description": "メッセージを削除",
       "responses": {
@@ -898,11 +915,12 @@
         "example": { "message_id": "1234" }
       },
       "queryParameters": {}
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/tasks",
+    "uri": "/rooms/${room_id}/tasks",
     "info": {
       "description": "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
       "queryParameters": {
@@ -994,11 +1012,12 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "POST",
-    "uri": "/rooms/{room_id}/tasks",
+    "uri": "/rooms/${room_id}/tasks",
     "info": {
       "description": "チャットに新しいタスクを追加\n",
       "queryParameters": {
@@ -1041,11 +1060,12 @@
         },
         "example": { "task_ids": [123, 124] }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/tasks/{task_id}",
+    "uri": "/rooms/${room_id}/tasks/${task_id}",
     "info": {
       "description": "タスク情報を取得",
       "queryParameters": {},
@@ -1109,11 +1129,12 @@
           "limit_type": "date"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/tasks/{task_id}/status",
+    "uri": "/rooms/${room_id}/tasks/${task_id}/status",
     "info": {
       "description": "タスク完了状態を変更する",
       "queryParameters": {
@@ -1135,11 +1156,12 @@
         },
         "example": { "task_id": 1234 }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/files",
+    "uri": "/rooms/${room_id}/files",
     "info": {
       "description": "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
       "queryParameters": {
@@ -1198,11 +1220,12 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "POST",
-    "uri": "/rooms/{room_id}/files",
+    "uri": "/rooms/${room_id}/files",
     "info": {
       "description": "チャットに新しいファイルをアップロード\n",
       "multipart/form-data": {
@@ -1222,11 +1245,12 @@
       },
       "responses": { "example": { "file_id": 1234 } },
       "queryParameters": {}
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/files/{file_id}",
+    "uri": "/rooms/${room_id}/files/${file_id}",
     "info": {
       "description": "ファイル情報を取得",
       "queryParameters": {
@@ -1281,11 +1305,12 @@
           "upload_time": 1384414750
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
-    "uri": "/rooms/{room_id}/link",
+    "uri": "/rooms/${room_id}/link",
     "info": {
       "description": "招待リンクを取得する",
       "queryParameters": {},
@@ -1308,11 +1333,12 @@
           "description": "Link description text"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "POST",
-    "uri": "/rooms/{room_id}/link",
+    "uri": "/rooms/${room_id}/link",
     "info": {
       "description": "招待リンクを作成する",
       "queryParameters": {
@@ -1360,11 +1386,12 @@
           "description": "Link description text"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/rooms/{room_id}/link",
+    "uri": "/rooms/${room_id}/link",
     "info": {
       "description": "招待リンクの情報を変更する",
       "queryParameters": {
@@ -1413,11 +1440,12 @@
           "description": "Link description text"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "DELETE",
-    "uri": "/rooms/{room_id}/link",
+    "uri": "/rooms/${room_id}/link",
     "info": {
       "description": "招待リンクを削除する",
       "responses": {
@@ -1440,7 +1468,8 @@
         }
       },
       "queryParameters": {}
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "GET",
@@ -1493,11 +1522,12 @@
           }
         ]
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "PUT",
-    "uri": "/incoming_requests/{request_id}",
+    "uri": "/incoming_requests/${request_id}",
     "info": {
       "description": "自分に対するコンタクト承認依頼を承認する\n",
       "queryParameters": {},
@@ -1537,15 +1567,17 @@
           "avatar_image_url": "https://example.com/abc.png"
         }
       }
-    }
+    },
+    "paramRequired": false
   },
   {
     "method": "DELETE",
-    "uri": "/incoming_requests/{request_id}",
+    "uri": "/incoming_requests/${request_id}",
     "info": {
       "description": "自分に対するコンタクト承認依頼をキャンセルする\n",
       "queryParameters": {},
       "responses": {}
-    }
+    },
+    "paramRequired": false
   }
 ]

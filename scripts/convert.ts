@@ -1,6 +1,17 @@
-import { Property, getType } from './templates';
+import {
+  Property,
+  getType,
+  getFunction,
+  getClass,
+  getHeader,
+} from './templates';
 
-const { readFileSync, writeFileSync }: typeof import('fs') = require('fs');
+const {
+  readFileSync,
+  writeFileSync,
+  unlinkSync,
+  existsSync,
+}: typeof import('fs') = require('fs');
 const { join, resolve }: typeof import('path') = require('path');
 const { parse }: typeof import('yaml') = require('yaml');
 const { format }: typeof import('prettier') = require('prettier');
@@ -9,23 +20,28 @@ const { pascalCase }: typeof import('pascal-case') = require('pascal-case');
 
 const EndPoints: typeof import('./endPoints.json') = require('./endPoints.json');
 
-const CHATWORK_URL = 'https://api.chatwork.com/v2';
-
 function log(...args: any[]) {
-  console.log(...args.map(v => format(JSON.stringify(v), { parser: 'json' })));
+  console.log(
+    ...args.map((v) => format(JSON.stringify(v), { parser: 'json' })),
+  );
 }
 
 export function getFunctionName(endPoint: any) {
-  const uri = endPoint.uri.replace(/\{.*\}/g, '');
-  return pascalCase(`${endPoint.method}_${uri}`);
+  let uri = endPoint.uri.replace(/s\/\$\{[a-z_]*\}/g, '_').replace(/\//g, '_');
+
+  if (endPoint.method === 'POST') {
+    uri = uri.replace(/s$/, '');
+  }
+
+  return camelCase(`${endPoint.method}_${uri}`);
 }
 
 export function getParamTypeName(endPoint: any) {
-  return getFunctionName(endPoint) + 'Param';
+  return pascalCase(getFunctionName(endPoint) + 'Param');
 }
 
 export function getResponseTypeName(endPoint: any) {
-  return getFunctionName(endPoint) + 'Response';
+  return pascalCase(getFunctionName(endPoint) + 'Response');
 }
 
 export function getPropertyType(type: string) {
@@ -40,6 +56,7 @@ export function queryParameterToProp(name: any, data: any): Property {
     description: data.displayName,
     types: getPropertyType(data.type),
     enums: data.enum,
+    required: data.required,
   };
 }
 
@@ -52,6 +69,7 @@ export function queryParametersToProps(queryParameters: any): Property[] {
 export function schemaPropertyToProperty(
   property: any,
   name: string,
+  required = true,
 ): Property {
   const children =
     property.type === 'object'
@@ -71,12 +89,16 @@ export function schemaPropertyToProperty(
     enums: property.enum,
     children,
     arrayProp,
+    required,
   };
 }
 
 export function responseSchemaToObjectProp(schema: any): Property {
+  const isRequired = (name: string) =>
+    Array.isArray(schema.required) && schema.required.includes(name);
+
   const children = Object.entries(schema.properties).map(([name, property]) =>
-    schemaPropertyToProperty(property, name),
+    schemaPropertyToProperty(property, name, isRequired(name)),
   );
   return {
     types: 'object',
@@ -122,30 +144,45 @@ export function responsesToProp(responses: any): Property {
   };
 }
 
-const paramTypes = EndPoints.map(endPoint => ({
+const paramTypes = EndPoints.map((endPoint) => ({
   name: getParamTypeName(endPoint),
   props: queryParametersToProps(endPoint.info.queryParameters),
 }));
 
-const responseTypes = EndPoints.map(endPoint => ({
+const responseTypes = EndPoints.map((endPoint) => ({
   name: getResponseTypeName(endPoint),
   props: responsesToProp(endPoint.info.responses),
 }));
 
-log(EndPoints);
-log(paramTypes);
-log(responseTypes);
+const paramData = paramTypes
+  .map((paramType) =>
+    format(getType(paramType.name, paramType.props), {
+      parser: 'typescript',
+    }),
+  )
+  .join('\n');
 
-paramTypes.forEach(paramType => {
-  const types = format(getType(paramType.name, paramType.props), {
-    parser: 'typescript',
-  });
-  console.log(types);
-});
+const responseData = responseTypes
+  .map((responseType) =>
+    format(getType(responseType.name, responseType.props), {
+      parser: 'typescript',
+    }),
+  )
+  .join('\n');
 
-responseTypes.forEach(responseType => {
-  const types = format(getType(responseType.name, responseType.props), {
+const functions = EndPoints.map((endPoint) => getFunction(endPoint)).join('\n');
+
+const classData = format(getClass(functions), { parser: 'typescript' });
+
+const headerData = getHeader();
+
+const data = format(
+  [headerData, paramData, responseData, classData].join('\n'),
+  {
     parser: 'typescript',
-  });
-  console.log(types);
-});
+  },
+);
+
+const writePath = resolve(__dirname, '..', 'src', 'api.ts');
+if (existsSync(writePath)) unlinkSync(writePath);
+writeFileSync(writePath, data);
