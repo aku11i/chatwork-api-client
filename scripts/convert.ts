@@ -6,23 +6,18 @@ import {
   getHeader,
 } from './templates';
 
-const {
-  readFileSync,
-  writeFileSync,
-  unlinkSync,
-  existsSync,
-}: typeof import('fs') = require('fs');
-const { join, resolve }: typeof import('path') = require('path');
-const { parse }: typeof import('yaml') = require('yaml');
-const { format }: typeof import('prettier') = require('prettier');
-const camelCase: typeof import('camelcase') = require('camelcase');
-const { pascalCase }: typeof import('pascal-case') = require('pascal-case');
+import fs = require('fs');
+import path = require('path');
+import yaml = require('yaml');
+import prettier = require('prettier');
+import camelCase = require('camelcase');
+import pascalCase = require('pascal-case');
 
-const EndPoints: typeof import('./endPoints.json') = require('./endPoints.json');
+import EndPoints = require('./endPoints.json');
 
 function log(...args: any[]) {
   console.log(
-    ...args.map((v) => format(JSON.stringify(v), { parser: 'json' })),
+    ...args.map((v) => prettier.format(JSON.stringify(v), { parser: 'json' })),
   );
 }
 
@@ -37,11 +32,11 @@ export function getFunctionName(endPoint: any) {
 }
 
 export function getParamTypeName(endPoint: any) {
-  return pascalCase(getFunctionName(endPoint) + 'Param');
+  return pascalCase.pascalCase(getFunctionName(endPoint) + 'Param');
 }
 
 export function getResponseTypeName(endPoint: any) {
-  return pascalCase(getFunctionName(endPoint) + 'Response');
+  return pascalCase.pascalCase(getFunctionName(endPoint) + 'Response');
 }
 
 export function getPropertyType(type: string) {
@@ -156,7 +151,7 @@ const responseTypes = EndPoints.map((endPoint) => ({
 
 const paramData = paramTypes
   .map((paramType) =>
-    format(getType(paramType.name, paramType.props), {
+    prettier.format(getType(paramType.name, paramType.props), {
       parser: 'typescript',
     }),
   )
@@ -164,7 +159,7 @@ const paramData = paramTypes
 
 const responseData = responseTypes
   .map((responseType) =>
-    format(getType(responseType.name, responseType.props), {
+    prettier.format(getType(responseType.name, responseType.props), {
       parser: 'typescript',
     }),
   )
@@ -172,17 +167,19 @@ const responseData = responseTypes
 
 const functions = EndPoints.map((endPoint) => getFunction(endPoint)).join('\n');
 
-const classData = format(getClass(functions), { parser: 'typescript' });
+const classData = prettier.format(getClass(functions), {
+  parser: 'typescript',
+});
 
 const headerData = getHeader();
 
-const data = format(
+const data = prettier.format(
   [headerData, paramData, responseData, classData].join('\n'),
   {
     parser: 'typescript',
   },
 );
 
-const writePath = resolve(__dirname, '..', 'src', 'api.ts');
-if (existsSync(writePath)) unlinkSync(writePath);
-writeFileSync(writePath, data);
+const writePath = path.resolve(__dirname, '..', 'src', 'api.ts');
+if (fs.existsSync(writePath)) fs.unlinkSync(writePath);
+fs.writeFileSync(writePath, data);

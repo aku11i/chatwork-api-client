@@ -1,16 +1,21 @@
-const { readFileSync, writeFileSync }: typeof import('fs') = require('fs');
-const { join, resolve }: typeof import('path') = require('path');
-const { parse }: typeof import('yaml') = require('yaml');
-const { format }: typeof import('prettier') = require('prettier');
+import fs = require('fs');
+import path = require('path');
+import yaml = require('yaml');
+import prettier = require('prettier');
 
-const ROOT = resolve(__dirname, '..');
+const ROOT = path.resolve(__dirname, '..');
 
 const LANG = 'ja';
 
-const raml = readFileSync(join(ROOT, 'api', 'RAML', `api-${LANG}.raml`), {
-  encoding: 'utf8',
+const raml = fs.readFileSync(
+  path.join(ROOT, 'api', 'RAML', `api-${LANG}.raml`),
+  {
+    encoding: 'utf8',
+  },
+);
+
+const json = prettier.format(JSON.stringify(yaml.parse(raml)), {
+  parser: 'json',
 });
 
-const json = format(JSON.stringify(parse(raml)), { parser: 'json' });
-
-writeFileSync(join(__dirname, 'api.json'), json);
+fs.writeFileSync(path.join(__dirname, 'api.json'), json);

@@ -1,12 +1,12 @@
-const { writeFileSync }: typeof import('fs') = require('fs');
-const { join, resolve }: typeof import('path') = require('path');
-const { format }: typeof import('prettier') = require('prettier');
-const Api: typeof import('./api.json') = require('./api.json');
+import fs = require('fs');
+import path = require('path');
+import prettier = require('prettier');
+import Api = require('./api.json');
 
 function write(fileName: string, data: any) {
-  const path = join(__dirname, fileName);
-  const json = format(JSON.stringify(data), { parser: 'json' });
-  writeFileSync(path, json, { encoding: 'utf8' });
+  const filePath = path.join(__dirname, fileName);
+  const json = prettier.format(JSON.stringify(data), { parser: 'json' });
+  fs.writeFileSync(filePath, json, { encoding: 'utf8' });
 }
 
 const traits = Api.traits.reduce((traits, trait) => {
