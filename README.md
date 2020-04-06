@@ -30,11 +30,11 @@ yarn add chatwork-api-client
 ## Usage
 
 ```typescript
-import ChatworkApi from 'chatwork-api-client';
+import ChatworkApi from "chatwork-api-client";
 // or
 // const ChatworkApi = require("chatwork-api-client").default;
 
-const api = new ChatworkApi('YOUR_API_TOKEN');
+const api = new ChatworkApi("YOUR_API_TOKEN");
 
 (async () => {
   const me = await api.getMe();

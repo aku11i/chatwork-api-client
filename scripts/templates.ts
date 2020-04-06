@@ -2,7 +2,7 @@ import {
   getParamTypeName,
   getResponseTypeName,
   getFunctionName,
-} from './convert';
+} from "./convert";
 
 export type Property = {
   name?: string;
@@ -16,9 +16,9 @@ export type Property = {
 
 function getParamsFromUri(uri: string) {
   return uri
-    .split('/')
+    .split("/")
     .filter((str) => str.match(/^\$\{.*\}$/))
-    .map((str) => str.replace('${', '').replace('}', ''));
+    .map((str) => str.replace("${", "").replace("}", ""));
 }
 
 export function getHeader() {
@@ -125,10 +125,10 @@ export function getFunction(endPoint: any) {
   const method = endPoint.method;
   const extraParams = getParamsFromUri(uri)
     .map((p) => `${p}: string | number, `)
-    .join('');
+    .join("");
   const paramRequired = endPoint.paramRequired;
 
-  const params = `params${paramRequired ? '' : '?'}: ${paramType}`;
+  const params = `params${paramRequired ? "" : "?"}: ${paramType}`;
 
   return `
 
@@ -143,20 +143,20 @@ export function getFunction(endPoint: any) {
 
 export function getTypeString({ types, enums, children, arrayProp }: Property) {
   if (enums) {
-    const enumStr = enums.map((e) => `"${e}"`).join(' | ');
+    const enumStr = enums.map((e) => `"${e}"`).join(" | ");
     return `${enumStr}`;
   }
 
-  if (types === 'object') {
+  if (types === "object") {
     return children
       ? `{
-          ${children.map(propToType).join('\n')}
+          ${children.map(propToType).join("\n")}
         }`
-      : 'any';
+      : "any";
   }
 
-  if (types === 'array') {
-    return arrayProp ? `${getTypeString(arrayProp)}[]` : 'any';
+  if (types === "array") {
+    return arrayProp ? `${getTypeString(arrayProp)}[]` : "any";
   }
 
   return `${types}`;
@@ -164,8 +164,8 @@ export function getTypeString({ types, enums, children, arrayProp }: Property) {
 
 function propToType(prop: Property) {
   return `
-  /** ${prop.description || ''} */
-  ${prop.name}${prop.required ? '' : '?'}: ${getTypeString(prop)}
+  /** ${prop.description || ""} */
+  ${prop.name}${prop.required ? "" : "?"}: ${getTypeString(prop)}
   `;
 }
 
@@ -173,7 +173,7 @@ export function getType(typeName: string, props: Property | Property[]) {
   if (Array.isArray(props)) {
     return `
     export type ${typeName} = {
-      ${props.map(propToType).join('\n')}
+      ${props.map(propToType).join("\n")}
     }
     `;
   }

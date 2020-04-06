@@ -885,7 +885,7 @@ export default class ChatworkApi {
 
   private getRateLimit(headers: any) {
     const rateLimits = Object.entries(headers).filter(([key, value]) =>
-      key.startsWith("x-ratelimit")
+      key.startsWith("x-ratelimit"),
     );
     return Object.fromEntries(rateLimits) as RateLimits;
   }
@@ -908,7 +908,7 @@ export default class ChatworkApi {
           ...this.headers,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     );
 
     return { ...(data as T), ...this.getRateLimit(headers) };
@@ -932,7 +932,7 @@ export default class ChatworkApi {
           ...this.headers,
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     );
 
     return { ...(data as T), ...this.getRateLimit(headers) };
@@ -1007,7 +1007,7 @@ export default class ChatworkApi {
   async getRoomMembers(room_id: string | number, params?: GetRoomMembersParam) {
     return await this.get<GetRoomMembersResponse>(
       `/rooms/${room_id}/members`,
-      params
+      params,
     );
   }
 
@@ -1017,7 +1017,7 @@ export default class ChatworkApi {
   async putRoomMembers(room_id: string | number, params?: PutRoomMembersParam) {
     return await this.put<PutRoomMembersResponse>(
       `/rooms/${room_id}/members`,
-      params
+      params,
     );
   }
 
@@ -1026,11 +1026,11 @@ export default class ChatworkApi {
    */
   async getRoomMessages(
     room_id: string | number,
-    params?: GetRoomMessagesParam
+    params?: GetRoomMessagesParam,
   ) {
     return await this.get<GetRoomMessagesResponse>(
       `/rooms/${room_id}/messages`,
-      params
+      params,
     );
   }
 
@@ -1039,11 +1039,11 @@ export default class ChatworkApi {
    */
   async postRoomMessage(
     room_id: string | number,
-    params?: PostRoomMessageParam
+    params?: PostRoomMessageParam,
   ) {
     return await this.post<PostRoomMessageResponse>(
       `/rooms/${room_id}/messages`,
-      params
+      params,
     );
   }
 
@@ -1052,11 +1052,11 @@ export default class ChatworkApi {
    */
   async putRoomMessagesRead(
     room_id: string | number,
-    params?: PutRoomMessagesReadParam
+    params?: PutRoomMessagesReadParam,
   ) {
     return await this.put<PutRoomMessagesReadResponse>(
       `/rooms/${room_id}/messages/read`,
-      params
+      params,
     );
   }
 
@@ -1065,11 +1065,11 @@ export default class ChatworkApi {
    */
   async putRoomMessagesUnread(
     room_id: string | number,
-    params?: PutRoomMessagesUnreadParam
+    params?: PutRoomMessagesUnreadParam,
   ) {
     return await this.put<PutRoomMessagesUnreadResponse>(
       `/rooms/${room_id}/messages/unread`,
-      params
+      params,
     );
   }
 
@@ -1079,11 +1079,11 @@ export default class ChatworkApi {
   async getRoomMessage(
     room_id: string | number,
     message_id: string | number,
-    params?: GetRoomMessageParam
+    params?: GetRoomMessageParam,
   ) {
     return await this.get<GetRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
-      params
+      params,
     );
   }
 
@@ -1093,11 +1093,11 @@ export default class ChatworkApi {
   async putRoomMessage(
     room_id: string | number,
     message_id: string | number,
-    params?: PutRoomMessageParam
+    params?: PutRoomMessageParam,
   ) {
     return await this.put<PutRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
-      params
+      params,
     );
   }
 
@@ -1107,11 +1107,11 @@ export default class ChatworkApi {
   async deleteRoomMessage(
     room_id: string | number,
     message_id: string | number,
-    params?: DeleteRoomMessageParam
+    params?: DeleteRoomMessageParam,
   ) {
     return await this.delete<DeleteRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
-      params
+      params,
     );
   }
 
@@ -1121,7 +1121,7 @@ export default class ChatworkApi {
   async getRoomTasks(room_id: string | number, params?: GetRoomTasksParam) {
     return await this.get<GetRoomTasksResponse>(
       `/rooms/${room_id}/tasks`,
-      params
+      params,
     );
   }
 
@@ -1131,7 +1131,7 @@ export default class ChatworkApi {
   async postRoomTask(room_id: string | number, params?: PostRoomTaskParam) {
     return await this.post<PostRoomTaskResponse>(
       `/rooms/${room_id}/tasks`,
-      params
+      params,
     );
   }
 
@@ -1141,11 +1141,11 @@ export default class ChatworkApi {
   async getRoomTask(
     room_id: string | number,
     task_id: string | number,
-    params?: GetRoomTaskParam
+    params?: GetRoomTaskParam,
   ) {
     return await this.get<GetRoomTaskResponse>(
       `/rooms/${room_id}/tasks/${task_id}`,
-      params
+      params,
     );
   }
 
@@ -1155,11 +1155,11 @@ export default class ChatworkApi {
   async putRoomTaskStatus(
     room_id: string | number,
     task_id: string | number,
-    params?: PutRoomTaskStatusParam
+    params?: PutRoomTaskStatusParam,
   ) {
     return await this.put<PutRoomTaskStatusResponse>(
       `/rooms/${room_id}/tasks/${task_id}/status`,
-      params
+      params,
     );
   }
 
@@ -1169,7 +1169,7 @@ export default class ChatworkApi {
   async getRoomFiles(room_id: string | number, params?: GetRoomFilesParam) {
     return await this.get<GetRoomFilesResponse>(
       `/rooms/${room_id}/files`,
-      params
+      params,
     );
   }
 
@@ -1179,7 +1179,7 @@ export default class ChatworkApi {
   async postRoomFile(room_id: string | number, params?: PostRoomFileParam) {
     return await this.post<PostRoomFileResponse>(
       `/rooms/${room_id}/files`,
-      params
+      params,
     );
   }
 
@@ -1189,11 +1189,11 @@ export default class ChatworkApi {
   async getRoomFile(
     room_id: string | number,
     file_id: string | number,
-    params?: GetRoomFileParam
+    params?: GetRoomFileParam,
   ) {
     return await this.get<GetRoomFileResponse>(
       `/rooms/${room_id}/files/${file_id}`,
-      params
+      params,
     );
   }
 
@@ -1203,7 +1203,7 @@ export default class ChatworkApi {
   async getRoomLink(room_id: string | number, params?: GetRoomLinkParam) {
     return await this.get<GetRoomLinkResponse>(
       `/rooms/${room_id}/link`,
-      params
+      params,
     );
   }
 
@@ -1213,7 +1213,7 @@ export default class ChatworkApi {
   async postRoomLink(room_id: string | number, params?: PostRoomLinkParam) {
     return await this.post<PostRoomLinkResponse>(
       `/rooms/${room_id}/link`,
-      params
+      params,
     );
   }
 
@@ -1223,7 +1223,7 @@ export default class ChatworkApi {
   async putRoomLink(room_id: string | number, params?: PutRoomLinkParam) {
     return await this.put<PutRoomLinkResponse>(
       `/rooms/${room_id}/link`,
-      params
+      params,
     );
   }
 
@@ -1233,7 +1233,7 @@ export default class ChatworkApi {
   async deleteRoomLink(room_id: string | number, params?: DeleteRoomLinkParam) {
     return await this.delete<DeleteRoomLinkResponse>(
       `/rooms/${room_id}/link`,
-      params
+      params,
     );
   }
 
@@ -1243,7 +1243,7 @@ export default class ChatworkApi {
   async getIncomingRequests(params?: GetIncomingRequestsParam) {
     return await this.get<GetIncomingRequestsResponse>(
       `/incoming_requests`,
-      params
+      params,
     );
   }
 
@@ -1252,11 +1252,11 @@ export default class ChatworkApi {
    */
   async putIncomingRequest(
     request_id: string | number,
-    params?: PutIncomingRequestParam
+    params?: PutIncomingRequestParam,
   ) {
     return await this.put<PutIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
-      params
+      params,
     );
   }
 
@@ -1265,11 +1265,11 @@ export default class ChatworkApi {
    */
   async deleteIncomingRequest(
     request_id: string | number,
-    params?: DeleteIncomingRequestParam
+    params?: DeleteIncomingRequestParam,
   ) {
     return await this.delete<DeleteIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
-      params
+      params,
     );
   }
 }

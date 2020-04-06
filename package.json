@@ -17,7 +17,7 @@
     "prepublishOnly": "npm-run-all generate build test",
     "prebuild": "npm-run-all clean prettier",
     "build": "tsc",
-    "prettier": "prettier --write src/ts *.js *.md",
+    "prettier": "prettier --write src/*.ts scripts/*.ts *.js *.md",
     "clean": "rimraf ./dist",
     "raml2json": "cd scripts && ts-node raml2json.ts",
     "parseJson": "cd scripts && ts-node parseJson.ts",

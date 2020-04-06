@@ -1,12 +1,17 @@
-import fs = require('fs');
-import path = require('path');
-import prettier = require('prettier');
-import Api = require('./api.json');
+import fs = require("fs");
+import path = require("path");
+import prettier = require("prettier");
+import Api = require("./api.json");
+
+const PrettierConfig = require("../.prettierrc.json");
 
 function write(fileName: string, data: any) {
   const filePath = path.join(__dirname, fileName);
-  const json = prettier.format(JSON.stringify(data), { parser: 'json' });
-  fs.writeFileSync(filePath, json, { encoding: 'utf8' });
+  const json = prettier.format(JSON.stringify(data), {
+    ...PrettierConfig,
+    parser: "json",
+  });
+  fs.writeFileSync(filePath, json, { encoding: "utf8" });
 }
 
 const traits = Api.traits.reduce((traits, trait) => {
@@ -15,23 +20,23 @@ const traits = Api.traits.reduce((traits, trait) => {
 }, [] as any);
 
 const queryParameters = traits
-  .filter((trait) => trait['queryParameters'])
+  .filter((trait) => trait["queryParameters"])
   .reduce(
     (obj, queryParameter) => ({
       ...obj,
-      [queryParameter.key]: queryParameter['queryParameters'],
+      [queryParameter.key]: queryParameter["queryParameters"],
     }),
     {},
   );
 
 function parseJson(text: string) {
-  const jsonString = text.replace(/^\|/, '');
+  const jsonString = text.replace(/^\|/, "");
   return JSON.parse(jsonString);
 }
 
 function parseResponsesJson(responses: any) {
-  const schema = responses?.['200']?.['body']['application/json']?.['schema'];
-  const example = responses?.['200']?.['body']['application/json']?.['example'];
+  const schema = responses?.["200"]?.["body"]["application/json"]?.["schema"];
+  const example = responses?.["200"]?.["body"]["application/json"]?.["example"];
 
   return {
     schema: schema ? parseJson(schema) : undefined,
@@ -40,7 +45,7 @@ function parseResponsesJson(responses: any) {
 }
 
 const responses = traits
-  .filter((trait) => trait['responses']?.['200'])
+  .filter((trait) => trait["responses"]?.["200"])
   .reduce(
     (obj, responses) => ({
       ...obj,
@@ -54,10 +59,10 @@ const responses = traits
 function getEndpoints(endPoint: any, uri: string) {
   const { GET, POST, PUT, DELETE, ...others } = endPoint;
   const endPoints: any[] = [];
-  if (GET) endPoints.push({ method: 'GET', uri, info: GET });
-  if (POST) endPoints.push({ method: 'POST', uri, info: POST });
-  if (PUT) endPoints.push({ method: 'PUT', uri, info: PUT });
-  if (DELETE) endPoints.push({ method: 'DELETE', uri, info: DELETE });
+  if (GET) endPoints.push({ method: "GET", uri, info: GET });
+  if (POST) endPoints.push({ method: "POST", uri, info: POST });
+  if (PUT) endPoints.push({ method: "PUT", uri, info: PUT });
+  if (DELETE) endPoints.push({ method: "DELETE", uri, info: DELETE });
   const children = Object.entries(others || {})
     .filter(([key]) => key.match(/\//))
     .map(([key, child]) => getEndpoints(child, uri + key))
@@ -80,14 +85,14 @@ function mergeQueryParameters(target: any, from: any) {
 
 endPoints.forEach((endPoint) => {
   if (endPoint?.uri) {
-    endPoint.uri = endPoint.uri.replace(/\{/g, '${');
+    endPoint.uri = endPoint.uri.replace(/\{/g, "${");
   }
   if (endPoint?.info?.responses) {
     endPoint.info.responses = parseResponsesJson(endPoint.info.responses);
   }
   if (Array.isArray(endPoint?.info?.is)) {
     const is = endPoint.info.is.filter(
-      (is) => is !== 'unauthorized_response' && is !== 'nocontent_response',
+      (is) => is !== "unauthorized_response" && is !== "nocontent_response",
     );
     endPoint.info.is = is.length ? is : undefined;
   }
@@ -105,7 +110,7 @@ endPoints.forEach((endPoint) => {
   }
   if (endPoint?.info?.description) {
     endPoint.info.description = endPoint.info.description
-      .replace(/^\|/, '')
+      .replace(/^\|/, "")
       .trim();
   }
   if (Array.isArray(endPoint?.info?.is)) {
@@ -119,4 +124,4 @@ endPoints.forEach((endPoint) => {
   delete endPoint?.info?.securedBy;
 });
 
-write('endPoints.json', endPoints);
+write("endPoints.json", endPoints);
