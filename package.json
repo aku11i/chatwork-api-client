@@ -2,10 +2,10 @@
   "name": "chatwork-api-client",
   "version": "0.2.3",
   "main": "dist/index.js",
-  "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
+  "author": "Shuhei Akutagawa <readonly@akutagawa.dev>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akutagw/chatwork-api-client.git"
+    "url": "https://github.com/ShuAkt/chatwork-api-client.git"
   },
   "keywords": [
     "chatwork",
