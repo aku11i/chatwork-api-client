@@ -5,8 +5,11 @@ import { stringify } from "qs";
 export const CHATWORK_URL = "https://api.chatwork.com/v2";
 
 export type RateLimits = {
+  /** 次に制限がリセットされる時間（Unix time） */
   "x-ratelimit-reset": string;
+  /** 残りコール回数 */
   "x-ratelimit-remaining": string;
+  /** 最大コール回数 */
   "x-ratelimit-limit": string;
 };
 
@@ -877,17 +880,27 @@ export type DeleteIncomingRequestResponse = any;
 export default class ChatworkApi {
   private readonly headers: any;
 
+  private _rateLimits?: RateLimits;
+
+  /**
+   * API制限情報
+   * APIが呼び出されるとレスポンスヘッダの情報を基に更新される
+   */
+  get rateLimits() {
+    return this._rateLimits;
+  }
+
   constructor(private api_token: string) {
     this.headers = {
       "X-ChatWorkToken": this.api_token,
     };
   }
 
-  private getRateLimit(headers: any) {
+  private saveRateLimits(headers: any) {
     const rateLimits = Object.entries(headers).filter(([key, value]) =>
       key.startsWith("x-ratelimit"),
     );
-    return Object.fromEntries(rateLimits) as RateLimits;
+    this._rateLimits = Object.fromEntries(rateLimits) as RateLimits;
   }
 
   private async get<T>(uri: string, params: any = {}) {
@@ -896,7 +909,9 @@ export default class ChatworkApi {
       params,
     });
 
-    return { ...(data as T), ...this.getRateLimit(headers) };
+    this.saveRateLimits(headers);
+
+    return data as T;
   }
 
   private async post<T>(uri: string, params: any = {}) {
@@ -911,7 +926,9 @@ export default class ChatworkApi {
       },
     );
 
-    return { ...(data as T), ...this.getRateLimit(headers) };
+    this.saveRateLimits(headers);
+
+    return data as T;
   }
 
   private async delete<T>(uri: string, params: any = {}) {
@@ -920,7 +937,9 @@ export default class ChatworkApi {
       params,
     });
 
-    return { ...(data as T), ...this.getRateLimit(headers) };
+    this.saveRateLimits(headers);
+
+    return data as T;
   }
 
   private async put<T>(uri: string, params: any = {}) {
@@ -935,7 +954,9 @@ export default class ChatworkApi {
       },
     );
 
-    return { ...(data as T), ...this.getRateLimit(headers) };
+    this.saveRateLimits(headers);
+
+    return data as T;
   }
 
   /**
