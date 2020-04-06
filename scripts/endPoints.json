@@ -81,7 +81,7 @@
     "method": "GET",
     "uri": "/my/status",
     "info": {
-      "description": "自分の未読数、未読To数、未完了タスク数を返す\n",
+      "description": "自分の未読数、未読To数、未完了タスク数を返す",
       "responses": {
         "schema": {
           "$schema": "http://json-schema.org/schema#",
@@ -120,7 +120,7 @@
     "method": "GET",
     "uri": "/my/tasks",
     "info": {
-      "description": "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "description": "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
       "queryParameters": {
         "assigned_by_account_id": {
           "displayName": "タスクの依頼者のアカウントID\n",
@@ -434,7 +434,7 @@
     "method": "GET",
     "uri": "/rooms/${room_id}",
     "info": {
-      "description": "チャットの名前、アイコン、種類(my/direct/group)を取得\n",
+      "description": "チャットの名前、アイコン、種類(my/direct/group)を取得",
       "queryParameters": {},
       "responses": {
         "schema": {
@@ -500,7 +500,7 @@
     "method": "PUT",
     "uri": "/rooms/${room_id}",
     "info": {
-      "description": "チャットの名前、アイコンをアップデート\n",
+      "description": "チャットの名前、アイコンをアップデート",
       "queryParameters": {
         "name": {
           "displayName": "グループチャット名",
@@ -558,7 +558,7 @@
     "method": "DELETE",
     "uri": "/rooms/${room_id}",
     "info": {
-      "description": "グループチャットを退席/削除する\n",
+      "description": "グループチャットを退席/削除する",
       "queryParameters": {
         "action_type": {
           "displayName": "退席するか、削除するか",
@@ -577,7 +577,7 @@
     "method": "GET",
     "uri": "/rooms/${room_id}/members",
     "info": {
-      "description": "チャットのメンバー一覧を取得\n",
+      "description": "チャットのメンバー一覧を取得",
       "queryParameters": {},
       "responses": {
         "schema": {
@@ -631,7 +631,7 @@
     "method": "PUT",
     "uri": "/rooms/${room_id}/members",
     "info": {
-      "description": "チャットのメンバーを一括変更\n",
+      "description": "チャットのメンバーを一括変更",
       "responses": {
         "schema": {
           "$schema": "http://json-schema.org/schema#",
@@ -686,7 +686,7 @@
           "example": 0
         }
       },
-      "description": "|\n          チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)\n",
+      "description": "チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)",
       "responses": {
         "schema": {
           "$schema": "http://json-schema.org/schema#",
@@ -740,7 +740,7 @@
     "method": "POST",
     "uri": "/rooms/${room_id}/messages",
     "info": {
-      "description": "チャットに新しいメッセージを追加\n",
+      "description": "チャットに新しいメッセージを追加",
       "queryParameters": {
         "body": {
           "displayName": "メッセージ本文",
@@ -877,7 +877,7 @@
     "method": "PUT",
     "uri": "/rooms/${room_id}/messages/${message_id}",
     "info": {
-      "description": "チャットのメッセージを更新する。\n",
+      "description": "チャットのメッセージを更新する。",
       "queryParameters": {
         "body": {
           "displayName": "更新するメッセージ本文",
@@ -922,7 +922,7 @@
     "method": "GET",
     "uri": "/rooms/${room_id}/tasks",
     "info": {
-      "description": "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "description": "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
       "queryParameters": {
         "account_id": {
           "displayName": "タスクの担当者のアカウントID\n",
@@ -1019,7 +1019,7 @@
     "method": "POST",
     "uri": "/rooms/${room_id}/tasks",
     "info": {
-      "description": "チャットに新しいタスクを追加\n",
+      "description": "チャットに新しいタスクを追加",
       "queryParameters": {
         "body": {
           "displayName": "タスクの内容",
@@ -1163,7 +1163,7 @@
     "method": "GET",
     "uri": "/rooms/${room_id}/files",
     "info": {
-      "description": "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "description": "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
       "queryParameters": {
         "account_id": {
           "displayName": "アップロードしたユーザーのアカウントID\n",
@@ -1227,7 +1227,7 @@
     "method": "POST",
     "uri": "/rooms/${room_id}/files",
     "info": {
-      "description": "チャットに新しいファイルをアップロード\n",
+      "description": "チャットに新しいファイルをアップロード",
       "multipart/form-data": {
         "formParameters": {
           "file": {
@@ -1475,7 +1475,7 @@
     "method": "GET",
     "uri": "/incoming_requests",
     "info": {
-      "description": "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)\n",
+      "description": "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
       "queryParameters": {},
       "responses": {
         "schema": {
@@ -1529,7 +1529,7 @@
     "method": "PUT",
     "uri": "/incoming_requests/${request_id}",
     "info": {
-      "description": "自分に対するコンタクト承認依頼を承認する\n",
+      "description": "自分に対するコンタクト承認依頼を承認する",
       "queryParameters": {},
       "responses": {
         "schema": {
@@ -1574,7 +1574,7 @@
     "method": "DELETE",
     "uri": "/incoming_requests/${request_id}",
     "info": {
-      "description": "自分に対するコンタクト承認依頼をキャンセルする\n",
+      "description": "自分に対するコンタクト承認依頼をキャンセルする",
       "queryParameters": {},
       "responses": {}
     },

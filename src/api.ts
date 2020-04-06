@@ -9,8 +9,7 @@ export type GetMeParam = {};
 export type GetMyStatusParam = {};
 
 export type GetMyTasksParam = {
-  /** タスクの依頼者のアカウントID
-   */
+  /** タスクの依頼者のアカウントID */
   assigned_by_account_id?: number;
 
   /** タスクのステータス */
@@ -116,8 +115,7 @@ export type PutRoomMembersParam = {
 };
 
 export type GetRoomMessagesParam = {
-  /** 未取得にかかわらず最新の100件を取得するか
-   */
+  /** 未取得にかかわらず最新の100件を取得するか */
   force?: 0 | 1;
 };
 
@@ -125,20 +123,17 @@ export type PostRoomMessageParam = {
   /** メッセージ本文 */
   body: string;
 
-  /** 追加したメッセージを自分から見て未読とするか
-   */
+  /** 追加したメッセージを自分から見て未読とするか */
   self_unread?: 0 | 1;
 };
 
 export type PutRoomMessagesReadParam = {
-  /** ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400)
-   */
+  /** ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400) */
   message_id?: string;
 };
 
 export type PutRoomMessagesUnreadParam = {
-  /** ここで指定するIDのメッセージ以降を未読にする
-   */
+  /** ここで指定するIDのメッセージ以降を未読にする */
   message_id: string;
 };
 
@@ -152,12 +147,10 @@ export type PutRoomMessageParam = {
 export type DeleteRoomMessageParam = {};
 
 export type GetRoomTasksParam = {
-  /** タスクの担当者のアカウントID
-   */
+  /** タスクの担当者のアカウントID */
   account_id?: number;
 
-  /** タスクの依頼者のアカウントID
-   */
+  /** タスクの依頼者のアカウントID */
   assigned_by_account_id?: number;
 
   /** タスクのステータス */
@@ -186,16 +179,14 @@ export type PutRoomTaskStatusParam = {
 };
 
 export type GetRoomFilesParam = {
-  /** アップロードしたユーザーのアカウントID
-   */
+  /** アップロードしたユーザーのアカウントID */
   account_id?: number;
 };
 
 export type PostRoomFileParam = {};
 
 export type GetRoomFileParam = {
-  /** ダウンロードする為のURLを生成するか
-   */
+  /** ダウンロードする為のURLを生成するか */
   create_download_url?: 0 | 1;
 };
 
@@ -934,17 +925,15 @@ export default class ChatworkApi {
   }
 
   /**
-     * 自分の未読数、未読To数、未完了タスク数を返す
-
-     */
+   * 自分の未読数、未読To数、未完了タスク数を返す
+   */
   async getMyStatus(params?: GetMyStatusParam) {
     return (await this.get(`/my/status`, params)) as GetMyStatusResponse;
   }
 
   /**
-     * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
-
-     */
+   * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+   */
   async getMyTasks(params?: GetMyTasksParam) {
     return (await this.get(`/my/tasks`, params)) as GetMyTasksResponse;
   }
@@ -971,25 +960,22 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットの名前、アイコン、種類(my/direct/group)を取得
-
-     */
+   * チャットの名前、アイコン、種類(my/direct/group)を取得
+   */
   async getRoom(room_id: string | number, params?: GetRoomParam) {
     return (await this.get(`/rooms/${room_id}`, params)) as GetRoomResponse;
   }
 
   /**
-     * チャットの名前、アイコンをアップデート
-
-     */
+   * チャットの名前、アイコンをアップデート
+   */
   async putRoom(room_id: string | number, params?: PutRoomParam) {
     return (await this.put(`/rooms/${room_id}`, params)) as PutRoomResponse;
   }
 
   /**
-     * グループチャットを退席/削除する
-
-     */
+   * グループチャットを退席/削除する
+   */
   async deleteRoom(room_id: string | number, params?: DeleteRoomParam) {
     return (await this.delete(
       `/rooms/${room_id}`,
@@ -998,9 +984,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットのメンバー一覧を取得
-
-     */
+   * チャットのメンバー一覧を取得
+   */
   async getRoomMembers(room_id: string | number, params?: GetRoomMembersParam) {
     return (await this.get(
       `/rooms/${room_id}/members`,
@@ -1009,9 +994,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットのメンバーを一括変更
-
-     */
+   * チャットのメンバーを一括変更
+   */
   async putRoomMembers(room_id: string | number, params?: PutRoomMembersParam) {
     return (await this.put(
       `/rooms/${room_id}/members`,
@@ -1020,10 +1004,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * |
-          チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
-
-     */
+   * チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)
+   */
   async getRoomMessages(
     room_id: string | number,
     params?: GetRoomMessagesParam
@@ -1035,9 +1017,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットに新しいメッセージを追加
-
-     */
+   * チャットに新しいメッセージを追加
+   */
   async postRoomMessage(
     room_id: string | number,
     params?: PostRoomMessageParam
@@ -1089,9 +1070,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットのメッセージを更新する。
-
-     */
+   * チャットのメッセージを更新する。
+   */
   async putRoomMessage(
     room_id: string | number,
     message_id: string | number,
@@ -1118,9 +1098,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
-
-     */
+   * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+   */
   async getRoomTasks(room_id: string | number, params?: GetRoomTasksParam) {
     return (await this.get(
       `/rooms/${room_id}/tasks`,
@@ -1129,9 +1108,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットに新しいタスクを追加
-
-     */
+   * チャットに新しいタスクを追加
+   */
   async postRoomTask(room_id: string | number, params?: PostRoomTaskParam) {
     return (await this.post(
       `/rooms/${room_id}/tasks`,
@@ -1168,9 +1146,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
-
-     */
+   * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+   */
   async getRoomFiles(room_id: string | number, params?: GetRoomFilesParam) {
     return (await this.get(
       `/rooms/${room_id}/files`,
@@ -1179,9 +1156,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * チャットに新しいファイルをアップロード
-
-     */
+   * チャットに新しいファイルをアップロード
+   */
   async postRoomFile(room_id: string | number, params?: PostRoomFileParam) {
     return (await this.post(
       `/rooms/${room_id}/files`,
@@ -1244,9 +1220,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
-
-     */
+   * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
+   */
   async getIncomingRequests(params?: GetIncomingRequestsParam) {
     return (await this.get(
       `/incoming_requests`,
@@ -1255,9 +1230,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * 自分に対するコンタクト承認依頼を承認する
-
-     */
+   * 自分に対するコンタクト承認依頼を承認する
+   */
   async putIncomingRequest(
     request_id: string | number,
     params?: PutIncomingRequestParam
@@ -1269,9 +1243,8 @@ export default class ChatworkApi {
   }
 
   /**
-     * 自分に対するコンタクト承認依頼をキャンセルする
-
-     */
+   * 自分に対するコンタクト承認依頼をキャンセルする
+   */
   async deleteIncomingRequest(
     request_id: string | number,
     params?: DeleteIncomingRequestParam

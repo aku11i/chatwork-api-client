@@ -48,7 +48,7 @@ export function getPropertyType(type: string) {
 export function queryParameterToProp(name: any, data: any): Property {
   return {
     name,
-    description: data.displayName,
+    description: data.displayName.trim(),
     types: getPropertyType(data.type),
     enums: data.enum,
     required: data.required,

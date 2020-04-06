@@ -103,6 +103,11 @@ endPoints.forEach((endPoint) => {
   if (!endPoint?.info?.responses) {
     endPoint.info.responses = {};
   }
+  if (endPoint?.info?.description) {
+    endPoint.info.description = endPoint.info.description
+      .replace(/^\|/, '')
+      .trim();
+  }
   if (Array.isArray(endPoint?.info?.is)) {
     endPoint.info.is.forEach((is) => {
       mergeQueryParameters(endPoint.info.queryParameters, queryParameters[is]);
