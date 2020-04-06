@@ -2,10 +2,10 @@
   "name": "chatwork-api-client",
   "version": "0.2.3",
   "main": "dist/index.js",
-  "author": "Shuhei Akutagawa <54097100+akutagw@users.noreply.github.com>",
+  "author": "Shuhei Akutagawa <readonly@akutagawa.dev>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/akutagw/chatwork-api-client.git"
+    "url": "https://github.com/ShuAkt/chatwork-api-client.git"
   },
   "keywords": [
     "chatwork",
@@ -19,40 +19,37 @@
     "build": "tsc",
     "prettier": "prettier --write src/ts *.js *.md",
     "clean": "rimraf ./dist",
-    "pregenerate": "ejslint ./__templates/*",
-    "generate": "node ./raml-to-ts.js",
+    "raml2json": "cd scripts && ts-node raml2json.ts",
+    "parseJson": "cd scripts && ts-node parseJson.ts",
+    "convert": "cd scripts && ts-node convert.ts",
+    "generate": "npm-run-all raml2json parseJson convert",
     "test": "jest"
   },
   "files": [
     "dist",
     "LICENSE"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run build"
-    }
-  },
   "devDependencies": {
-    "@types/ejs": "^2.6.3",
-    "@types/jest": "^24.0.18",
-    "@types/js-yaml": "^3.12.1",
-    "@types/node": "^12.7.2",
-    "@types/prettier": "^1.18.2",
+    "@types/jest": "^25.2.1",
+    "@types/js-yaml": "^3.12.3",
+    "@types/node": "^13.11.0",
+    "@types/prettier": "^2.0.0",
+    "@types/qs": "^6.9.1",
+    "@types/yaml": "^1.2.0",
     "camelcase": "^5.3.1",
-    "ejs": "^2.6.2",
-    "ejs-lint": "^0.3.0",
-    "husky": "^3.0.4",
-    "jest": "^24.9.0",
+    "jest": "^25.2.7",
     "js-yaml": "^3.13.1",
-    "json-ts": "^1.6.4",
     "npm-run-all": "^4.1.5",
-    "pascal-case": "^2.0.1",
-    "prettier": "^1.18.2",
-    "rimraf": "^3.0.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "pascal-case": "^3.1.1",
+    "prettier": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^25.3.1",
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3",
+    "yaml": "^1.8.3"
   },
   "dependencies": {
-    "axios": "^0.19.0"
+    "axios": "^0.19.2",
+    "qs": "^6.9.3"
   }
 }

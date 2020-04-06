@@ -43,6 +43,7 @@ function getApiToken() {
       encoding: 'utf8',
     })
     .split('\n')
-    .filter(line => line && !line.startsWith('#'))
-    .join('');
+    .filter((line) => line && !line.startsWith('#'))
+    .join('')
+    .trim();
 }

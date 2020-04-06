@@ -1,22 +1,30 @@
 # Chatwork API Client
 
+Chatwork API v2 client for TypeScript.
+
 ## Features
 
-- Supports Chatwork API v2.
-- API methods are automaticaly generated from [official RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml).
-  - Perfect type definition and comments. (Comments are currently Japanese)
-- Using [axios](https://github.com/axios/axios) for API connection.
+- Chatwork API v2 をサポートしています。
+- API メソッドは [公式の RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml) を基に自動生成しています。
+  - 完全な型定義とコメント説明がついています。
+- API 通信に [axios](https://github.com/axios/axios) を使用しています。
 
 ## Work In Progress
 
-- This library is not stable yet.
-- Some methods are not tested.
-  - `postRoomFile` is not working.
+- 動作確認が十分に取れていません。
+- ファイルを添付するメソッドなどはまだ動作しません。
+  - `postRoomFile` など
 
 ## Installation
 
 ```sh
 npm install --save chatwork-api-client
+```
+
+or
+
+```sh
+yarn add chatwork-api-client
 ```
 
 ## Usage
@@ -34,7 +42,7 @@ const api = new ChatworkApi('YOUR_API_TOKEN');
 })();
 ```
 
-Transpile if you want to run on a browser or a lower version of Node.js.
+ブラウザやバージョンの低い Node.js で動作させる場合はトランスパイルしてください。
 
 ## Development
 
@@ -51,14 +59,14 @@ npm install
 ### Build
 
 ```sh
-npm run generate # Generates src/api.ts from RAML
+npm run generate # src/api.ts の生成が行われます
 npm run build
 ```
 
 ### Test
 
-Create `API_TOKEN` file in the root directory.<br>
-See [here](https://github.com/akutagw/chatwork-api-client/blob/master/_API_TOKEN).
+`API_TOKEN` ファイルを作成してください。<br>
+参照： [./\_API_TOKEN](./_API_TOKEN)
 
 ```sh
 npm run test
