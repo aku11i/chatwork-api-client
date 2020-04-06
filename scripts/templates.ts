@@ -28,6 +28,12 @@ export function getHeader() {
     import { stringify } from 'qs';
 
     export const CHATWORK_URL = 'https://api.chatwork.com/v2';
+
+    export type RateLimits = {
+      'x-ratelimit-reset': string
+      'x-ratelimit-remaining': string
+      'x-ratelimit-limit': string
+    }
   `;
 }
 
@@ -45,8 +51,14 @@ export function getClass(functions: string) {
         }
       }
 
-      private async get(uri: string, params: any = {}) {
-        const {data} = await axios.get(
+      private getRateLimit(headers: any) {
+        const rateLimits = Object.entries(headers)
+          .filter(([key, value]) => key.startsWith('x-ratelimit'));
+        return Object.fromEntries(rateLimits) as RateLimits;
+      }
+
+      private async get<T>(uri: string, params: any = {}) {
+        const { data, headers } = await axios.get(
           CHATWORK_URL + uri,
           {
             headers: this.headers,
@@ -54,11 +66,11 @@ export function getClass(functions: string) {
           }
         );
 
-        return { ...data } as any;
+        return { ...data as T, ...this.getRateLimit(headers) };
       }
 
-      private async post(uri: string, params: any = {}) {
-        const {data} = await axios.post(
+      private async post<T>(uri: string, params: any = {}) {
+        const { data, headers } = await axios.post(
           CHATWORK_URL + uri,
           stringify(params),
           {
@@ -69,11 +81,11 @@ export function getClass(functions: string) {
           }
         );
 
-        return { ...data } as any;
+        return { ...data as T, ...this.getRateLimit(headers) };
       }
 
-      private async delete(uri: string, params: any = {}) {
-        const {data} = await axios.delete(
+      private async delete<T>(uri: string, params: any = {}) {
+        const { data, headers } = await axios.delete(
           CHATWORK_URL + uri,
           {
             headers: this.headers,
@@ -81,11 +93,11 @@ export function getClass(functions: string) {
           }
         );
 
-        return { ...data } as any;
+        return { ...data as T, ...this.getRateLimit(headers) };
       }
 
-      private async put(uri: string, params: any = {}) {
-        const {data} = await axios.put(
+      private async put<T>(uri: string, params: any = {}) {
+        const { data, headers } = await axios.put(
           CHATWORK_URL + uri,
           stringify(params),
           {
@@ -96,7 +108,7 @@ export function getClass(functions: string) {
           }
         );
 
-        return { ...data } as any;
+        return { ...data as T, ...this.getRateLimit(headers) };
       }
 
       ${functions}
@@ -124,7 +136,7 @@ export function getFunction(endPoint: any) {
      * ${description}
      */
     async ${functionName} (${extraParams}${params}) {
-      return (await this.${method.toLowerCase()}(\`${uri}\`, params)) as ${returnType};
+      return (await this.${method.toLowerCase()}<${returnType}>(\`${uri}\`, params));
     }
     `;
 }

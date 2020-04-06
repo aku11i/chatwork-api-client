@@ -4,6 +4,12 @@ import { stringify } from "qs";
 
 export const CHATWORK_URL = "https://api.chatwork.com/v2";
 
+export type RateLimits = {
+  "x-ratelimit-reset": string;
+  "x-ratelimit-remaining": string;
+  "x-ratelimit-limit": string;
+};
+
 export type GetMeParam = {};
 
 export type GetMyStatusParam = {};
@@ -877,130 +883,142 @@ export default class ChatworkApi {
     };
   }
 
-  private async get(uri: string, params: any = {}) {
-    const { data } = await axios.get(CHATWORK_URL + uri, {
+  private getRateLimit(headers: any) {
+    const rateLimits = Object.entries(headers).filter(([key, value]) =>
+      key.startsWith("x-ratelimit")
+    );
+    return Object.fromEntries(rateLimits) as RateLimits;
+  }
+
+  private async get<T>(uri: string, params: any = {}) {
+    const { data, headers } = await axios.get(CHATWORK_URL + uri, {
       headers: this.headers,
       params,
     });
 
-    return { ...data } as any;
+    return { ...(data as T), ...this.getRateLimit(headers) };
   }
 
-  private async post(uri: string, params: any = {}) {
-    const { data } = await axios.post(CHATWORK_URL + uri, stringify(params), {
-      headers: {
-        ...this.headers,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+  private async post<T>(uri: string, params: any = {}) {
+    const { data, headers } = await axios.post(
+      CHATWORK_URL + uri,
+      stringify(params),
+      {
+        headers: {
+          ...this.headers,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
 
-    return { ...data } as any;
+    return { ...(data as T), ...this.getRateLimit(headers) };
   }
 
-  private async delete(uri: string, params: any = {}) {
-    const { data } = await axios.delete(CHATWORK_URL + uri, {
+  private async delete<T>(uri: string, params: any = {}) {
+    const { data, headers } = await axios.delete(CHATWORK_URL + uri, {
       headers: this.headers,
       params,
     });
 
-    return { ...data } as any;
+    return { ...(data as T), ...this.getRateLimit(headers) };
   }
 
-  private async put(uri: string, params: any = {}) {
-    const { data } = await axios.put(CHATWORK_URL + uri, stringify(params), {
-      headers: {
-        ...this.headers,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+  private async put<T>(uri: string, params: any = {}) {
+    const { data, headers } = await axios.put(
+      CHATWORK_URL + uri,
+      stringify(params),
+      {
+        headers: {
+          ...this.headers,
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
 
-    return { ...data } as any;
+    return { ...(data as T), ...this.getRateLimit(headers) };
   }
 
   /**
    * 自分自身の情報を取得
    */
   async getMe(params?: GetMeParam) {
-    return (await this.get(`/me`, params)) as GetMeResponse;
+    return await this.get<GetMeResponse>(`/me`, params);
   }
 
   /**
    * 自分の未読数、未読To数、未完了タスク数を返す
    */
   async getMyStatus(params?: GetMyStatusParam) {
-    return (await this.get(`/my/status`, params)) as GetMyStatusResponse;
+    return await this.get<GetMyStatusResponse>(`/my/status`, params);
   }
 
   /**
    * 自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
   async getMyTasks(params?: GetMyTasksParam) {
-    return (await this.get(`/my/tasks`, params)) as GetMyTasksResponse;
+    return await this.get<GetMyTasksResponse>(`/my/tasks`, params);
   }
 
   /**
    * 自分のコンタクト一覧を取得
    */
   async getContacts(params?: GetContactsParam) {
-    return (await this.get(`/contacts`, params)) as GetContactsResponse;
+    return await this.get<GetContactsResponse>(`/contacts`, params);
   }
 
   /**
    * 自分のチャット一覧の取得
    */
   async getRooms(params?: GetRoomsParam) {
-    return (await this.get(`/rooms`, params)) as GetRoomsResponse;
+    return await this.get<GetRoomsResponse>(`/rooms`, params);
   }
 
   /**
    * グループチャットを新規作成
    */
   async postRoom(params?: PostRoomParam) {
-    return (await this.post(`/rooms`, params)) as PostRoomResponse;
+    return await this.post<PostRoomResponse>(`/rooms`, params);
   }
 
   /**
    * チャットの名前、アイコン、種類(my/direct/group)を取得
    */
   async getRoom(room_id: string | number, params?: GetRoomParam) {
-    return (await this.get(`/rooms/${room_id}`, params)) as GetRoomResponse;
+    return await this.get<GetRoomResponse>(`/rooms/${room_id}`, params);
   }
 
   /**
    * チャットの名前、アイコンをアップデート
    */
   async putRoom(room_id: string | number, params?: PutRoomParam) {
-    return (await this.put(`/rooms/${room_id}`, params)) as PutRoomResponse;
+    return await this.put<PutRoomResponse>(`/rooms/${room_id}`, params);
   }
 
   /**
    * グループチャットを退席/削除する
    */
   async deleteRoom(room_id: string | number, params?: DeleteRoomParam) {
-    return (await this.delete(
-      `/rooms/${room_id}`,
-      params
-    )) as DeleteRoomResponse;
+    return await this.delete<DeleteRoomResponse>(`/rooms/${room_id}`, params);
   }
 
   /**
    * チャットのメンバー一覧を取得
    */
   async getRoomMembers(room_id: string | number, params?: GetRoomMembersParam) {
-    return (await this.get(
+    return await this.get<GetRoomMembersResponse>(
       `/rooms/${room_id}/members`,
       params
-    )) as GetRoomMembersResponse;
+    );
   }
 
   /**
    * チャットのメンバーを一括変更
    */
   async putRoomMembers(room_id: string | number, params?: PutRoomMembersParam) {
-    return (await this.put(
+    return await this.put<PutRoomMembersResponse>(
       `/rooms/${room_id}/members`,
       params
-    )) as PutRoomMembersResponse;
+    );
   }
 
   /**
@@ -1010,10 +1028,10 @@ export default class ChatworkApi {
     room_id: string | number,
     params?: GetRoomMessagesParam
   ) {
-    return (await this.get(
+    return await this.get<GetRoomMessagesResponse>(
       `/rooms/${room_id}/messages`,
       params
-    )) as GetRoomMessagesResponse;
+    );
   }
 
   /**
@@ -1023,10 +1041,10 @@ export default class ChatworkApi {
     room_id: string | number,
     params?: PostRoomMessageParam
   ) {
-    return (await this.post(
+    return await this.post<PostRoomMessageResponse>(
       `/rooms/${room_id}/messages`,
       params
-    )) as PostRoomMessageResponse;
+    );
   }
 
   /**
@@ -1036,10 +1054,10 @@ export default class ChatworkApi {
     room_id: string | number,
     params?: PutRoomMessagesReadParam
   ) {
-    return (await this.put(
+    return await this.put<PutRoomMessagesReadResponse>(
       `/rooms/${room_id}/messages/read`,
       params
-    )) as PutRoomMessagesReadResponse;
+    );
   }
 
   /**
@@ -1049,10 +1067,10 @@ export default class ChatworkApi {
     room_id: string | number,
     params?: PutRoomMessagesUnreadParam
   ) {
-    return (await this.put(
+    return await this.put<PutRoomMessagesUnreadResponse>(
       `/rooms/${room_id}/messages/unread`,
       params
-    )) as PutRoomMessagesUnreadResponse;
+    );
   }
 
   /**
@@ -1063,10 +1081,10 @@ export default class ChatworkApi {
     message_id: string | number,
     params?: GetRoomMessageParam
   ) {
-    return (await this.get(
+    return await this.get<GetRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
       params
-    )) as GetRoomMessageResponse;
+    );
   }
 
   /**
@@ -1077,10 +1095,10 @@ export default class ChatworkApi {
     message_id: string | number,
     params?: PutRoomMessageParam
   ) {
-    return (await this.put(
+    return await this.put<PutRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
       params
-    )) as PutRoomMessageResponse;
+    );
   }
 
   /**
@@ -1091,30 +1109,30 @@ export default class ChatworkApi {
     message_id: string | number,
     params?: DeleteRoomMessageParam
   ) {
-    return (await this.delete(
+    return await this.delete<DeleteRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
       params
-    )) as DeleteRoomMessageResponse;
+    );
   }
 
   /**
    * チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
   async getRoomTasks(room_id: string | number, params?: GetRoomTasksParam) {
-    return (await this.get(
+    return await this.get<GetRoomTasksResponse>(
       `/rooms/${room_id}/tasks`,
       params
-    )) as GetRoomTasksResponse;
+    );
   }
 
   /**
    * チャットに新しいタスクを追加
    */
   async postRoomTask(room_id: string | number, params?: PostRoomTaskParam) {
-    return (await this.post(
+    return await this.post<PostRoomTaskResponse>(
       `/rooms/${room_id}/tasks`,
       params
-    )) as PostRoomTaskResponse;
+    );
   }
 
   /**
@@ -1125,10 +1143,10 @@ export default class ChatworkApi {
     task_id: string | number,
     params?: GetRoomTaskParam
   ) {
-    return (await this.get(
+    return await this.get<GetRoomTaskResponse>(
       `/rooms/${room_id}/tasks/${task_id}`,
       params
-    )) as GetRoomTaskResponse;
+    );
   }
 
   /**
@@ -1139,30 +1157,30 @@ export default class ChatworkApi {
     task_id: string | number,
     params?: PutRoomTaskStatusParam
   ) {
-    return (await this.put(
+    return await this.put<PutRoomTaskStatusResponse>(
       `/rooms/${room_id}/tasks/${task_id}/status`,
       params
-    )) as PutRoomTaskStatusResponse;
+    );
   }
 
   /**
    * チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
   async getRoomFiles(room_id: string | number, params?: GetRoomFilesParam) {
-    return (await this.get(
+    return await this.get<GetRoomFilesResponse>(
       `/rooms/${room_id}/files`,
       params
-    )) as GetRoomFilesResponse;
+    );
   }
 
   /**
    * チャットに新しいファイルをアップロード
    */
   async postRoomFile(room_id: string | number, params?: PostRoomFileParam) {
-    return (await this.post(
+    return await this.post<PostRoomFileResponse>(
       `/rooms/${room_id}/files`,
       params
-    )) as PostRoomFileResponse;
+    );
   }
 
   /**
@@ -1173,60 +1191,60 @@ export default class ChatworkApi {
     file_id: string | number,
     params?: GetRoomFileParam
   ) {
-    return (await this.get(
+    return await this.get<GetRoomFileResponse>(
       `/rooms/${room_id}/files/${file_id}`,
       params
-    )) as GetRoomFileResponse;
+    );
   }
 
   /**
    * 招待リンクを取得する
    */
   async getRoomLink(room_id: string | number, params?: GetRoomLinkParam) {
-    return (await this.get(
+    return await this.get<GetRoomLinkResponse>(
       `/rooms/${room_id}/link`,
       params
-    )) as GetRoomLinkResponse;
+    );
   }
 
   /**
    * 招待リンクを作成する
    */
   async postRoomLink(room_id: string | number, params?: PostRoomLinkParam) {
-    return (await this.post(
+    return await this.post<PostRoomLinkResponse>(
       `/rooms/${room_id}/link`,
       params
-    )) as PostRoomLinkResponse;
+    );
   }
 
   /**
    * 招待リンクの情報を変更する
    */
   async putRoomLink(room_id: string | number, params?: PutRoomLinkParam) {
-    return (await this.put(
+    return await this.put<PutRoomLinkResponse>(
       `/rooms/${room_id}/link`,
       params
-    )) as PutRoomLinkResponse;
+    );
   }
 
   /**
    * 招待リンクを削除する
    */
   async deleteRoomLink(room_id: string | number, params?: DeleteRoomLinkParam) {
-    return (await this.delete(
+    return await this.delete<DeleteRoomLinkResponse>(
       `/rooms/${room_id}/link`,
       params
-    )) as DeleteRoomLinkResponse;
+    );
   }
 
   /**
    * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
   async getIncomingRequests(params?: GetIncomingRequestsParam) {
-    return (await this.get(
+    return await this.get<GetIncomingRequestsResponse>(
       `/incoming_requests`,
       params
-    )) as GetIncomingRequestsResponse;
+    );
   }
 
   /**
@@ -1236,10 +1254,10 @@ export default class ChatworkApi {
     request_id: string | number,
     params?: PutIncomingRequestParam
   ) {
-    return (await this.put(
+    return await this.put<PutIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
       params
-    )) as PutIncomingRequestResponse;
+    );
   }
 
   /**
@@ -1249,9 +1267,9 @@ export default class ChatworkApi {
     request_id: string | number,
     params?: DeleteIncomingRequestParam
   ) {
-    return (await this.delete(
+    return await this.delete<DeleteIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
       params
-    )) as DeleteIncomingRequestResponse;
+    );
   }
 }
