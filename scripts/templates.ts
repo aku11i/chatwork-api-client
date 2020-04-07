@@ -31,11 +31,11 @@ export function getHeader() {
 
     export type RateLimits = {
       /** 次に制限がリセットされる時間（Unix time） */
-      'x-ratelimit-reset': string
+      'x-ratelimit-reset': number;
       /** 残りコール回数 */
-      'x-ratelimit-remaining': string
+      'x-ratelimit-remaining': number;
       /** 最大コール回数 */
-      'x-ratelimit-limit': string
+      'x-ratelimit-limit': number;
     }
   `;
 }
@@ -66,7 +66,8 @@ export function getClass(functions: string) {
 
       private saveRateLimits(headers: any) {
         const rateLimits = Object.entries(headers)
-          .filter(([key, value]) => key.startsWith('x-ratelimit'));
+          .filter(([key, value]) => key.startsWith('x-ratelimit'))
+          .map(([key, value]) => ([key, Number(value)]));
         this._rateLimits = Object.fromEntries(rateLimits) as RateLimits;
       }
 
