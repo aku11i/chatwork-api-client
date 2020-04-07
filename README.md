@@ -49,7 +49,7 @@ const api = new ChatworkApi("YOUR_API_TOKEN");
 ### Setup
 
 ```sh
-git clone https://github.com/akutagw/chatwork-api-client.git
+git clone https://github.com/ShuAkt/chatwork-api-client.git
 cd chatwork-api-client
 
 git submodule update --init
