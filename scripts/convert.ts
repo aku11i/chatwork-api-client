@@ -1,19 +1,13 @@
-import {
-  Property,
-  getType,
-  getFunction,
-  getClass,
-  getHeader,
-} from "./templates";
+import { Property, getParamTypeName, getResponseTypeName } from "./utils";
 
 import fs = require("fs");
 import path = require("path");
 import yaml = require("yaml");
 import prettier = require("prettier");
-import camelCase = require("camelcase");
-import pascalCase = require("pascal-case");
 
 import EndPoints = require("./endPoints.json");
+import { getType } from "./typeTemplates";
+import { getFunction, getClass, getClassHeader } from "./classTemplates";
 
 const PrettierConfig = require("../.prettierrc.json");
 
@@ -23,24 +17,6 @@ function log(...args: any[]) {
       prettier.format(JSON.stringify(v), { ...PrettierConfig, parser: "json" }),
     ),
   );
-}
-
-export function getFunctionName(endPoint: any) {
-  let uri = endPoint.uri.replace(/s\/\$\{[a-z_]*\}/g, "_").replace(/\//g, "_");
-
-  if (endPoint.method === "POST") {
-    uri = uri.replace(/s$/, "");
-  }
-
-  return camelCase(`${endPoint.method}_${uri}`);
-}
-
-export function getParamTypeName(endPoint: any) {
-  return pascalCase.pascalCase(getFunctionName(endPoint) + "Param");
-}
-
-export function getResponseTypeName(endPoint: any) {
-  return pascalCase.pascalCase(getFunctionName(endPoint) + "Response");
 }
 
 export function getPropertyType(type: string) {
@@ -144,12 +120,12 @@ export function responsesToProp(responses: any): Property {
 }
 
 const paramTypes = EndPoints.map((endPoint) => ({
-  name: getParamTypeName(endPoint),
+  name: getParamTypeName(endPoint.method, endPoint.uri),
   props: queryParametersToProps(endPoint.info.queryParameters),
 }));
 
 const responseTypes = EndPoints.map((endPoint) => ({
-  name: getResponseTypeName(endPoint),
+  name: getResponseTypeName(endPoint.method, endPoint.uri),
   props: responsesToProp(endPoint.info.responses),
 }));
 
@@ -173,21 +149,23 @@ const responseData = responseTypes
 
 const functions = EndPoints.map((endPoint) => getFunction(endPoint)).join("\n");
 
-const classData = prettier.format(getClass(functions), {
-  ...PrettierConfig,
-  parser: "typescript",
-});
-
-const headerData = getHeader();
-
-const data = prettier.format(
-  [headerData, paramData, responseData, classData].join("\n"),
+const classData = prettier.format(
+  [getClassHeader(), getClass(functions)].join("\n"),
   {
     ...PrettierConfig,
     parser: "typescript",
   },
 );
 
-const writePath = path.resolve(__dirname, "..", "src", "api.ts");
-if (fs.existsSync(writePath)) fs.unlinkSync(writePath);
-fs.writeFileSync(writePath, data);
+const typeData = prettier.format([paramData, responseData].join("\n"), {
+  ...PrettierConfig,
+  parser: "typescript",
+});
+
+const classPath = path.resolve(__dirname, "..", "src", "api.ts");
+if (fs.existsSync(classPath)) fs.unlinkSync(classPath);
+fs.writeFileSync(classPath, classData);
+
+const typePath = path.resolve(__dirname, "..", "src", "types.ts");
+if (fs.existsSync(typePath)) fs.unlinkSync(typePath);
+fs.writeFileSync(typePath, typeData);

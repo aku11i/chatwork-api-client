@@ -1,31 +1,17 @@
 import {
+  getFunctionName,
   getParamTypeName,
   getResponseTypeName,
-  getFunctionName,
-} from "./convert";
+  getParamsFromUri,
+} from "./utils";
 
-export type Property = {
-  name?: string;
-  description?: string;
-  types: string;
-  enums?: string[];
-  children?: Property[];
-  arrayProp?: Property;
-  required?: boolean;
-};
-
-function getParamsFromUri(uri: string) {
-  return uri
-    .split("/")
-    .filter((str) => str.match(/^\$\{.*\}$/))
-    .map((str) => str.replace("${", "").replace("}", ""));
-}
-
-export function getHeader() {
+export function getClassHeader() {
   return `
     // This file was automatically generated.
     import axios from 'axios';
     import { stringify } from 'qs';
+
+    import * as Types from './types';
 
     export const CHATWORK_URL = 'https://api.chatwork.com/v2';
 
@@ -139,18 +125,18 @@ export function getClass(functions: string) {
 }
 
 export function getFunction(endPoint: any) {
-  const functionName = getFunctionName(endPoint);
+  const functionName = getFunctionName(endPoint.method, endPoint.uri);
   const uri = endPoint.uri;
-  const description = endPoint.info.description;
-  const paramType = getParamTypeName(endPoint);
-  const returnType = getResponseTypeName(endPoint);
   const method = endPoint.method;
+  const description = endPoint.info.description;
+  const paramType = getParamTypeName(method, uri);
+  const returnType = getResponseTypeName(method, uri);
   const extraParams = getParamsFromUri(uri)
     .map((p) => `${p}: string | number, `)
     .join("");
   const paramRequired = endPoint.paramRequired;
 
-  const params = `params${paramRequired ? "" : "?"}: ${paramType}`;
+  const params = `params${paramRequired ? "" : "?"}: Types.${paramType}`;
 
   return `
 
@@ -158,47 +144,7 @@ export function getFunction(endPoint: any) {
      * ${description}
      */
     async ${functionName} (${extraParams}${params}) {
-      return (await this.${method.toLowerCase()}<${returnType}>(\`${uri}\`, params));
+      return (await this.${method.toLowerCase()}<Types.${returnType}>(\`${uri}\`, params));
     }
     `;
-}
-
-export function getTypeString({ types, enums, children, arrayProp }: Property) {
-  if (enums) {
-    const enumStr = enums.map((e) => `"${e}"`).join(" | ");
-    return `${enumStr}`;
-  }
-
-  if (types === "object") {
-    return children
-      ? `{
-          ${children.map(propToType).join("\n")}
-        }`
-      : "any";
-  }
-
-  if (types === "array") {
-    return arrayProp ? `${getTypeString(arrayProp)}[]` : "any";
-  }
-
-  return `${types}`;
-}
-
-function propToType(prop: Property) {
-  return `
-  /** ${prop.description || ""} */
-  ${prop.name}${prop.required ? "" : "?"}: ${getTypeString(prop)}
-  `;
-}
-
-export function getType(typeName: string, props: Property | Property[]) {
-  if (Array.isArray(props)) {
-    return `
-    export type ${typeName} = {
-      ${props.map(propToType).join("\n")}
-    }
-    `;
-  }
-
-  return `export type ${typeName} = ${getTypeString(props)}`;
 }
