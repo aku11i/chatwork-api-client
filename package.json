@@ -7,6 +7,15 @@
     "type": "git",
     "url": "https://github.com/ShuAkt/chatwork-api-client.git"
   },
+  "engines": {
+    "node": ">= 12",
+    "npm": ">= 6",
+    "yarn": "^1.20"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "keywords": [
     "chatwork",
     "api",
@@ -25,10 +34,6 @@
     "generate": "npm-run-all raml2json parseJson convert",
     "test": "jest"
   },
-  "files": [
-    "dist",
-    "LICENSE"
-  ],
   "devDependencies": {
     "@types/jest": "^25.2.1",
     "@types/js-yaml": "^3.12.3",
