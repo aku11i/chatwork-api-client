@@ -31,7 +31,8 @@
     "raml2json": "cd scripts && ts-node raml2json.ts",
     "parseJson": "cd scripts && ts-node parseJson.ts",
     "convert": "cd scripts && ts-node convert.ts",
-    "generate": "npm-run-all raml2json parseJson convert",
+    "output": "cd scripts && ts-node output.ts",
+    "generate": "npm-run-all raml2json parseJson convert output",
     "test": "jest"
   },
   "devDependencies": {

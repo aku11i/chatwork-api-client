@@ -103,15 +103,15 @@ export default class ChatworkApi {
   /**
    * 自分自身の情報を取得
    */
-  async getMe(params?: Types.GetMeParam) {
-    return await this.get<Types.GetMeResponse>(`/me`, params);
+  async getMe() {
+    return await this.get<Types.GetMeResponse>(`/me`);
   }
 
   /**
    * 自分の未読数、未読To数、未完了タスク数を返す
    */
-  async getMyStatus(params?: Types.GetMyStatusParam) {
-    return await this.get<Types.GetMyStatusResponse>(`/my/status`, params);
+  async getMyStatus() {
+    return await this.get<Types.GetMyStatusResponse>(`/my/status`);
   }
 
   /**
@@ -124,29 +124,29 @@ export default class ChatworkApi {
   /**
    * 自分のコンタクト一覧を取得
    */
-  async getContacts(params?: Types.GetContactsParam) {
-    return await this.get<Types.GetContactsResponse>(`/contacts`, params);
+  async getContacts() {
+    return await this.get<Types.GetContactsResponse>(`/contacts`);
   }
 
   /**
    * 自分のチャット一覧の取得
    */
-  async getRooms(params?: Types.GetRoomsParam) {
-    return await this.get<Types.GetRoomsResponse>(`/rooms`, params);
+  async getRooms() {
+    return await this.get<Types.GetRoomsResponse>(`/rooms`);
   }
 
   /**
    * グループチャットを新規作成
    */
-  async postRoom(params?: Types.PostRoomParam) {
+  async postRoom(params: Types.PostRoomParam) {
     return await this.post<Types.PostRoomResponse>(`/rooms`, params);
   }
 
   /**
    * チャットの名前、アイコン、種類(my/direct/group)を取得
    */
-  async getRoom(room_id: string | number, params?: Types.GetRoomParam) {
-    return await this.get<Types.GetRoomResponse>(`/rooms/${room_id}`, params);
+  async getRoom(room_id: string | number) {
+    return await this.get<Types.GetRoomResponse>(`/rooms/${room_id}`);
   }
 
   /**
@@ -159,7 +159,7 @@ export default class ChatworkApi {
   /**
    * グループチャットを退席/削除する
    */
-  async deleteRoom(room_id: string | number, params?: Types.DeleteRoomParam) {
+  async deleteRoom(room_id: string | number, params: Types.DeleteRoomParam) {
     return await this.delete<Types.DeleteRoomResponse>(
       `/rooms/${room_id}`,
       params,
@@ -169,13 +169,9 @@ export default class ChatworkApi {
   /**
    * チャットのメンバー一覧を取得
    */
-  async getRoomMembers(
-    room_id: string | number,
-    params?: Types.GetRoomMembersParam,
-  ) {
+  async getRoomMembers(room_id: string | number) {
     return await this.get<Types.GetRoomMembersResponse>(
       `/rooms/${room_id}/members`,
-      params,
     );
   }
 
@@ -184,7 +180,7 @@ export default class ChatworkApi {
    */
   async putRoomMembers(
     room_id: string | number,
-    params?: Types.PutRoomMembersParam,
+    params: Types.PutRoomMembersParam,
   ) {
     return await this.put<Types.PutRoomMembersResponse>(
       `/rooms/${room_id}/members`,
@@ -210,7 +206,7 @@ export default class ChatworkApi {
    */
   async postRoomMessage(
     room_id: string | number,
-    params?: Types.PostRoomMessageParam,
+    params: Types.PostRoomMessageParam,
   ) {
     return await this.post<Types.PostRoomMessageResponse>(
       `/rooms/${room_id}/messages`,
@@ -236,7 +232,7 @@ export default class ChatworkApi {
    */
   async putRoomMessagesUnread(
     room_id: string | number,
-    params?: Types.PutRoomMessagesUnreadParam,
+    params: Types.PutRoomMessagesUnreadParam,
   ) {
     return await this.put<Types.PutRoomMessagesUnreadResponse>(
       `/rooms/${room_id}/messages/unread`,
@@ -247,14 +243,9 @@ export default class ChatworkApi {
   /**
    * メッセージ情報を取得
    */
-  async getRoomMessage(
-    room_id: string | number,
-    message_id: string | number,
-    params?: Types.GetRoomMessageParam,
-  ) {
+  async getRoomMessage(room_id: string | number, message_id: string | number) {
     return await this.get<Types.GetRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
-      params,
     );
   }
 
@@ -264,7 +255,7 @@ export default class ChatworkApi {
   async putRoomMessage(
     room_id: string | number,
     message_id: string | number,
-    params?: Types.PutRoomMessageParam,
+    params: Types.PutRoomMessageParam,
   ) {
     return await this.put<Types.PutRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
@@ -278,11 +269,9 @@ export default class ChatworkApi {
   async deleteRoomMessage(
     room_id: string | number,
     message_id: string | number,
-    params?: Types.DeleteRoomMessageParam,
   ) {
     return await this.delete<Types.DeleteRoomMessageResponse>(
       `/rooms/${room_id}/messages/${message_id}`,
-      params,
     );
   }
 
@@ -304,7 +293,7 @@ export default class ChatworkApi {
    */
   async postRoomTask(
     room_id: string | number,
-    params?: Types.PostRoomTaskParam,
+    params: Types.PostRoomTaskParam,
   ) {
     return await this.post<Types.PostRoomTaskResponse>(
       `/rooms/${room_id}/tasks`,
@@ -315,14 +304,9 @@ export default class ChatworkApi {
   /**
    * タスク情報を取得
    */
-  async getRoomTask(
-    room_id: string | number,
-    task_id: string | number,
-    params?: Types.GetRoomTaskParam,
-  ) {
+  async getRoomTask(room_id: string | number, task_id: string | number) {
     return await this.get<Types.GetRoomTaskResponse>(
       `/rooms/${room_id}/tasks/${task_id}`,
-      params,
     );
   }
 
@@ -332,7 +316,7 @@ export default class ChatworkApi {
   async putRoomTaskStatus(
     room_id: string | number,
     task_id: string | number,
-    params?: Types.PutRoomTaskStatusParam,
+    params: Types.PutRoomTaskStatusParam,
   ) {
     return await this.put<Types.PutRoomTaskStatusResponse>(
       `/rooms/${room_id}/tasks/${task_id}/status`,
@@ -356,13 +340,9 @@ export default class ChatworkApi {
   /**
    * チャットに新しいファイルをアップロード
    */
-  async postRoomFile(
-    room_id: string | number,
-    params?: Types.PostRoomFileParam,
-  ) {
+  async postRoomFile(room_id: string | number) {
     return await this.post<Types.PostRoomFileResponse>(
       `/rooms/${room_id}/files`,
-      params,
     );
   }
 
@@ -383,11 +363,8 @@ export default class ChatworkApi {
   /**
    * 招待リンクを取得する
    */
-  async getRoomLink(room_id: string | number, params?: Types.GetRoomLinkParam) {
-    return await this.get<Types.GetRoomLinkResponse>(
-      `/rooms/${room_id}/link`,
-      params,
-    );
+  async getRoomLink(room_id: string | number) {
+    return await this.get<Types.GetRoomLinkResponse>(`/rooms/${room_id}/link`);
   }
 
   /**
@@ -416,49 +393,36 @@ export default class ChatworkApi {
   /**
    * 招待リンクを削除する
    */
-  async deleteRoomLink(
-    room_id: string | number,
-    params?: Types.DeleteRoomLinkParam,
-  ) {
+  async deleteRoomLink(room_id: string | number) {
     return await this.delete<Types.DeleteRoomLinkResponse>(
       `/rooms/${room_id}/link`,
-      params,
     );
   }
 
   /**
    * 自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)
    */
-  async getIncomingRequests(params?: Types.GetIncomingRequestsParam) {
+  async getIncomingRequests() {
     return await this.get<Types.GetIncomingRequestsResponse>(
       `/incoming_requests`,
-      params,
     );
   }
 
   /**
    * 自分に対するコンタクト承認依頼を承認する
    */
-  async putIncomingRequest(
-    request_id: string | number,
-    params?: Types.PutIncomingRequestParam,
-  ) {
+  async putIncomingRequest(request_id: string | number) {
     return await this.put<Types.PutIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
-      params,
     );
   }
 
   /**
    * 自分に対するコンタクト承認依頼をキャンセルする
    */
-  async deleteIncomingRequest(
-    request_id: string | number,
-    params?: Types.DeleteIncomingRequestParam,
-  ) {
+  async deleteIncomingRequest(request_id: string | number) {
     return await this.delete<Types.DeleteIncomingRequestResponse>(
       `/incoming_requests/${request_id}`,
-      params,
     );
   }
 }

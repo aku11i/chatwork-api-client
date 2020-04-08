@@ -1,0 +1,1208 @@
+[
+  {
+    "uri": "/me",
+    "method": "GET",
+    "description": "自分自身の情報を取得",
+    "functionName": "getMe",
+    "paramTypeName": "GetMeParam",
+    "responseTypeName": "GetMeResponse",
+    "commandName": "get-me",
+    "uriParams": [],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "account_id", "types": "number", "required": true },
+        { "name": "room_id", "types": "number", "required": true },
+        { "name": "name", "types": "string", "required": true },
+        { "name": "chatwork_id", "types": "string", "required": true },
+        { "name": "organization_id", "types": "number", "required": true },
+        { "name": "organization_name", "types": "string", "required": true },
+        { "name": "department", "types": "string", "required": true },
+        { "name": "title", "types": "string", "required": true },
+        { "name": "url", "types": "string", "required": true },
+        { "name": "introduction", "types": "string", "required": true },
+        { "name": "mail", "types": "string", "required": true },
+        { "name": "tel_organization", "types": "string", "required": true },
+        { "name": "tel_extension", "types": "string", "required": true },
+        { "name": "tel_mobile", "types": "string", "required": true },
+        { "name": "skype", "types": "string", "required": true },
+        { "name": "facebook", "types": "string", "required": true },
+        { "name": "twitter", "types": "string", "required": true },
+        { "name": "avatar_image_url", "types": "string", "required": true },
+        { "name": "login_mail", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/my/status",
+    "method": "GET",
+    "description": "自分の未読数、未読To数、未完了タスク数を返す",
+    "functionName": "getMyStatus",
+    "paramTypeName": "GetMyStatusParam",
+    "responseTypeName": "GetMyStatusResponse",
+    "commandName": "get-my-status",
+    "uriParams": [],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "unread_room_num", "types": "number", "required": true },
+        { "name": "mention_room_num", "types": "number", "required": true },
+        { "name": "mytask_room_num", "types": "number", "required": true },
+        { "name": "unread_num", "types": "number", "required": true },
+        { "name": "mention_num", "types": "number", "required": true },
+        { "name": "mytask_num", "types": "number", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/my/tasks",
+    "method": "GET",
+    "description": "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
+    "functionName": "getMyTasks",
+    "paramTypeName": "GetMyTasksParam",
+    "responseTypeName": "GetMyTasksResponse",
+    "commandName": "get-my-tasks",
+    "uriParams": [],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "assigned_by_account_id",
+          "description": "タスクの依頼者のアカウントID",
+          "types": "number"
+        },
+        {
+          "name": "status",
+          "description": "タスクのステータス",
+          "types": "string",
+          "enums": ["open", "done"]
+        }
+      ]
+    },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "task_id", "types": "number", "required": true },
+          {
+            "name": "room",
+            "types": "object",
+            "children": [
+              { "name": "room_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              { "name": "icon_path", "types": "string", "required": true }
+            ],
+            "required": true
+          },
+          {
+            "name": "assigned_by_account",
+            "types": "object",
+            "children": [
+              { "name": "account_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              {
+                "name": "avatar_image_url",
+                "types": "string",
+                "required": true
+              }
+            ],
+            "required": true
+          },
+          { "name": "message_id", "types": "string", "required": true },
+          { "name": "body", "types": "string", "required": true },
+          { "name": "limit_time", "types": "number", "required": true },
+          {
+            "name": "status",
+            "types": "string",
+            "enums": ["open", "done"],
+            "required": true
+          },
+          {
+            "name": "limit_type",
+            "types": "string",
+            "enums": ["none", "date", "time"],
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/contacts",
+    "method": "GET",
+    "description": "自分のコンタクト一覧を取得",
+    "functionName": "getContacts",
+    "paramTypeName": "GetContactsParam",
+    "responseTypeName": "GetContactsResponse",
+    "commandName": "get-contacts",
+    "uriParams": [],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "account_id", "types": "number", "required": false },
+          { "name": "room_id", "types": "number", "required": false },
+          { "name": "name", "types": "string", "required": false },
+          { "name": "chatwork_id", "types": "string", "required": false },
+          { "name": "organization_id", "types": "number", "required": false },
+          { "name": "organization_name", "types": "string", "required": false },
+          { "name": "department", "types": "string", "required": false },
+          { "name": "avatar_image_url", "types": "string", "required": false }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms",
+    "method": "GET",
+    "description": "自分のチャット一覧の取得",
+    "functionName": "getRooms",
+    "paramTypeName": "GetRoomsParam",
+    "responseTypeName": "GetRoomsResponse",
+    "commandName": "get-rooms",
+    "uriParams": [],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "room_id", "types": "number", "required": true },
+          { "name": "name", "types": "string", "required": true },
+          {
+            "name": "type",
+            "types": "string",
+            "enums": ["my", "direct", "group"],
+            "required": true
+          },
+          {
+            "name": "role",
+            "types": "string",
+            "enums": ["admin", "member", "readonly"],
+            "required": true
+          },
+          { "name": "sticky", "types": "0|1", "required": true },
+          { "name": "unread_num", "types": "number", "required": true },
+          { "name": "mention_num", "types": "number", "required": true },
+          { "name": "mytask_num", "types": "number", "required": true },
+          { "name": "message_num", "types": "number", "required": true },
+          { "name": "file_num", "types": "number", "required": true },
+          { "name": "task_num", "types": "number", "required": true },
+          { "name": "icon_path", "types": "string", "required": true },
+          { "name": "last_update_time", "types": "number", "required": true }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms",
+    "method": "POST",
+    "description": "グループチャットを新規作成",
+    "functionName": "postRoom",
+    "paramTypeName": "PostRoomParam",
+    "responseTypeName": "PostRoomResponse",
+    "commandName": "post-room",
+    "uriParams": [],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "name",
+          "description": "グループチャット名",
+          "types": "string",
+          "required": true
+        },
+        {
+          "name": "description",
+          "description": "チャット概要",
+          "types": "string"
+        },
+        {
+          "name": "link",
+          "description": "招待リンク作成",
+          "types": "0|1",
+          "required": false
+        },
+        {
+          "name": "link_code",
+          "description": "リンク文字列",
+          "types": "string",
+          "required": false
+        },
+        {
+          "name": "link_need_acceptance",
+          "description": "承認要否",
+          "types": "0|1",
+          "required": false
+        },
+        {
+          "name": "members_admin_ids",
+          "description": "管理者権限のユーザー",
+          "types": "string",
+          "required": true
+        },
+        {
+          "name": "members_member_ids",
+          "description": "メンバー権限のユーザー",
+          "types": "string"
+        },
+        {
+          "name": "members_readonly_ids",
+          "description": "閲覧のみ権限のユーザー",
+          "types": "string"
+        },
+        {
+          "name": "icon_preset",
+          "description": "アイコン種類",
+          "types": "string",
+          "enums": [
+            "group",
+            "check",
+            "document",
+            "meeting",
+            "event",
+            "project",
+            "business",
+            "study",
+            "security",
+            "star",
+            "idea",
+            "heart",
+            "magcup",
+            "beer",
+            "music",
+            "sports",
+            "travel"
+          ]
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [{ "name": "room_id", "types": "number", "required": true }]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}",
+    "method": "GET",
+    "description": "チャットの名前、アイコン、種類(my/direct/group)を取得",
+    "functionName": "getRoom",
+    "paramTypeName": "GetRoomParam",
+    "responseTypeName": "GetRoomResponse",
+    "commandName": "get-room",
+    "uriParams": ["room_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "room_id", "types": "number", "required": true },
+        { "name": "name", "types": "string", "required": true },
+        {
+          "name": "type",
+          "types": "string",
+          "enums": ["my", "direct", "group"],
+          "required": true
+        },
+        {
+          "name": "role",
+          "types": "string",
+          "enums": ["admin", "member", "readonly"],
+          "required": true
+        },
+        { "name": "sticky", "types": "0|1", "required": true },
+        { "name": "unread_num", "types": "number", "required": true },
+        { "name": "mention_num", "types": "number", "required": true },
+        { "name": "mytask_num", "types": "number", "required": true },
+        { "name": "message_num", "types": "number", "required": true },
+        { "name": "file_num", "types": "number", "required": true },
+        { "name": "task_num", "types": "number", "required": true },
+        { "name": "icon_path", "types": "string", "required": true },
+        { "name": "last_update_time", "types": "number", "required": true },
+        { "name": "description", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}",
+    "method": "PUT",
+    "description": "チャットの名前、アイコンをアップデート",
+    "functionName": "putRoom",
+    "paramTypeName": "PutRoomParam",
+    "responseTypeName": "PutRoomResponse",
+    "commandName": "put-room",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "name",
+          "description": "グループチャット名",
+          "types": "string"
+        },
+        {
+          "name": "description",
+          "description": "チャット概要",
+          "types": "string"
+        },
+        {
+          "name": "icon_preset",
+          "description": "アイコン種類",
+          "types": "string",
+          "enums": [
+            "group",
+            "check",
+            "document",
+            "meeting",
+            "event",
+            "project",
+            "business",
+            "study",
+            "security",
+            "star",
+            "idea",
+            "heart",
+            "magcup",
+            "beer",
+            "music",
+            "sports",
+            "travel"
+          ]
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [{ "name": "room_id", "types": "number", "required": true }]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}",
+    "method": "DELETE",
+    "description": "グループチャットを退席/削除する",
+    "functionName": "deleteRoom",
+    "paramTypeName": "DeleteRoomParam",
+    "responseTypeName": "DeleteRoomResponse",
+    "commandName": "delete-room",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "action_type",
+          "description": "退席するか、削除するか",
+          "types": "string",
+          "enums": ["leave", "delete"],
+          "required": true
+        }
+      ]
+    },
+    "response": { "types": "object" }
+  },
+  {
+    "uri": "/rooms/${room_id}/members",
+    "method": "GET",
+    "description": "チャットのメンバー一覧を取得",
+    "functionName": "getRoomMembers",
+    "paramTypeName": "GetRoomMembersParam",
+    "responseTypeName": "GetRoomMembersResponse",
+    "commandName": "get-room-members",
+    "uriParams": ["room_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "account_id", "types": "number", "required": true },
+          {
+            "name": "role",
+            "types": "string",
+            "enums": ["admin", "member", "readonly"],
+            "required": true
+          },
+          { "name": "name", "types": "string", "required": true },
+          { "name": "chatwork_id", "types": "string", "required": true },
+          { "name": "organization_id", "types": "number", "required": true },
+          { "name": "organization_name", "types": "string", "required": true },
+          { "name": "department", "types": "string", "required": true },
+          { "name": "avatar_image_url", "types": "string", "required": true }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/members",
+    "method": "PUT",
+    "description": "チャットのメンバーを一括変更",
+    "functionName": "putRoomMembers",
+    "paramTypeName": "PutRoomMembersParam",
+    "responseTypeName": "PutRoomMembersResponse",
+    "commandName": "put-room-members",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "members_admin_ids",
+          "description": "管理者権限のユーザー",
+          "types": "string",
+          "required": true
+        },
+        {
+          "name": "members_member_ids",
+          "description": "メンバー権限のユーザー",
+          "types": "string"
+        },
+        {
+          "name": "members_readonly_ids",
+          "description": "閲覧のみ権限のユーザー",
+          "types": "string"
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        {
+          "name": "admin",
+          "types": "array",
+          "arrayProp": { "name": "admin", "types": "number", "required": true },
+          "required": true
+        },
+        {
+          "name": "member",
+          "types": "array",
+          "arrayProp": {
+            "name": "member",
+            "types": "number",
+            "required": true
+          },
+          "required": true
+        },
+        {
+          "name": "readonly",
+          "types": "array",
+          "arrayProp": {
+            "name": "readonly",
+            "types": "number",
+            "required": true
+          },
+          "required": true
+        }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages",
+    "method": "GET",
+    "description": "チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)",
+    "functionName": "getRoomMessages",
+    "paramTypeName": "GetRoomMessagesParam",
+    "responseTypeName": "GetRoomMessagesResponse",
+    "commandName": "get-room-messages",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "force",
+          "description": "未取得にかかわらず最新の100件を取得するか",
+          "types": "0|1"
+        }
+      ]
+    },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "message_id", "types": "string", "required": true },
+          {
+            "name": "account",
+            "types": "object",
+            "children": [
+              { "name": "account_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              {
+                "name": "avatar_image_url",
+                "types": "string",
+                "required": true
+              }
+            ],
+            "required": true
+          },
+          { "name": "body", "types": "string", "required": true },
+          { "name": "send_time", "types": "number", "required": true },
+          { "name": "update_time", "types": "number", "required": true }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages",
+    "method": "POST",
+    "description": "チャットに新しいメッセージを追加",
+    "functionName": "postRoomMessage",
+    "paramTypeName": "PostRoomMessageParam",
+    "responseTypeName": "PostRoomMessageResponse",
+    "commandName": "post-room-message",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "body",
+          "description": "メッセージ本文",
+          "types": "string",
+          "required": true
+        },
+        {
+          "name": "self_unread",
+          "description": "追加したメッセージを自分から見て未読とするか",
+          "types": "0|1"
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "message_id", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages/read",
+    "method": "PUT",
+    "description": "メッセージを既読にする",
+    "functionName": "putRoomMessagesRead",
+    "paramTypeName": "PutRoomMessagesReadParam",
+    "responseTypeName": "PutRoomMessagesReadResponse",
+    "commandName": "put-room-messages-read",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "message_id",
+          "description": "ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400)",
+          "types": "string"
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "unread_num", "types": "number", "required": true },
+        { "name": "mention_num", "types": "number", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages/unread",
+    "method": "PUT",
+    "description": "メッセージを未読にする",
+    "functionName": "putRoomMessagesUnread",
+    "paramTypeName": "PutRoomMessagesUnreadParam",
+    "responseTypeName": "PutRoomMessagesUnreadResponse",
+    "commandName": "put-room-messages-unread",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "message_id",
+          "description": "ここで指定するIDのメッセージ以降を未読にする",
+          "types": "string",
+          "required": true
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "unread_num", "types": "number", "required": true },
+        { "name": "mention_num", "types": "number", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages/${message_id}",
+    "method": "GET",
+    "description": "メッセージ情報を取得",
+    "functionName": "getRoomMessage",
+    "paramTypeName": "GetRoomMessageParam",
+    "responseTypeName": "GetRoomMessageResponse",
+    "commandName": "get-room-message",
+    "uriParams": ["room_id", "message_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "message_id", "types": "string", "required": true },
+        {
+          "name": "account",
+          "types": "object",
+          "children": [
+            { "name": "account_id", "types": "number", "required": true },
+            { "name": "name", "types": "string", "required": true },
+            { "name": "avatar_image_url", "types": "string", "required": true }
+          ],
+          "required": true
+        },
+        { "name": "body", "types": "string", "required": true },
+        { "name": "send_time", "types": "number", "required": true },
+        { "name": "update_time", "types": "number", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages/${message_id}",
+    "method": "PUT",
+    "description": "チャットのメッセージを更新する。",
+    "functionName": "putRoomMessage",
+    "paramTypeName": "PutRoomMessageParam",
+    "responseTypeName": "PutRoomMessageResponse",
+    "commandName": "put-room-message",
+    "uriParams": ["room_id", "message_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "body",
+          "description": "更新するメッセージ本文",
+          "types": "string",
+          "required": true
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "message_id", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/messages/${message_id}",
+    "method": "DELETE",
+    "description": "メッセージを削除",
+    "functionName": "deleteRoomMessage",
+    "paramTypeName": "DeleteRoomMessageParam",
+    "responseTypeName": "DeleteRoomMessageResponse",
+    "commandName": "delete-room-message",
+    "uriParams": ["room_id", "message_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "message_id", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/tasks",
+    "method": "GET",
+    "description": "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
+    "functionName": "getRoomTasks",
+    "paramTypeName": "GetRoomTasksParam",
+    "responseTypeName": "GetRoomTasksResponse",
+    "commandName": "get-room-tasks",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "account_id",
+          "description": "タスクの担当者のアカウントID",
+          "types": "number"
+        },
+        {
+          "name": "assigned_by_account_id",
+          "description": "タスクの依頼者のアカウントID",
+          "types": "number"
+        },
+        {
+          "name": "status",
+          "description": "タスクのステータス",
+          "types": "string",
+          "enums": ["open", "done"]
+        }
+      ]
+    },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "task_id", "types": "number", "required": true },
+          {
+            "name": "account",
+            "types": "object",
+            "children": [
+              { "name": "account_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              {
+                "name": "avatar_image_url",
+                "types": "string",
+                "required": true
+              }
+            ],
+            "required": true
+          },
+          {
+            "name": "assigned_by_account",
+            "types": "object",
+            "children": [
+              { "name": "account_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              {
+                "name": "avatar_image_url",
+                "types": "string",
+                "required": true
+              }
+            ],
+            "required": true
+          },
+          { "name": "message_id", "types": "string", "required": true },
+          { "name": "body", "types": "string", "required": true },
+          { "name": "limit_time", "types": "number", "required": true },
+          {
+            "name": "status",
+            "types": "string",
+            "enums": ["open", "done"],
+            "required": true
+          },
+          {
+            "name": "limit_type",
+            "types": "string",
+            "enums": ["none", "date", "time"],
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/tasks",
+    "method": "POST",
+    "description": "チャットに新しいタスクを追加",
+    "functionName": "postRoomTask",
+    "paramTypeName": "PostRoomTaskParam",
+    "responseTypeName": "PostRoomTaskResponse",
+    "commandName": "post-room-task",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "body",
+          "description": "タスクの内容",
+          "types": "string",
+          "required": true
+        },
+        {
+          "name": "to_ids",
+          "description": "担当者のアカウントID",
+          "types": "string",
+          "required": true
+        },
+        { "name": "limit", "description": "タスクの期限", "types": "number" },
+        {
+          "name": "limit_type",
+          "description": "タスク期限の種別",
+          "types": "string",
+          "enums": ["none", "date", "time"]
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        {
+          "name": "task_ids",
+          "types": "array",
+          "arrayProp": {
+            "name": "task_ids",
+            "types": "number",
+            "required": true
+          },
+          "required": true
+        }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/tasks/${task_id}",
+    "method": "GET",
+    "description": "タスク情報を取得",
+    "functionName": "getRoomTask",
+    "paramTypeName": "GetRoomTaskParam",
+    "responseTypeName": "GetRoomTaskResponse",
+    "commandName": "get-room-task",
+    "uriParams": ["room_id", "task_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "task_id", "types": "number", "required": true },
+        {
+          "name": "account",
+          "types": "object",
+          "children": [
+            { "name": "account_id", "types": "number", "required": true },
+            { "name": "name", "types": "string", "required": true },
+            { "name": "avatar_image_url", "types": "string", "required": true }
+          ],
+          "required": true
+        },
+        {
+          "name": "assigned_by_account",
+          "types": "object",
+          "children": [
+            { "name": "account_id", "types": "number", "required": true },
+            { "name": "name", "types": "string", "required": true },
+            { "name": "avatar_image_url", "types": "string", "required": true }
+          ],
+          "required": true
+        },
+        { "name": "message_id", "types": "string", "required": true },
+        { "name": "body", "types": "string", "required": true },
+        { "name": "limit_time", "types": "number", "required": true },
+        {
+          "name": "status",
+          "types": "string",
+          "enums": ["open", "done"],
+          "required": true
+        },
+        {
+          "name": "limit_type",
+          "types": "string",
+          "enums": ["none", "date", "time"],
+          "required": true
+        }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/tasks/${task_id}/status",
+    "method": "PUT",
+    "description": "タスク完了状態を変更する",
+    "functionName": "putRoomTaskStatus",
+    "paramTypeName": "PutRoomTaskStatusParam",
+    "responseTypeName": "PutRoomTaskStatusResponse",
+    "commandName": "put-room-task-status",
+    "uriParams": ["room_id", "task_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "body",
+          "description": "タスク完了状態",
+          "types": "string",
+          "enums": ["open", "done"],
+          "required": true
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [{ "name": "task_id", "types": "number", "required": true }]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/files",
+    "method": "GET",
+    "description": "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
+    "functionName": "getRoomFiles",
+    "paramTypeName": "GetRoomFilesParam",
+    "responseTypeName": "GetRoomFilesResponse",
+    "commandName": "get-room-files",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "account_id",
+          "description": "アップロードしたユーザーのアカウントID",
+          "types": "number"
+        }
+      ]
+    },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "file_id", "types": "number", "required": true },
+          {
+            "name": "account",
+            "types": "object",
+            "children": [
+              { "name": "account_id", "types": "number", "required": true },
+              { "name": "name", "types": "string", "required": true },
+              {
+                "name": "avatar_image_url",
+                "types": "string",
+                "required": true
+              }
+            ],
+            "required": true
+          },
+          { "name": "message_id", "types": "string", "required": true },
+          { "name": "filename", "types": "string", "required": true },
+          { "name": "filesize", "types": "number", "required": true },
+          { "name": "upload_time", "types": "number", "required": true }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/files",
+    "method": "POST",
+    "description": "チャットに新しいファイルをアップロード",
+    "functionName": "postRoomFile",
+    "paramTypeName": "PostRoomFileParam",
+    "responseTypeName": "PostRoomFileResponse",
+    "commandName": "post-room-file",
+    "uriParams": ["room_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [{ "name": "file_id", "description": "", "types": "number" }]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/files/${file_id}",
+    "method": "GET",
+    "description": "ファイル情報を取得",
+    "functionName": "getRoomFile",
+    "paramTypeName": "GetRoomFileParam",
+    "responseTypeName": "GetRoomFileResponse",
+    "commandName": "get-room-file",
+    "uriParams": ["room_id", "file_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "create_download_url",
+          "description": "ダウンロードする為のURLを生成するか",
+          "types": "0|1"
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "file_id", "types": "number", "required": true },
+        {
+          "name": "account",
+          "types": "object",
+          "children": [
+            { "name": "account_id", "types": "number", "required": true },
+            { "name": "name", "types": "string", "required": true },
+            { "name": "avatar_image_url", "types": "string", "required": true }
+          ],
+          "required": true
+        },
+        { "name": "message_id", "types": "string", "required": true },
+        { "name": "filename", "types": "string", "required": true },
+        { "name": "filesize", "types": "number", "required": true },
+        { "name": "upload_time", "types": "number", "required": true },
+        { "name": "download_url", "types": "string", "required": false }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/link",
+    "method": "GET",
+    "description": "招待リンクを取得する",
+    "functionName": "getRoomLink",
+    "paramTypeName": "GetRoomLinkParam",
+    "responseTypeName": "GetRoomLinkResponse",
+    "commandName": "get-room-link",
+    "uriParams": ["room_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "public", "types": "0|1", "required": true },
+        { "name": "url", "types": "string", "required": false },
+        { "name": "need_acceptance", "types": "0|1", "required": false },
+        { "name": "description", "types": "string", "required": false }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/link",
+    "method": "POST",
+    "description": "招待リンクを作成する",
+    "functionName": "postRoomLink",
+    "paramTypeName": "PostRoomLinkParam",
+    "responseTypeName": "PostRoomLinkResponse",
+    "commandName": "post-room-link",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "code",
+          "description": "リンク文字列",
+          "types": "string",
+          "required": false
+        },
+        {
+          "name": "need_acceptance",
+          "description": "承認要否",
+          "types": "0|1",
+          "required": false
+        },
+        {
+          "name": "description",
+          "description": "リンク説明文",
+          "types": "string",
+          "required": false
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "public", "types": "0|1", "required": true },
+        { "name": "url", "types": "string", "required": false },
+        { "name": "need_acceptance", "types": "0|1", "required": false },
+        { "name": "description", "types": "string", "required": false }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/link",
+    "method": "PUT",
+    "description": "招待リンクの情報を変更する",
+    "functionName": "putRoomLink",
+    "paramTypeName": "PutRoomLinkParam",
+    "responseTypeName": "PutRoomLinkResponse",
+    "commandName": "put-room-link",
+    "uriParams": ["room_id"],
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "code",
+          "description": "リンク文字列",
+          "types": "string",
+          "required": false
+        },
+        {
+          "name": "need_acceptance",
+          "description": "承認要否",
+          "types": "0|1",
+          "required": false
+        },
+        {
+          "name": "description",
+          "description": "リンク説明文",
+          "types": "string",
+          "required": false
+        }
+      ]
+    },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "public", "types": "0|1", "required": true },
+        { "name": "url", "types": "string", "required": false },
+        { "name": "need_acceptance", "types": "0|1", "required": false },
+        { "name": "description", "types": "string", "required": false }
+      ]
+    }
+  },
+  {
+    "uri": "/rooms/${room_id}/link",
+    "method": "DELETE",
+    "description": "招待リンクを削除する",
+    "functionName": "deleteRoomLink",
+    "paramTypeName": "DeleteRoomLinkParam",
+    "responseTypeName": "DeleteRoomLinkResponse",
+    "commandName": "delete-room-link",
+    "uriParams": ["room_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "public", "types": "0|1", "required": true },
+        { "name": "url", "types": "string", "required": false },
+        { "name": "need_acceptance", "types": "0|1", "required": false },
+        { "name": "description", "types": "string", "required": false }
+      ]
+    }
+  },
+  {
+    "uri": "/incoming_requests",
+    "method": "GET",
+    "description": "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
+    "functionName": "getIncomingRequests",
+    "paramTypeName": "GetIncomingRequestsParam",
+    "responseTypeName": "GetIncomingRequestsResponse",
+    "commandName": "get-incoming-requests",
+    "uriParams": [],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "array",
+      "arrayProp": {
+        "types": "object",
+        "children": [
+          { "name": "request_id", "types": "number", "required": true },
+          { "name": "account_id", "types": "number", "required": true },
+          { "name": "message", "types": "string", "required": true },
+          { "name": "name", "types": "string", "required": true },
+          { "name": "chatwork_id", "types": "string", "required": true },
+          { "name": "organization_id", "types": "number", "required": true },
+          { "name": "organization_name", "types": "string", "required": true },
+          { "name": "department", "types": "string", "required": true },
+          { "name": "avatar_image_url", "types": "string", "required": true }
+        ]
+      }
+    }
+  },
+  {
+    "uri": "/incoming_requests/${request_id}",
+    "method": "PUT",
+    "description": "自分に対するコンタクト承認依頼を承認する",
+    "functionName": "putIncomingRequest",
+    "paramTypeName": "PutIncomingRequestParam",
+    "responseTypeName": "PutIncomingRequestResponse",
+    "commandName": "put-incoming-request",
+    "uriParams": ["request_id"],
+    "param": { "types": "object", "children": [] },
+    "response": {
+      "types": "object",
+      "children": [
+        { "name": "account_id", "types": "number", "required": true },
+        { "name": "room_id", "types": "number", "required": true },
+        { "name": "name", "types": "string", "required": true },
+        { "name": "chatwork_id", "types": "string", "required": true },
+        { "name": "organization_id", "types": "number", "required": true },
+        { "name": "organization_name", "types": "string", "required": true },
+        { "name": "department", "types": "string", "required": true },
+        { "name": "avatar_image_url", "types": "string", "required": true }
+      ]
+    }
+  },
+  {
+    "uri": "/incoming_requests/${request_id}",
+    "method": "DELETE",
+    "description": "自分に対するコンタクト承認依頼をキャンセルする",
+    "functionName": "deleteIncomingRequest",
+    "paramTypeName": "DeleteIncomingRequestParam",
+    "responseTypeName": "DeleteIncomingRequestResponse",
+    "commandName": "delete-incoming-request",
+    "uriParams": ["request_id"],
+    "param": { "types": "object", "children": [] },
+    "response": { "types": "object" }
+  }
+]

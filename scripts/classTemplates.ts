@@ -3,7 +3,11 @@ import {
   getParamTypeName,
   getResponseTypeName,
   getParamsFromUri,
+  Property,
+  hasProp,
+  isChildrenRequired,
 } from "./utils";
+import { BuildData } from "./typings";
 
 export function getClassHeader() {
   return `
@@ -124,19 +128,27 @@ export function getClass(functions: string) {
     `;
 }
 
-export function getFunction(endPoint: any) {
-  const functionName = getFunctionName(endPoint.method, endPoint.uri);
-  const uri = endPoint.uri;
-  const method = endPoint.method;
-  const description = endPoint.info.description;
-  const paramType = getParamTypeName(method, uri);
-  const returnType = getResponseTypeName(method, uri);
-  const extraParams = getParamsFromUri(uri)
-    .map((p) => `${p}: string | number, `)
-    .join("");
-  const paramRequired = endPoint.paramRequired;
+export function getFunction({
+  uri,
+  method,
+  description,
+  functionName,
+  paramTypeName,
+  responseTypeName,
+  uriParams,
+  param,
+}: BuildData) {
+  const extraParams = (uriParams as string[])
+    .map((p) => `${p}: string | number`)
+    .join(", ");
+  const paramExists = hasProp(param);
+  const paramRequired = isChildrenRequired(param);
 
-  const params = `params${paramRequired ? "" : "?"}: Types.${paramType}`;
+  const params = paramExists
+    ? `${extraParams ? ", " : ""}params${
+        paramRequired ? "" : "?"
+      }: Types.${paramTypeName}`
+    : "";
 
   return `
 
@@ -144,7 +156,9 @@ export function getFunction(endPoint: any) {
      * ${description}
      */
     async ${functionName} (${extraParams}${params}) {
-      return (await this.${method.toLowerCase()}<Types.${returnType}>(\`${uri}\`, params));
+      return (await this.${method.toLowerCase()}<Types.${responseTypeName}>(\`${uri}\`${
+    paramExists ? ", params" : ""
+  }));
     }
     `;
 }

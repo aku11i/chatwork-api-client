@@ -35,3 +35,12 @@ export function getParamTypeName(method: string, uri: string) {
 export function getResponseTypeName(method: string, uri: string) {
   return pascalCase.pascalCase(getFunctionName(method, uri) + "Response");
 }
+
+export function hasProp({ types, children, arrayProp }: Property) {
+  if (types !== "object") return true;
+  return Boolean(children?.length);
+}
+
+export function isChildrenRequired({ children }: Property) {
+  return Boolean(children?.some((child) => child.required));
+}

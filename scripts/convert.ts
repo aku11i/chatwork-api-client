@@ -1,13 +1,17 @@
-import { Property, getParamTypeName, getResponseTypeName } from "./utils";
+import {
+  Property,
+  getParamTypeName,
+  getResponseTypeName,
+  getFunctionName,
+  getCommandName,
+  getParamsFromUri,
+} from "./utils";
 
 import fs = require("fs");
 import path = require("path");
-import yaml = require("yaml");
 import prettier = require("prettier");
 
 import EndPoints = require("./endPoints.json");
-import { getType } from "./typeTemplates";
-import { getFunction, getClass, getClassHeader } from "./classTemplates";
 
 const PrettierConfig = require("../.prettierrc.json");
 
@@ -35,10 +39,14 @@ export function queryParameterToProp(name: any, data: any): Property {
   };
 }
 
-export function queryParametersToProps(queryParameters: any): Property[] {
-  return Object.entries(queryParameters).map(([name, data]) =>
+export function queryParametersToProp(queryParameters: any): Property {
+  const properties = Object.entries(queryParameters).map(([name, data]) =>
     queryParameterToProp(name, data),
   );
+  return {
+    types: "object",
+    children: properties,
+  };
 }
 
 export function schemaPropertyToProperty(
@@ -89,10 +97,9 @@ export function responseSchemaToArrayProp(schema: any): Property {
 }
 
 export function rootResponseSchemaToProp(schema: any): Property {
-  if (schema.type === "array") {
-    return responseSchemaToArrayProp(schema);
-  }
-  return responseSchemaToObjectProp(schema);
+  return schema.type === "array"
+    ? responseSchemaToArrayProp(schema)
+    : responseSchemaToObjectProp(schema);
 }
 
 export function responseExampleToProps(example: any): Property {
@@ -121,7 +128,7 @@ export function responsesToProp(responses: any): Property {
 
 const paramTypes = EndPoints.map((endPoint) => ({
   name: getParamTypeName(endPoint.method, endPoint.uri),
-  props: queryParametersToProps(endPoint.info.queryParameters),
+  props: queryParametersToProp(endPoint.info.queryParameters),
 }));
 
 const responseTypes = EndPoints.map((endPoint) => ({
@@ -129,43 +136,22 @@ const responseTypes = EndPoints.map((endPoint) => ({
   props: responsesToProp(endPoint.info.responses),
 }));
 
-const paramData = paramTypes
-  .map((paramType) =>
-    prettier.format(getType(paramType.name, paramType.props), {
-      ...PrettierConfig,
-      parser: "typescript",
-    }),
-  )
-  .join("\n");
+const buildData = EndPoints.map((endPoint, i) => ({
+  uri: endPoint.uri,
+  method: endPoint.method,
+  description: endPoint.info.description,
+  functionName: getFunctionName(endPoint.method, endPoint.uri),
+  paramTypeName: getParamTypeName(endPoint.method, endPoint.uri),
+  responseTypeName: getResponseTypeName(endPoint.method, endPoint.uri),
+  commandName: getCommandName(endPoint.method, endPoint.uri),
+  uriParams: getParamsFromUri(endPoint.uri),
+  param: paramTypes[i].props,
+  response: responseTypes[i].props,
+}));
 
-const responseData = responseTypes
-  .map((responseType) =>
-    prettier.format(getType(responseType.name, responseType.props), {
-      ...PrettierConfig,
-      parser: "typescript",
-    }),
-  )
-  .join("\n");
-
-const functions = EndPoints.map((endPoint) => getFunction(endPoint)).join("\n");
-
-const classData = prettier.format(
-  [getClassHeader(), getClass(functions)].join("\n"),
-  {
-    ...PrettierConfig,
-    parser: "typescript",
-  },
-);
-
-const typeData = prettier.format([paramData, responseData].join("\n"), {
+const buildDataJson = prettier.format(JSON.stringify(buildData), {
   ...PrettierConfig,
-  parser: "typescript",
+  parser: "json",
 });
 
-const classPath = path.resolve(__dirname, "..", "src", "api.ts");
-if (fs.existsSync(classPath)) fs.unlinkSync(classPath);
-fs.writeFileSync(classPath, classData);
-
-const typePath = path.resolve(__dirname, "..", "src", "types.ts");
-if (fs.existsSync(typePath)) fs.unlinkSync(typePath);
-fs.writeFileSync(typePath, typeData);
+fs.writeFileSync(path.join(__dirname, "buildData.json"), buildDataJson);
