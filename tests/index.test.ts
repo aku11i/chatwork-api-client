@@ -1,4 +1,4 @@
-import ChatworkApi from ".";
+import ChatworkApi from "../src";
 import * as fs from "fs";
 import * as path from "path";
 
