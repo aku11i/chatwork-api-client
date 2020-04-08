@@ -1,7 +1,3 @@
-export type GetMeParam = {};
-
-export type GetMyStatusParam = {};
-
 export type GetMyTasksParam = {
   /** タスクの依頼者のアカウントID */
   assigned_by_account_id?: number;
@@ -9,10 +5,6 @@ export type GetMyTasksParam = {
   /** タスクのステータス */
   status?: "open" | "done";
 };
-
-export type GetContactsParam = {};
-
-export type GetRoomsParam = {};
 
 export type PostRoomParam = {
   /** グループチャット名 */
@@ -60,8 +52,6 @@ export type PostRoomParam = {
     | "travel";
 };
 
-export type GetRoomParam = {};
-
 export type PutRoomParam = {
   /** グループチャット名 */
   name?: string;
@@ -94,8 +84,6 @@ export type DeleteRoomParam = {
   /** 退席するか、削除するか */
   action_type: "leave" | "delete";
 };
-
-export type GetRoomMembersParam = {};
 
 export type PutRoomMembersParam = {
   /** 管理者権限のユーザー */
@@ -131,14 +119,10 @@ export type PutRoomMessagesUnreadParam = {
   message_id: string;
 };
 
-export type GetRoomMessageParam = {};
-
 export type PutRoomMessageParam = {
   /** 更新するメッセージ本文 */
   body: string;
 };
-
-export type DeleteRoomMessageParam = {};
 
 export type GetRoomTasksParam = {
   /** タスクの担当者のアカウントID */
@@ -165,8 +149,6 @@ export type PostRoomTaskParam = {
   limit_type?: "none" | "date" | "time";
 };
 
-export type GetRoomTaskParam = {};
-
 export type PutRoomTaskStatusParam = {
   /** タスク完了状態 */
   body: "open" | "done";
@@ -177,14 +159,10 @@ export type GetRoomFilesParam = {
   account_id?: number;
 };
 
-export type PostRoomFileParam = {};
-
 export type GetRoomFileParam = {
   /** ダウンロードする為のURLを生成するか */
   create_download_url?: 0 | 1;
 };
-
-export type GetRoomLinkParam = {};
 
 export type PostRoomLinkParam = {
   /** リンク文字列 */
@@ -207,14 +185,6 @@ export type PutRoomLinkParam = {
   /** リンク説明文 */
   description?: string;
 };
-
-export type DeleteRoomLinkParam = {};
-
-export type GetIncomingRequestsParam = {};
-
-export type PutIncomingRequestParam = {};
-
-export type DeleteIncomingRequestParam = {};
 
 export type GetMeResponse = {
   /**  */

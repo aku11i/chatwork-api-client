@@ -8,13 +8,16 @@ import { getFunction, getClass, getClassHeader } from "./classTemplates";
 const PrettierConfig = require("../.prettierrc.json");
 
 import BuildDataJson = require("./buildData.json");
+import { hasProp } from "./utils";
 
-const paramData = BuildDataJson.map((buildData) =>
-  prettier.format(getType(buildData.paramTypeName, buildData.param), {
-    ...PrettierConfig,
-    parser: "typescript",
-  }),
-).join("\n");
+const paramData = BuildDataJson.filter((buildData) => hasProp(buildData.param))
+  .map((buildData) =>
+    prettier.format(getType(buildData.paramTypeName, buildData.param), {
+      ...PrettierConfig,
+      parser: "typescript",
+    }),
+  )
+  .join("\n");
 
 const responseData = BuildDataJson.map((buildData) =>
   prettier.format(getType(buildData.responseTypeName, buildData.response), {
