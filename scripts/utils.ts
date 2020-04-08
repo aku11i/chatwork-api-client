@@ -1,5 +1,6 @@
 import camelCase = require("camelcase");
 import pascalCase = require("pascal-case");
+import paramCase = require("param-case");
 
 export type Property = {
   name?: string;
@@ -34,6 +35,10 @@ export function getParamTypeName(method: string, uri: string) {
 
 export function getResponseTypeName(method: string, uri: string) {
   return pascalCase.pascalCase(getFunctionName(method, uri) + "Response");
+}
+
+export function getCommandName(method: string, uri: string) {
+  return paramCase.paramCase(getFunctionName(method, uri));
 }
 
 export function hasProp({ types, children, arrayProp }: Property) {
