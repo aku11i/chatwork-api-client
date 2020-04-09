@@ -49,3 +49,11 @@ export function hasProp({ types, children, arrayProp }: Property) {
 export function isChildrenRequired({ children }: Property) {
   return Boolean(children?.some((child) => child.required));
 }
+
+export function flatObjectProperties(property: Property): Property[] {
+  if (property.types !== "object") return [property];
+
+  return (property.children || new Array<Property>()).flatMap(
+    flatObjectProperties,
+  );
+}

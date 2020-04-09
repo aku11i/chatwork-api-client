@@ -31,10 +31,20 @@ export default class ChatworkApi {
     return this._rateLimits;
   }
 
-  constructor(private api_token: string) {
+  constructor(private api_token?: string) {
     this.headers = {
       "X-ChatWorkToken": this.api_token,
     };
+  }
+
+  setApiToken(api_token: string) {
+    this.headers["X-ChatWorkToken"] = api_token;
+  }
+
+  private checkApiToken() {
+    if (!this.headers["X-ChatWorkToken"]) {
+      throw new Error("Chatwork API Token is not set.");
+    }
   }
 
   private saveRateLimits(headers: any) {
@@ -45,6 +55,7 @@ export default class ChatworkApi {
   }
 
   private async get<T>(uri: string, params: any = {}) {
+    this.checkApiToken();
     const { data, headers } = await axios.get(CHATWORK_URL + uri, {
       headers: this.headers,
       params,
@@ -56,6 +67,7 @@ export default class ChatworkApi {
   }
 
   private async post<T>(uri: string, params: any = {}) {
+    this.checkApiToken();
     const { data, headers } = await axios.post(
       CHATWORK_URL + uri,
       stringify(params),
@@ -73,6 +85,7 @@ export default class ChatworkApi {
   }
 
   private async delete<T>(uri: string, params: any = {}) {
+    this.checkApiToken();
     const { data, headers } = await axios.delete(CHATWORK_URL + uri, {
       headers: this.headers,
       params,
@@ -84,6 +97,7 @@ export default class ChatworkApi {
   }
 
   private async put<T>(uri: string, params: any = {}) {
+    this.checkApiToken();
     const { data, headers } = await axios.put(
       CHATWORK_URL + uri,
       stringify(params),
