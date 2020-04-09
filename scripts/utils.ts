@@ -1,5 +1,6 @@
 import camelCase = require("camelcase");
 import pascalCase = require("pascal-case");
+import paramCase = require("param-case");
 
 export type Property = {
   name?: string;
@@ -36,6 +37,10 @@ export function getResponseTypeName(method: string, uri: string) {
   return pascalCase.pascalCase(getFunctionName(method, uri) + "Response");
 }
 
+export function getCommandName(method: string, uri: string) {
+  return paramCase.paramCase(getFunctionName(method, uri));
+}
+
 export function hasProp({ types, children, arrayProp }: Property) {
   if (types !== "object") return true;
   return Boolean(children?.length);
@@ -43,4 +48,12 @@ export function hasProp({ types, children, arrayProp }: Property) {
 
 export function isChildrenRequired({ children }: Property) {
   return Boolean(children?.some((child) => child.required));
+}
+
+export function flatObjectProperties(property: Property): Property[] {
+  if (property.types !== "object") return [property];
+
+  return (property.children || new Array<Property>()).flatMap(
+    flatObjectProperties,
+  );
 }
