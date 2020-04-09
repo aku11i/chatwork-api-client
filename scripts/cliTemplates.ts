@@ -47,7 +47,7 @@ export function getCliHeader() {
     type PrintType = 'json';
 
     function printResult(response: any, printType: PrintType) {
-        console.log(response);
+        console.log(JSON.stringify(response, undefined, 2));
     }
 
     function printError(error: Error) {
