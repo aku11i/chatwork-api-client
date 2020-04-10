@@ -28,7 +28,7 @@ function getAction({ uriParams, param, functionName }: BuildData) {
     const ${paramStr} = cmd;
     const { api_token } = cmd;
     if(api_token) {
-        api.setApiToken(api_token);
+        api.apiToken = api_token;
     }
     api.${functionName}(${functionParams}).then((response) => {
         printResult(response, "json");
@@ -54,7 +54,7 @@ export function getCliHeader() {
         console.error('Error: ' + error.message);
     }
 
-    const api = new ChatworkApi();
+    const api = new ChatworkApi(process.env.CHATWORK_API_TOKEN);
     `;
 }
 

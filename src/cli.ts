@@ -11,7 +11,7 @@ function printError(error: Error) {
   console.error("Error: " + error.message);
 }
 
-const api = new ChatworkApi();
+const api = new ChatworkApi(process.env.CHATWORK_API_TOKEN);
 
 program
   .command("get-me")
@@ -22,7 +22,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getMe()
@@ -44,7 +44,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getMyStatus()
@@ -73,7 +73,7 @@ program
     const { assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getMyTasks({ assigned_by_account_id, status })
@@ -95,7 +95,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getContacts()
@@ -117,7 +117,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRooms()
@@ -167,7 +167,7 @@ program
     } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .postRoom({
@@ -200,7 +200,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoom(room_id)
@@ -225,7 +225,7 @@ program
     const { name, description, icon_preset } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoom(room_id, { name, description, icon_preset })
@@ -251,7 +251,7 @@ program
     const { action_type } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .deleteRoom(room_id, { action_type })
@@ -274,7 +274,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomMembers(room_id)
@@ -308,7 +308,7 @@ program
     const { members_admin_ids, members_member_ids, members_readonly_ids } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomMembers(room_id, {
@@ -337,7 +337,7 @@ program
     const { force } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomMessages(room_id, { force })
@@ -364,7 +364,7 @@ program
     const { body, self_unread } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .postRoomMessage(room_id, { body, self_unread })
@@ -390,7 +390,7 @@ program
     const { message_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomMessagesRead(room_id, { message_id })
@@ -416,7 +416,7 @@ program
     const { message_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomMessagesUnread(room_id, { message_id })
@@ -440,7 +440,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomMessage(room_id, message_id)
@@ -464,7 +464,7 @@ program
     const { body } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomMessage(room_id, message_id, { body })
@@ -488,7 +488,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .deleteRoomMessage(room_id, message_id)
@@ -518,7 +518,7 @@ program
     const { account_id, assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomTasks(room_id, { account_id, assigned_by_account_id, status })
@@ -547,7 +547,7 @@ program
     const { body, to_ids, limit, limit_type } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .postRoomTask(room_id, { body, to_ids, limit, limit_type })
@@ -571,7 +571,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomTask(room_id, task_id)
@@ -595,7 +595,7 @@ program
     const { body } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomTaskStatus(room_id, task_id, { body })
@@ -623,7 +623,7 @@ program
     const { account_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomFiles(room_id, { account_id })
@@ -646,7 +646,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .postRoomFile(room_id)
@@ -673,7 +673,7 @@ program
     const { create_download_url } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomFile(room_id, file_id, { create_download_url })
@@ -696,7 +696,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getRoomLink(room_id)
@@ -721,7 +721,7 @@ program
     const { code, need_acceptance, description } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .postRoomLink(room_id, { code, need_acceptance, description })
@@ -746,7 +746,7 @@ program
     const { code, need_acceptance, description } = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putRoomLink(room_id, { code, need_acceptance, description })
@@ -769,7 +769,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .deleteRoomLink(room_id)
@@ -793,7 +793,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .getIncomingRequests()
@@ -816,7 +816,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .putIncomingRequest(request_id)
@@ -839,7 +839,7 @@ program
     const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
-      api.setApiToken(api_token);
+      api.apiToken = api_token;
     }
     api
       .deleteIncomingRequest(request_id)

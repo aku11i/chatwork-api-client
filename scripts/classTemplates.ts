@@ -36,9 +36,14 @@ export function getClass(functions: string) {
      * Chatwork API V2
      */
     export default class ChatworkApi {
-      private readonly headers: any;
-
       private _rateLimits?: RateLimits;
+      private _apiToken?: string;
+      set apiToken(apiToken: string | undefined) {
+        this._apiToken = apiToken;
+      }
+      get apiToken() {
+        return this._apiToken || process.env.CHATWORK_API_TOKEN;
+      }
 
       /**
        * API制限情報
@@ -48,18 +53,18 @@ export function getClass(functions: string) {
         return this._rateLimits;
       }
 
-      constructor(private api_token?: string) {
-        this.headers = {
-          "X-ChatWorkToken": this.api_token,
+      constructor(apiToken?: string) {
+        this._apiToken = apiToken;
+      }
+
+      private getRequestHeaders() {
+        return {
+          "X-ChatWorkToken": this.apiToken
         }
       }
 
-      setApiToken(api_token: string) {
-        this.headers["X-ChatWorkToken"] = api_token;
-      }
-
-      private checkApiToken() {
-        if(!this.headers["X-ChatWorkToken"]) {
+      private checkApiToken(headers: any) {
+        if(!headers["X-ChatWorkToken"]) {
           throw new Error("Chatwork API Token is not set.")
         }
       }
@@ -72,11 +77,12 @@ export function getClass(functions: string) {
       }
 
       private async get<T>(uri: string, params: any = {}) {
-        this.checkApiToken();
+        const requestHeaders = this.getRequestHeaders();
+        this.checkApiToken(requestHeaders);
         const { data, headers } = await axios.get(
           CHATWORK_URL + uri,
           {
-            headers: this.headers,
+            headers: requestHeaders,
             params,
           }
         );
@@ -87,13 +93,14 @@ export function getClass(functions: string) {
       }
 
       private async post<T>(uri: string, params: any = {}) {
-        this.checkApiToken();
+        const requestHeaders = this.getRequestHeaders();
+        this.checkApiToken(requestHeaders);
         const { data, headers } = await axios.post(
           CHATWORK_URL + uri,
           stringify(params),
           {
             headers: {
-              ...this.headers,
+              ...requestHeaders,
               "Content-Type": "application/x-www-form-urlencoded"
             }
           }
@@ -105,11 +112,12 @@ export function getClass(functions: string) {
       }
 
       private async delete<T>(uri: string, params: any = {}) {
-        this.checkApiToken();
+        const requestHeaders = this.getRequestHeaders();
+        this.checkApiToken(requestHeaders);
         const { data, headers } = await axios.delete(
           CHATWORK_URL + uri,
           {
-            headers: this.headers,
+            headers: requestHeaders,
             params,
           }
         );
@@ -120,13 +128,14 @@ export function getClass(functions: string) {
       }
 
       private async put<T>(uri: string, params: any = {}) {
-        this.checkApiToken();
+        const requestHeaders = this.getRequestHeaders();
+        this.checkApiToken(requestHeaders);
         const { data, headers } = await axios.put(
           CHATWORK_URL + uri,
           stringify(params),
           {
             headers: {
-              ...this.headers,
+              ...requestHeaders,
               "Content-Type": "application/x-www-form-urlencoded"
             }
           }
