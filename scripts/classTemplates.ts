@@ -1,12 +1,4 @@
-import {
-  getFunctionName,
-  getParamTypeName,
-  getResponseTypeName,
-  getParamsFromUri,
-  Property,
-  hasProp,
-  isChildrenRequired,
-} from "./utils";
+import { hasProp, isChildrenRequired } from "./utils";
 import { BuildData } from "./typings";
 
 export function getClassHeader() {
