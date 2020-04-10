@@ -25,7 +25,7 @@ export default class ChatworkApi {
     this._apiToken = apiToken;
   }
   get apiToken() {
-    return this._apiToken || process.env.CHATWORK_API_TOKEN;
+    return this._apiToken || process?.env?.CHATWORK_API_TOKEN;
   }
 
   /**
