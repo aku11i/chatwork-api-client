@@ -102,6 +102,10 @@ Commands:
   help [command]                                        display help for command
 ```
 
+## API Token
+
+環境変数 `CHATWORK_API_TOKEN` に API トークンをセットしておくと、クラス・コマンドの API トークンの指定を省略できます。
+
 ## Development
 
 ### Setup
