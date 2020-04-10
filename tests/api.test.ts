@@ -1,8 +1,5 @@
 import ChatworkApi from "../src";
-import * as fs from "fs";
-import * as path from "path";
-
-const API_TOKEN_PATH = path.resolve(__dirname, "../API_TOKEN");
+import { getApiToken } from "./util";
 
 const API_TOKEN = getApiToken();
 
@@ -31,19 +28,3 @@ test("API Connection Test (GET,POST,PUT,DELETE)", async () => {
   const deleteResult = await api.deleteRoomMessage(room_id, message_id);
   expect(deleteResult).toHaveProperty("message_id");
 });
-
-function getApiToken() {
-  if (!fs.existsSync(API_TOKEN_PATH)) {
-    throw new Error(
-      ['The file "API_TOKEN" is not found.', API_TOKEN_PATH].join("\n"),
-    );
-  }
-  return fs
-    .readFileSync(API_TOKEN_PATH, {
-      encoding: "utf8",
-    })
-    .split("\n")
-    .filter((line) => line && !line.startsWith("#"))
-    .join("")
-    .trim();
-}
