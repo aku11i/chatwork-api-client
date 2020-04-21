@@ -68,7 +68,7 @@ program
     "--assigned_by_account_id <assigned_by_account_id>",
     "<number> タスクの依頼者のアカウントID",
   )
-  .option("--status <status>", "<string> タスクのステータス")
+  .option("--status <status>", "<open|done> タスクのステータス")
   .action((cmd) => {
     const { assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
@@ -152,7 +152,10 @@ program
     "--members_readonly_ids <members_readonly_ids>",
     "<string> 閲覧のみ権限のユーザー",
   )
-  .option("--icon_preset <icon_preset>", "<string> アイコン種類")
+  .option(
+    "--icon_preset <icon_preset>",
+    "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
+  )
   .action((cmd) => {
     const {
       name,
@@ -220,7 +223,10 @@ program
   .arguments("<room_id>")
   .option("--name <name>", "<string> グループチャット名")
   .option("--description <description>", "<string> チャット概要")
-  .option("--icon_preset <icon_preset>", "<string> アイコン種類")
+  .option(
+    "--icon_preset <icon_preset>",
+    "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
+  )
   .action((room_id, cmd) => {
     const { name, description, icon_preset } = cmd;
     const { api_token } = cmd;
@@ -245,7 +251,7 @@ program
   .arguments("<room_id>")
   .requiredOption(
     "--action_type <action_type>",
-    "<string> <required> 退席するか、削除するか",
+    "<leave|delete> <required> 退席するか、削除するか",
   )
   .action((room_id, cmd) => {
     const { action_type } = cmd;
@@ -513,7 +519,7 @@ program
     "--assigned_by_account_id <assigned_by_account_id>",
     "<number> タスクの依頼者のアカウントID",
   )
-  .option("--status <status>", "<string> タスクのステータス")
+  .option("--status <status>", "<open|done> タスクのステータス")
   .action((room_id, cmd) => {
     const { account_id, assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
@@ -542,7 +548,7 @@ program
     "<string> <required> 担当者のアカウントID",
   )
   .option("--limit <limit>", "<number> タスクの期限")
-  .option("--limit_type <limit_type>", "<string> タスク期限の種別")
+  .option("--limit_type <limit_type>", "<none|date|time> タスク期限の種別")
   .action((room_id, cmd) => {
     const { body, to_ids, limit, limit_type } = cmd;
     const { api_token } = cmd;
@@ -590,7 +596,7 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
   .arguments("<room_id>")
   .arguments("<task_id>")
-  .requiredOption("--body <body>", "<string> <required> タスク完了状態")
+  .requiredOption("--body <body>", "<open|done> <required> タスク完了状態")
   .action((room_id, task_id, cmd) => {
     const { body } = cmd;
     const { api_token } = cmd;
@@ -641,15 +647,22 @@ program
   .description("チャットに新しいファイルをアップロード")
   .option("--api_token <api_token>", "Chatwork API Token")
   .arguments("<room_id>")
-
+  .requiredOption(
+    "--file <file>",
+    "<string> <required> アップロードするファイル（上限：5MB）",
+  )
+  .option(
+    "--message <message>",
+    "<string> ファイルと一緒に投稿するメッセージの本文",
+  )
   .action((room_id, cmd) => {
-    const {} = cmd;
+    const { file, message } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
     api
-      .postRoomFile(room_id)
+      .postRoomFile(room_id, { file, message })
       .then((response) => {
         printResult(response, "json");
       })

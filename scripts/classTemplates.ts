@@ -6,8 +6,12 @@ export function getClassHeader() {
     // This file was automatically generated.
     import axios from 'axios';
     import { stringify } from 'qs';
+    import FormData = require("form-data");
+    import FileType = require("file-type");
 
     import * as Types from './types';
+    import { readFileAsync } from './file';
+
 
     export const CHATWORK_URL = 'https://api.chatwork.com/v2';
 
@@ -103,6 +107,38 @@ export function getClass(functions: string) {
         return data as T;
       }
 
+      private async postFile<T>(uri: string, params: any = {}) {
+        const requestHeaders = this.getRequestHeaders();
+        this.checkApiToken(requestHeaders);
+
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(params)) {
+          if(value === null || value === undefined) continue;
+          if (key === "file") {
+            const file = await readFileAsync(value as string);
+            const fileType = await FileType.fromBuffer(file);
+            formData.append(key, file, {
+              contentType: fileType?.mime,
+              filepath: value as string,
+              knownLength: file.length,
+            });
+          } else {
+            formData.append(key, value);
+          }
+        }
+
+        const { data, headers } = await axios.post(CHATWORK_URL + uri, formData, {
+          headers: {
+            ...requestHeaders,
+            ...formData.getHeaders(),
+          },
+        });
+
+        this.saveRateLimits(headers);
+
+        return data as T;
+      }
+
       private async delete<T>(uri: string, params: any = {}) {
         const requestHeaders = this.getRequestHeaders();
         this.checkApiToken(requestHeaders);
@@ -152,6 +188,7 @@ export function getFunction({
   responseTypeName,
   uriParams,
   param,
+  isMultipartFormData,
 }: BuildData) {
   const extraParams = (uriParams as string[])
     .map((p) => `${p}: string | number`)
@@ -165,13 +202,17 @@ export function getFunction({
       }: Types.${paramTypeName}`
     : "";
 
+  const methodName = isMultipartFormData
+    ? `${method.toLowerCase()}File`
+    : method.toLowerCase();
+
   return `
 
     /**
      * ${description}
      */
     async ${functionName} (${extraParams}${params}) {
-      return (await this.${method.toLowerCase()}<Types.${responseTypeName}>(\`${uri}\`${
+      return (await this.${methodName}<Types.${responseTypeName}>(\`${uri}\`${
     paramExists ? ", params" : ""
   }));
     }

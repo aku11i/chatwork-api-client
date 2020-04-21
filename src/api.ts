@@ -1,8 +1,11 @@
 // This file was automatically generated.
 import axios from "axios";
 import { stringify } from "qs";
+import FormData = require("form-data");
+import FileType = require("file-type");
 
 import * as Types from "./types";
+import { readFileAsync } from "./file";
 
 export const CHATWORK_URL = "https://api.chatwork.com/v2";
 
@@ -85,6 +88,38 @@ export default class ChatworkApi {
         },
       },
     );
+
+    this.saveRateLimits(headers);
+
+    return data as T;
+  }
+
+  private async postFile<T>(uri: string, params: any = {}) {
+    const requestHeaders = this.getRequestHeaders();
+    this.checkApiToken(requestHeaders);
+
+    const formData = new FormData();
+    for (const [key, value] of Object.entries(params)) {
+      if (value === null || value === undefined) continue;
+      if (key === "file") {
+        const file = await readFileAsync(value as string);
+        const fileType = await FileType.fromBuffer(file);
+        formData.append(key, file, {
+          contentType: fileType?.mime,
+          filepath: value as string,
+          knownLength: file.length,
+        });
+      } else {
+        formData.append(key, value);
+      }
+    }
+
+    const { data, headers } = await axios.post(CHATWORK_URL + uri, formData, {
+      headers: {
+        ...requestHeaders,
+        ...formData.getHeaders(),
+      },
+    });
 
     this.saveRateLimits(headers);
 
@@ -363,9 +398,13 @@ export default class ChatworkApi {
   /**
    * チャットに新しいファイルをアップロード
    */
-  async postRoomFile(room_id: string | number) {
-    return await this.post<Types.PostRoomFileResponse>(
+  async postRoomFile(
+    room_id: string | number,
+    params: Types.PostRoomFileParam,
+  ) {
+    return await this.postFile<Types.PostRoomFileResponse>(
       `/rooms/${room_id}/files`,
+      params,
     );
   }
 

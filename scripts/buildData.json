@@ -32,7 +32,8 @@
         { "name": "avatar_image_url", "types": "string", "required": true },
         { "name": "login_mail", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/my/status",
@@ -54,7 +55,8 @@
         { "name": "mention_num", "types": "number", "required": true },
         { "name": "mytask_num", "types": "number", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/my/tasks",
@@ -128,7 +130,8 @@
           }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/contacts",
@@ -155,7 +158,8 @@
           { "name": "avatar_image_url", "types": "string", "required": false }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms",
@@ -197,7 +201,8 @@
           { "name": "last_update_time", "types": "number", "required": true }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms",
@@ -285,7 +290,8 @@
     "response": {
       "types": "object",
       "children": [{ "name": "room_id", "types": "number", "required": true }]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}",
@@ -325,7 +331,8 @@
         { "name": "last_update_time", "types": "number", "required": true },
         { "name": "description", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}",
@@ -378,7 +385,8 @@
     "response": {
       "types": "object",
       "children": [{ "name": "room_id", "types": "number", "required": true }]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}",
@@ -401,7 +409,8 @@
         }
       ]
     },
-    "response": { "types": "object" }
+    "response": { "types": "object" },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/members",
@@ -433,7 +442,8 @@
           { "name": "avatar_image_url", "types": "string", "required": true }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/members",
@@ -495,7 +505,8 @@
           "required": true
         }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages",
@@ -541,7 +552,8 @@
           { "name": "update_time", "types": "number", "required": true }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages",
@@ -573,7 +585,8 @@
       "children": [
         { "name": "message_id", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages/read",
@@ -600,7 +613,8 @@
         { "name": "unread_num", "types": "number", "required": true },
         { "name": "mention_num", "types": "number", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages/unread",
@@ -628,7 +642,8 @@
         { "name": "unread_num", "types": "number", "required": true },
         { "name": "mention_num", "types": "number", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages/${message_id}",
@@ -658,7 +673,8 @@
         { "name": "send_time", "types": "number", "required": true },
         { "name": "update_time", "types": "number", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages/${message_id}",
@@ -685,7 +701,8 @@
       "children": [
         { "name": "message_id", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/messages/${message_id}",
@@ -702,7 +719,8 @@
       "children": [
         { "name": "message_id", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/tasks",
@@ -785,7 +803,8 @@
           }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/tasks",
@@ -834,7 +853,8 @@
           "required": true
         }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/tasks/${task_id}",
@@ -886,7 +906,8 @@
           "required": true
         }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/tasks/${task_id}/status",
@@ -912,7 +933,8 @@
     "response": {
       "types": "object",
       "children": [{ "name": "task_id", "types": "number", "required": true }]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/files",
@@ -959,7 +981,8 @@
           { "name": "upload_time", "types": "number", "required": true }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/files",
@@ -970,11 +993,27 @@
     "responseTypeName": "PostRoomFileResponse",
     "commandName": "post-room-file",
     "uriParams": ["room_id"],
-    "param": { "types": "object", "children": [] },
+    "param": {
+      "types": "object",
+      "children": [
+        {
+          "name": "file",
+          "description": "アップロードするファイル（上限：5MB）",
+          "types": "file",
+          "required": true
+        },
+        {
+          "name": "message",
+          "description": "ファイルと一緒に投稿するメッセージの本文",
+          "types": "string"
+        }
+      ]
+    },
     "response": {
       "types": "object",
       "children": [{ "name": "file_id", "description": "", "types": "number" }]
-    }
+    },
+    "isMultipartFormData": true
   },
   {
     "uri": "/rooms/${room_id}/files/${file_id}",
@@ -1015,7 +1054,8 @@
         { "name": "upload_time", "types": "number", "required": true },
         { "name": "download_url", "types": "string", "required": false }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/link",
@@ -1035,7 +1075,8 @@
         { "name": "need_acceptance", "types": "0|1", "required": false },
         { "name": "description", "types": "string", "required": false }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/link",
@@ -1077,7 +1118,8 @@
         { "name": "need_acceptance", "types": "0|1", "required": false },
         { "name": "description", "types": "string", "required": false }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/link",
@@ -1119,7 +1161,8 @@
         { "name": "need_acceptance", "types": "0|1", "required": false },
         { "name": "description", "types": "string", "required": false }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/rooms/${room_id}/link",
@@ -1139,7 +1182,8 @@
         { "name": "need_acceptance", "types": "0|1", "required": false },
         { "name": "description", "types": "string", "required": false }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/incoming_requests",
@@ -1167,7 +1211,8 @@
           { "name": "avatar_image_url", "types": "string", "required": true }
         ]
       }
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/incoming_requests/${request_id}",
@@ -1191,7 +1236,8 @@
         { "name": "department", "types": "string", "required": true },
         { "name": "avatar_image_url", "types": "string", "required": true }
       ]
-    }
+    },
+    "isMultipartFormData": false
   },
   {
     "uri": "/incoming_requests/${request_id}",
@@ -1203,6 +1249,7 @@
     "commandName": "delete-incoming-request",
     "uriParams": ["request_id"],
     "param": { "types": "object", "children": [] },
-    "response": { "types": "object" }
+    "response": { "types": "object" },
+    "isMultipartFormData": false
   }
 ]

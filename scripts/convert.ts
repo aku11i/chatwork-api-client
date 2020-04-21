@@ -128,7 +128,10 @@ export function responsesToProp(responses: any): Property {
 
 const paramTypes = EndPoints.map((endPoint) => ({
   name: getParamTypeName(endPoint.method, endPoint.uri),
-  props: queryParametersToProp(endPoint.info.queryParameters),
+  props: queryParametersToProp(
+    endPoint.info["multipart/form-data"]?.formParameters ??
+      endPoint.info.queryParameters,
+  ),
 }));
 
 const responseTypes = EndPoints.map((endPoint) => ({
@@ -147,6 +150,7 @@ const buildData = EndPoints.map((endPoint, i) => ({
   uriParams: getParamsFromUri(endPoint.uri),
   param: paramTypes[i].props,
   response: responseTypes[i].props,
+  isMultipartFormData: Boolean(endPoint.info["multipart/form-data"]),
 }));
 
 const buildDataJson = prettier.format(JSON.stringify(buildData), {
