@@ -3,6 +3,7 @@ import axios from "axios";
 import { stringify } from "qs";
 import FormData = require("form-data");
 import FileType = require("file-type");
+import { basename } from "path";
 
 import * as Types from "./types";
 import { readFileAsync } from "./file";
@@ -104,9 +105,10 @@ export default class ChatworkApi {
       if (key === "file") {
         const file = await readFileAsync(value as string);
         const fileType = await FileType.fromBuffer(file);
+        const fileName = basename(value as string);
         formData.append(key, file, {
           contentType: fileType?.mime,
-          filepath: value as string,
+          filename: fileName,
           knownLength: file.length,
         });
       } else {
