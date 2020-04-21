@@ -42,6 +42,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@types/form-data": "^2.5.0",
     "@types/jest": "^25.2.1",
     "@types/js-yaml": "^3.12.3",
     "@types/node": "^13.11.0",
@@ -64,6 +65,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "commander": "^5.0.0",
+    "file-type": "^14.1.4",
+    "form-data": "^3.0.0",
     "qs": "^6.9.3"
   }
 }

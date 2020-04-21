@@ -1,7 +1,7 @@
 # Chatwork API Client
 
-Chatwork API v2 client for TypeScript.<br>
-CLI `chatwork-api-client` command is also provided.
+Chatwork API v2 client for TypeScript / JavaScript.<br>
+CLI command `chatwork-api-client` is also provided.
 
 ## Features
 
@@ -10,12 +10,9 @@ CLI `chatwork-api-client` command is also provided.
   - 完全な型定義とコメント説明がついています。
 - API 通信に [axios](https://github.com/axios/axios) を使用しています。
 - コマンドラインインターフェースも用意されています。 `chatwork-api-client`
-
-## Work In Progress
-
-- 動作確認が十分に取れていません。
-- ファイルを添付するメソッドなどはまだ動作しません。
-  - `postRoomFile` など
+- 動作確認 Node.js バージョン： `12 <=`
+- ファイル送信処理に Node.js の fs モジュールなどを使用しています。<br>
+  現状ブラウザで動作させることはできません。
 
 ## API
 
@@ -41,8 +38,6 @@ const api = new ChatworkApi("YOUR_API_TOKEN");
   const { name, account_id } = me;
 })();
 ```
-
-ブラウザやバージョンの低い Node.js で動作させる場合はトランスパイルしてください。
 
 ## CLI
 

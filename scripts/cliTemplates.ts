@@ -1,5 +1,6 @@
 import { flatObjectProperties } from "./utils";
 import { BuildData } from "./typings";
+import { getTypeString } from "./typeTemplates";
 
 function getArguments({ uriParams }: BuildData) {
   return (uriParams as string[]).map(
@@ -10,8 +11,12 @@ function getArguments({ uriParams }: BuildData) {
 function getOptions({ param }: BuildData) {
   return flatObjectProperties(param).map((prop) =>
     prop.required
-      ? `.requiredOption("--${prop.name} <${prop.name}>", "<${prop.types}> <required> ${prop.description}")`
-      : `.option("--${prop.name} <${prop.name}>", "<${prop.types}> ${prop.description}")`,
+      ? `.requiredOption("--${prop.name} <${prop.name}>", "<${getTypeString(
+          prop,
+        ).replace(/"/g, "")}> <required> ${prop.description}")`
+      : `.option("--${prop.name} <${prop.name}>", "<${getTypeString(
+          prop,
+        ).replace(/"/g, "")}> ${prop.description}")`,
   );
 }
 
