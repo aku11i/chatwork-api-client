@@ -106,7 +106,7 @@ Commands:
 ### Setup
 
 ```sh
-git clone https://github.com/ShuAkt/chatwork-api-client.git
+git clone https://github.com/aktriver/chatwork-api-client.git
 cd chatwork-api-client
 
 git submodule update --init
