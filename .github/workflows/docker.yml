@@ -2,6 +2,8 @@ name: Docker Image CI
 
 on:
   push:
+    branches:
+      - master
     tags:
       - "v[0-9]+*"
 
@@ -10,9 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Login Docker Github Registry
-        run: docker login docker.pkg.github.com -u aktriver -p ${{ secrets.GITHUB_TOKEN }}
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:latest --tag docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:${{ github.ref }}
-      - name: Push the Docker image
-        run: docker push docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client
+      - uses: docker/build-push-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: aktriver
+          password: ${{ secrets.GITHUB_TOKEN }}
+          repository: aktriver/chatwork-api-client/chatwork-api-client
+          tag_with_ref: true
