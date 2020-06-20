@@ -4,6 +4,7 @@ import { BuildData } from "./typings";
 export function getClassHeader() {
   return `
     // This file was automatically generated.
+    //
     import axios from 'axios';
     import { stringify } from 'qs';
     import * as FormData from "form-data";
