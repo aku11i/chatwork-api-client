@@ -37,11 +37,10 @@ test("API Connection Test[CLI] (GET,POST,PUT,DELETE)", async () => {
 
   expect(deleteResult).toHaveProperty("message_id");
 
+  const filePath = join(__dirname, "test.txt");
+
   const postFileResultJson = execSync(
-    `yarn --silent start post-room-file --file "${join(
-      __dirname,
-      "test.txt",
-    )}" "${room_id}"`,
+    `yarn --silent start post-room-file --file_name "testfile.cli.txt" --file "${filePath}" "${room_id}"`,
   ).toString();
   const postFileResult = JSON.parse(postFileResultJson);
 

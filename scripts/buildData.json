@@ -1006,6 +1006,12 @@
           "name": "message",
           "description": "ファイルと一緒に投稿するメッセージの本文",
           "types": "string"
+        },
+        {
+          "name": "file_name",
+          "description": "ファイル名",
+          "types": "string",
+          "required": true
         }
       ]
     },

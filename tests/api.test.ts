@@ -1,6 +1,7 @@
 import ChatworkApi from "../src";
 import { getApiToken, sleep } from "./util";
 import { join } from "path";
+import { readFileSync } from "fs";
 
 const API_TOKEN = getApiToken();
 
@@ -34,7 +35,8 @@ test("API Connection Test (GET,POST,PUT,DELETE,File Upload)", async () => {
   expect(deleteResult).toHaveProperty("message_id");
 
   const postFileResult = await api.postRoomFile(room_id, {
-    file: join(__dirname, "test.txt"),
+    file: readFileSync(join(__dirname, "test.txt")),
+    file_name: "testfile.txt",
   });
   expect(postFileResult).toHaveProperty("file_id");
 });
