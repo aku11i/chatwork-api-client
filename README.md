@@ -1,5 +1,7 @@
 # Chatwork API Client
 
+![](https://github.com/aktriver/chatwork-api-client/workflows/Publish%20NPM%20package%20and%20Docker%20container/badge.svg)
+
 Chatwork API v2 client for TypeScript / JavaScript.<br>
 CLI command `chatwork-api-client` is also provided.
 
