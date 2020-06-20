@@ -29,7 +29,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node bin/chatwork-api-client.js",
-    "prepublishOnly": "npm-run-all generate build test",
+    "prepublishOnly": "npm-run-all generate build",
     "prebuild": "npm-run-all clean prettier",
     "build": "tsc",
     "prettier": "prettier --write src/*.ts scripts/*.ts *.js *.md",
