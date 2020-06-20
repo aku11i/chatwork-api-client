@@ -8,7 +8,6 @@ export function getClassHeader() {
     import { stringify } from 'qs';
     import * as FormData from "form-data";
     import * as FileType from "file-type/browser";
-    import { basename } from 'path';
 
     import * as Types from './types';
 
