@@ -52,6 +52,13 @@ chatwork-api-client --help
 # chapi --help
 ```
 
+## Docker
+
+```sh
+docker pull docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:latest
+docker run --rm --env "CHATWORK_API_TOKEN=YOUR_API_TOKEN" docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:latest --help
+```
+
 ```sh
 Usage: chatwork-api-client [options] [command]
 
