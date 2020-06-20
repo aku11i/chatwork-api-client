@@ -57,6 +57,9 @@ export function getCliHeader() {
     import ChatworkApi from '.';
     import { readFileSync } from 'fs';
 
+    const packageJson = require("../package.json");
+    program.version(packageJson.version);
+
     type PrintFormat = 'table' | 'json';
 
     function printResult(response: any, format: PrintFormat) {
