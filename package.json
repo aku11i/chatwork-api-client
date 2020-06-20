@@ -41,13 +41,11 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/form-data": "^2.5.0",
     "@types/jest": "^26.0.0",
     "@types/js-yaml": "^3.12.3",
     "@types/node": "^14.0.4",
     "@types/prettier": "^2.0.0",
     "@types/qs": "^6.9.1",
-    "@types/yaml": "^1.2.0",
     "camelcase": "^6.0.0",
     "jest": "^25.2.7",
     "js-yaml": "^3.13.1",
