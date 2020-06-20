@@ -1,17 +1,10 @@
 import { execSync } from "child_process";
 import { resolve, join } from "path";
-import { getApiToken, sleep } from "./util";
-
-const API_TOKEN = getApiToken();
+import { sleep } from "./util";
 
 const ROOT = resolve(__dirname, "..");
 
 process.chdir(ROOT);
-
-test("API Token", () => {
-  expect(API_TOKEN).toMatch(/^[a-z0-9]+$/);
-  process.env.CHATWORK_API_TOKEN = API_TOKEN;
-});
 
 test("API Connection Test[CLI] (GET,POST,PUT,DELETE)", async () => {
   const meJson = execSync("yarn --silent start get-me").toString();

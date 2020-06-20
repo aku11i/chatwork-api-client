@@ -1,16 +1,10 @@
 import ChatworkApi from "../src";
-import { getApiToken, sleep } from "./util";
+import { sleep } from "./util";
 import { join } from "path";
 import { readFileSync } from "fs";
 
-const API_TOKEN = getApiToken();
-
-test("API Token", () => {
-  expect(API_TOKEN).toMatch(/^[a-z0-9]+$/);
-});
-
 test("API Connection Test (GET,POST,PUT,DELETE,File Upload)", async () => {
-  const api = new ChatworkApi(API_TOKEN);
+  const api = new ChatworkApi();
 
   const me = await api.getMe();
   expect(me).toHaveProperty("room_id");

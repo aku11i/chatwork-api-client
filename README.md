@@ -10,9 +10,7 @@ CLI command `chatwork-api-client` is also provided.
   - 完全な型定義とコメント説明がついています。
 - API 通信に [axios](https://github.com/axios/axios) を使用しています。
 - コマンドラインインターフェースも用意されています。 `chatwork-api-client`
-- 動作確認 Node.js バージョン： `12 <=`
-- ファイル送信処理に Node.js の fs モジュールなどを使用しています。<br>
-  現状ブラウザで動作させることはできません。
+  - 動作確認 Node.js バージョン： `12 <=`
 
 ## API
 
@@ -20,7 +18,6 @@ CLI command `chatwork-api-client` is also provided.
 
 ```sh
 npm install --save chatwork-api-client
-# or
 # yarn add chatwork-api-client
 ```
 
@@ -28,7 +25,6 @@ npm install --save chatwork-api-client
 
 ```typescript
 import ChatworkApi from "chatwork-api-client";
-// or
 // const ChatworkApi = require("chatwork-api-client").default;
 
 const api = new ChatworkApi("YOUR_API_TOKEN");
@@ -51,7 +47,8 @@ npm install --global chatwork-api-client
 
 ```sh
 chatwork-api-client --help
-# or use alias
+
+# alias
 # chapi --help
 ```
 
@@ -112,7 +109,6 @@ cd chatwork-api-client
 git submodule update --init
 
 npm install
-# or
 # yarn install
 ```
 
@@ -121,23 +117,21 @@ npm install
 ```sh
 # src/*.ts の生成
 npm run generate
-# or
 # yarn generate
 
 # src/*.ts のビルド
 npm run build
-# or
 # yarn build
 ```
 
 ### Test
 
-`API_TOKEN` ファイルを作成してください。<br>
-参照： [./\_API_TOKEN](./_API_TOKEN)
+> 「マイチャット」への投稿テストを行います。
+
+環境変数 `CHATWORK_API_TOKEN` に Chatwork の API トークンをセットします。
 
 ```sh
 npm run test
-# or
 # yarn test
 ```
 
@@ -145,6 +139,5 @@ npm run test
 
 ```sh
 npm --silent start -- --help
-# or
 # yarn --silent start --help
 ```
