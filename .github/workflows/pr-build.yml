@@ -20,7 +20,5 @@ jobs:
       - run: npm ci
       - run: npm run generate
       - run: npm run build
-      - uses: technote-space/get-diff-action@v1
-      - name: Fail the job if git difference is occured
-        run: echo "Git difference has occurred in the repository." && exit 1
-        if: env.GIT_DIFF
+      - name: If git difference occured, exit with error
+        run: git diff --exit-code
