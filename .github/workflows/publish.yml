@@ -1,0 +1,43 @@
+name: Publish NPM package and Docker container
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v[0-9]+*"
+
+jobs:
+  publish-npm:
+    name: Build, Test, Publish to NPM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - run: npm run build
+      - run: npm run test
+        env:
+          CHATWORK_API_TOKEN: ${{secrets.CHATWORK_API_TOKEN}}
+      - name: Publish to NPM if tag is pushed
+        run: npm publish
+        if: contains(github.ref, 'tags/v')
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-docker:
+    needs: publish-npm
+    name: Publish to docker.pkg.github.com
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: docker/build-push-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: aktriver
+          password: ${{ secrets.GITHUB_TOKEN }}
+          repository: aktriver/chatwork-api-client/chatwork-api-client
+          tag_with_ref: true

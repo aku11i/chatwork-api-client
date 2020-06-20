@@ -8,14 +8,3 @@ on:
       - "v[0-9]+*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: docker/build-push-action@v1
-        with:
-          registry: docker.pkg.github.com
-          username: aktriver
-          password: ${{ secrets.GITHUB_TOKEN }}
-          repository: aktriver/chatwork-api-client/chatwork-api-client
-          tag_with_ref: true
