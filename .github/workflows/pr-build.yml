@@ -1,0 +1,26 @@
+name: Build when Pull Request created
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: "true"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm run generate
+      - run: npm run build
+      - uses: technote-space/get-diff-action@v1
+      - name: Fail the job if git difference is occured
+        run: echo "Git difference has occurred in the repository." && exit 1
+        if: env.GIT_DIFF
