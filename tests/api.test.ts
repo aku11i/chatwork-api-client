@@ -8,7 +8,7 @@ test("API Token", () => {
   expect(API_TOKEN).toMatch(/^[a-z0-9]+$/);
 });
 
-test("API Connection Test (GET,POST,PUT,DELETE)", async () => {
+test("API Connection Test (GET,POST,PUT,DELETE,File Upload)", async () => {
   const api = new ChatworkApi(API_TOKEN);
 
   const me = await api.getMe();

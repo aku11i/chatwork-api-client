@@ -30,15 +30,6 @@ test("API Connection Test[CLI] (GET,POST,PUT,DELETE)", async () => {
 
   await sleep();
 
-  const putResultJson = execSync(
-    `yarn --silent start put-room-message --body "[info][title]chatwork-api-client[CLI][/title]test(edited)[/info]" "${room_id}" "${message_id}"`,
-  ).toString();
-  const putResult = JSON.parse(putResultJson);
-
-  expect(putResult).toHaveProperty("message_id");
-
-  await sleep();
-
   const deleteResultJson = execSync(
     `yarn --silent start delete-room-message "${room_id}" "${message_id}"`,
   ).toString();
