@@ -3,8 +3,9 @@ FROM node:lts-alpine as builder
 WORKDIR /build
 
 ADD package.json .
+ADD package-lock.json .
 
-RUN npm install
+RUN npm ci
 
 ADD . .
 
