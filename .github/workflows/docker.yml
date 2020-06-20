@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - "v[0-9]+*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Login Docker Github Registry
+        run: docker login docker.pkg.github.com -u aktriver -p ${{ secrets.GITHUB_TOKEN }}
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:latest --tag docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:${{ github.ref }}
+      - name: Push the Docker image
+        run: docker push docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client
