@@ -31,7 +31,7 @@ function getAction({ uriParams, param, functionName }: BuildData) {
     : `${params.length ? paramStr : ""}`;
 
   return `.action((${args}) =>{
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if(api_token) {
         api.apiToken = api_token;
     }
@@ -43,7 +43,7 @@ function getAction({ uriParams, param, functionName }: BuildData) {
     const ${paramStr} = cmd;
 
     api.${functionName}(${functionParams}).then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
     }).catch((e) => {
         printError(e);
         process.exit(1);
@@ -57,10 +57,19 @@ export function getCliHeader() {
     import ChatworkApi from '.';
     import { readFileSync } from 'fs';
 
-    type PrintType = 'json';
+    type PrintFormat = 'table' | 'json';
 
-    function printResult(response: any, printType: PrintType) {
-        console.log(JSON.stringify(response, undefined, 2));
+    function printResult(response: any, format: PrintFormat) {
+        switch(format) {
+          case 'table': {
+            console.table(response);
+            break;
+          }
+          case 'json': {
+            console.log(JSON.stringify(response, undefined, 2));
+            break;
+          }
+        }
     }
 
     function printError(error: Error) {
@@ -82,6 +91,7 @@ export function getCommand(buildData: BuildData) {
     program.command("${commandName}")
       .description("${description}")
       .option("--api_token <api_token>", "Chatwork API Token")
+      .option("--format <format>", '<table|json> Specify the result format.', "table")
       ${args}
       ${options}
       ${action}

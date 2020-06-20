@@ -2,10 +2,19 @@ import { program } from "commander";
 import ChatworkApi from ".";
 import { readFileSync } from "fs";
 
-type PrintType = "json";
+type PrintFormat = "table" | "json";
 
-function printResult(response: any, printType: PrintType) {
-  console.log(JSON.stringify(response, undefined, 2));
+function printResult(response: any, format: PrintFormat) {
+  switch (format) {
+    case "table": {
+      console.table(response);
+      break;
+    }
+    case "json": {
+      console.log(JSON.stringify(response, undefined, 2));
+      break;
+    }
+  }
 }
 
 function printError(error: Error) {
@@ -18,9 +27,14 @@ program
   .command("get-me")
   .description("自分自身の情報を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -34,7 +48,7 @@ program
     api
       .getMe()
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -46,9 +60,14 @@ program
   .command("get-my-status")
   .description("自分の未読数、未読To数、未完了タスク数を返す")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -62,7 +81,7 @@ program
     api
       .getMyStatus()
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -76,6 +95,11 @@ program
     "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .option(
     "--assigned_by_account_id <assigned_by_account_id>",
@@ -83,7 +107,7 @@ program
   )
   .option("--status <status>", "<open|done> タスクのステータス")
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -97,7 +121,7 @@ program
     api
       .getMyTasks({ assigned_by_account_id, status })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -109,9 +133,14 @@ program
   .command("get-contacts")
   .description("自分のコンタクト一覧を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -125,7 +154,7 @@ program
     api
       .getContacts()
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -137,9 +166,14 @@ program
   .command("get-rooms")
   .description("自分のチャット一覧の取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -153,7 +187,7 @@ program
     api
       .getRooms()
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -165,6 +199,11 @@ program
   .command("post-room")
   .description("グループチャットを新規作成")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .requiredOption("--name <name>", "<string> <required> グループチャット名")
   .option("--description <description>", "<string> チャット概要")
@@ -188,7 +227,7 @@ program
     "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
   )
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -222,7 +261,7 @@ program
         icon_preset,
       })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -234,10 +273,15 @@ program
   .command("get-room")
   .description("チャットの名前、アイコン、種類(my/direct/group)を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -251,7 +295,7 @@ program
     api
       .getRoom(room_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -263,6 +307,11 @@ program
   .command("put-room")
   .description("チャットの名前、アイコンをアップデート")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option("--name <name>", "<string> グループチャット名")
   .option("--description <description>", "<string> チャット概要")
@@ -271,7 +320,7 @@ program
     "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -285,7 +334,7 @@ program
     api
       .putRoom(room_id, { name, description, icon_preset })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -297,13 +346,18 @@ program
   .command("delete-room")
   .description("グループチャットを退席/削除する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption(
     "--action_type <action_type>",
     "<leave|delete> <required> 退席するか、削除するか",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -317,7 +371,7 @@ program
     api
       .deleteRoom(room_id, { action_type })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -329,10 +383,15 @@ program
   .command("get-room-members")
   .description("チャットのメンバー一覧を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -346,7 +405,7 @@ program
     api
       .getRoomMembers(room_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -358,6 +417,11 @@ program
   .command("put-room-members")
   .description("チャットのメンバーを一括変更")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption(
     "--members_admin_ids <members_admin_ids>",
@@ -372,7 +436,7 @@ program
     "<string> 閲覧のみ権限のユーザー",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -390,7 +454,7 @@ program
         members_readonly_ids,
       })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -404,10 +468,15 @@ program
     "チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)",
   )
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option("--force <force>", "<0|1> 未取得にかかわらず最新の100件を取得するか")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -421,7 +490,7 @@ program
     api
       .getRoomMessages(room_id, { force })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -433,6 +502,11 @@ program
   .command("post-room-message")
   .description("チャットに新しいメッセージを追加")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption("--body <body>", "<string> <required> メッセージ本文")
   .option(
@@ -440,7 +514,7 @@ program
     "<0|1> 追加したメッセージを自分から見て未読とするか",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -454,7 +528,7 @@ program
     api
       .postRoomMessage(room_id, { body, self_unread })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -466,13 +540,18 @@ program
   .command("put-room-messages-read")
   .description("メッセージを既読にする")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option(
     "--message_id <message_id>",
     "<string> ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400)",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -486,7 +565,7 @@ program
     api
       .putRoomMessagesRead(room_id, { message_id })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -498,13 +577,18 @@ program
   .command("put-room-messages-unread")
   .description("メッセージを未読にする")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption(
     "--message_id <message_id>",
     "<string> <required> ここで指定するIDのメッセージ以降を未読にする",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -518,7 +602,7 @@ program
     api
       .putRoomMessagesUnread(room_id, { message_id })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -530,11 +614,16 @@ program
   .command("get-room-message")
   .description("メッセージ情報を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<message_id>")
 
   .action((room_id, message_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -548,7 +637,7 @@ program
     api
       .getRoomMessage(room_id, message_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -560,11 +649,16 @@ program
   .command("put-room-message")
   .description("チャットのメッセージを更新する。")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<message_id>")
   .requiredOption("--body <body>", "<string> <required> 更新するメッセージ本文")
   .action((room_id, message_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -578,7 +672,7 @@ program
     api
       .putRoomMessage(room_id, message_id, { body })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -590,11 +684,16 @@ program
   .command("delete-room-message")
   .description("メッセージを削除")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<message_id>")
 
   .action((room_id, message_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -608,7 +707,7 @@ program
     api
       .deleteRoomMessage(room_id, message_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -622,6 +721,11 @@ program
     "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option("--account_id <account_id>", "<number> タスクの担当者のアカウントID")
   .option(
@@ -630,7 +734,7 @@ program
   )
   .option("--status <status>", "<open|done> タスクのステータス")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -644,7 +748,7 @@ program
     api
       .getRoomTasks(room_id, { account_id, assigned_by_account_id, status })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -656,6 +760,11 @@ program
   .command("post-room-task")
   .description("チャットに新しいタスクを追加")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption("--body <body>", "<string> <required> タスクの内容")
   .requiredOption(
@@ -665,7 +774,7 @@ program
   .option("--limit <limit>", "<number> タスクの期限")
   .option("--limit_type <limit_type>", "<none|date|time> タスク期限の種別")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -679,7 +788,7 @@ program
     api
       .postRoomTask(room_id, { body, to_ids, limit, limit_type })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -691,11 +800,16 @@ program
   .command("get-room-task")
   .description("タスク情報を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<task_id>")
 
   .action((room_id, task_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -709,7 +823,7 @@ program
     api
       .getRoomTask(room_id, task_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -721,11 +835,16 @@ program
   .command("put-room-task-status")
   .description("タスク完了状態を変更する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<task_id>")
   .requiredOption("--body <body>", "<open|done> <required> タスク完了状態")
   .action((room_id, task_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -739,7 +858,7 @@ program
     api
       .putRoomTaskStatus(room_id, task_id, { body })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -753,13 +872,18 @@ program
     "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option(
     "--account_id <account_id>",
     "<number> アップロードしたユーザーのアカウントID",
   )
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -773,7 +897,7 @@ program
     api
       .getRoomFiles(room_id, { account_id })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -785,6 +909,11 @@ program
   .command("post-room-file")
   .description("チャットに新しいファイルをアップロード")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .requiredOption(
     "--file <file>",
@@ -796,7 +925,7 @@ program
   )
   .requiredOption("--file_name <file_name>", "<string> <required> ファイル名")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -810,7 +939,7 @@ program
     api
       .postRoomFile(room_id, { file, message, file_name })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -822,6 +951,11 @@ program
   .command("get-room-file")
   .description("ファイル情報を取得")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .arguments("<file_id>")
   .option(
@@ -829,7 +963,7 @@ program
     "<0|1> ダウンロードする為のURLを生成するか",
   )
   .action((room_id, file_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -843,7 +977,7 @@ program
     api
       .getRoomFile(room_id, file_id, { create_download_url })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -855,10 +989,15 @@ program
   .command("get-room-link")
   .description("招待リンクを取得する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -872,7 +1011,7 @@ program
     api
       .getRoomLink(room_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -884,12 +1023,17 @@ program
   .command("post-room-link")
   .description("招待リンクを作成する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option("--code <code>", "<string> リンク文字列")
   .option("--need_acceptance <need_acceptance>", "<0|1> 承認要否")
   .option("--description <description>", "<string> リンク説明文")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -903,7 +1047,7 @@ program
     api
       .postRoomLink(room_id, { code, need_acceptance, description })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -915,12 +1059,17 @@ program
   .command("put-room-link")
   .description("招待リンクの情報を変更する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
   .option("--code <code>", "<string> リンク文字列")
   .option("--need_acceptance <need_acceptance>", "<0|1> 承認要否")
   .option("--description <description>", "<string> リンク説明文")
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -934,7 +1083,7 @@ program
     api
       .putRoomLink(room_id, { code, need_acceptance, description })
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -946,10 +1095,15 @@ program
   .command("delete-room-link")
   .description("招待リンクを削除する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -963,7 +1117,7 @@ program
     api
       .deleteRoomLink(room_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -977,9 +1131,14 @@ program
     "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
 
   .action((cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -993,7 +1152,7 @@ program
     api
       .getIncomingRequests()
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -1005,10 +1164,15 @@ program
   .command("put-incoming-request")
   .description("自分に対するコンタクト承認依頼を承認する")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<request_id>")
 
   .action((request_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -1022,7 +1186,7 @@ program
     api
       .putIncomingRequest(request_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
@@ -1034,10 +1198,15 @@ program
   .command("delete-incoming-request")
   .description("自分に対するコンタクト承認依頼をキャンセルする")
   .option("--api_token <api_token>", "Chatwork API Token")
+  .option(
+    "--format <format>",
+    "<table|json> Specify the result format.",
+    "table",
+  )
   .arguments("<request_id>")
 
   .action((request_id, cmd) => {
-    const { api_token } = cmd;
+    const { api_token, format } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
@@ -1051,7 +1220,7 @@ program
     api
       .deleteIncomingRequest(request_id)
       .then((response) => {
-        printResult(response, "json");
+        printResult(response, format);
       })
       .catch((e) => {
         printError(e);
