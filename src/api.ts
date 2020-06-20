@@ -1,12 +1,11 @@
 // This file was automatically generated.
 import axios from "axios";
 import { stringify } from "qs";
-import FormData = require("form-data");
-import FileType = require("file-type");
+import * as FormData from "form-data";
+import * as FileType from "file-type";
 import { basename } from "path";
 
 import * as Types from "./types";
-import { readFileAsync } from "./file";
 
 export const CHATWORK_URL = "https://api.chatwork.com/v2";
 
@@ -103,9 +102,9 @@ export default class ChatworkApi {
     for (const [key, value] of Object.entries(params)) {
       if (value === null || value === undefined) continue;
       if (key === "file") {
-        const file = await readFileAsync(value as string);
+        const file = value as Buffer;
         const fileType = await FileType.fromBuffer(file);
-        const fileName = basename(value as string);
+        const fileName = params["file_name"] || "NO_NAME";
         formData.append(key, file, {
           contentType: fileType?.mime,
           filename: fileName,

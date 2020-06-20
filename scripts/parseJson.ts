@@ -105,6 +105,16 @@ endPoints.forEach((endPoint) => {
     );
     endPoint.paramRequired = paramRequired;
   }
+  if (endPoint?.info?.["multipart/form-data"]?.formParameters?.file) {
+    const fileNameParam = {
+      displayName: "ファイル名",
+      type: "string",
+      required: true,
+    };
+    endPoint.info[
+      "multipart/form-data"
+    ].formParameters.file_name = fileNameParam;
+  }
   if (!endPoint?.info?.responses) {
     endPoint.info.responses = {};
   }

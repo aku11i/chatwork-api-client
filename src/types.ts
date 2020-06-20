@@ -161,10 +161,13 @@ export type GetRoomFilesParam = {
 
 export type PostRoomFileParam = {
   /** アップロードするファイル（上限：5MB） */
-  file: string;
+  file: Buffer;
 
   /** ファイルと一緒に投稿するメッセージの本文 */
   message?: string;
+
+  /** ファイル名 */
+  file_name: string;
 };
 
 export type GetRoomFileParam = {

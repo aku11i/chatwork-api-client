@@ -1239,6 +1239,11 @@
             "displayName": "ファイルと一緒に投稿するメッセージの本文\n",
             "type": "string",
             "example": "I attached comment to chat."
+          },
+          "file_name": {
+            "displayName": "ファイル名",
+            "type": "string",
+            "required": true
           }
         },
         "example": "--------------------------f295b94a5560e2eb\nContent-Disposition: form-data; name=\"file\"; filename=\"example.jpeg\"\nContent-Type: image/jpeg\n\nabc012....binarydata....789de\n...\n--------------------------f295b94a5560e2eb\nContent-Disposition: form-data; name=\"message\"\n\nI attached comment to chat.\n--------------------------f295b94a5560e2eb--\n"

@@ -24,7 +24,7 @@ export function getTypeString({
   }
 
   if (types === "file") {
-    return "string";
+    return "Buffer";
   }
 
   return `${types}`;

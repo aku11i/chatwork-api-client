@@ -9,15 +9,16 @@ function getArguments({ uriParams }: BuildData) {
 }
 
 function getOptions({ param }: BuildData) {
-  return flatObjectProperties(param).map((prop) =>
-    prop.required
-      ? `.requiredOption("--${prop.name} <${prop.name}>", "<${getTypeString(
-          prop,
-        ).replace(/"/g, "")}> <required> ${prop.description}")`
-      : `.option("--${prop.name} <${prop.name}>", "<${getTypeString(
-          prop,
-        ).replace(/"/g, "")}> ${prop.description}")`,
-  );
+  return flatObjectProperties(param).map((prop) => {
+    let typeString = getTypeString(prop).replace(/"/g, "");
+    if (typeString === "Buffer") typeString = "string";
+
+    if (prop.required) {
+      return `.requiredOption("--${prop.name} <${prop.name}>", "<${typeString}> <required> ${prop.description}")`;
+    } else {
+      return `.option("--${prop.name} <${prop.name}>", "<${typeString}> ${prop.description}")`;
+    }
+  });
 }
 
 function getAction({ uriParams, param, functionName }: BuildData) {
@@ -30,11 +31,17 @@ function getAction({ uriParams, param, functionName }: BuildData) {
     : `${params.length ? paramStr : ""}`;
 
   return `.action((${args}) =>{
-    const ${paramStr} = cmd;
     const { api_token } = cmd;
     if(api_token) {
         api.apiToken = api_token;
     }
+    if(cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const ${paramStr} = cmd;
+
     api.${functionName}(${functionParams}).then((response) => {
         printResult(response, "json");
     }).catch((e) => {
@@ -48,6 +55,7 @@ export function getCliHeader() {
   return `
     import { program } from 'commander';
     import ChatworkApi from '.';
+    import { readFileSync } from 'fs';
 
     type PrintType = 'json';
 

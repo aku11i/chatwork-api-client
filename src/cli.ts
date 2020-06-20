@@ -1,5 +1,6 @@
 import { program } from "commander";
 import ChatworkApi from ".";
+import { readFileSync } from "fs";
 
 type PrintType = "json";
 
@@ -19,11 +20,17 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
 
   .action((cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getMe()
       .then((response) => {
@@ -41,11 +48,17 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
 
   .action((cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getMyStatus()
       .then((response) => {
@@ -70,11 +83,17 @@ program
   )
   .option("--status <status>", "<open|done> タスクのステータス")
   .action((cmd) => {
-    const { assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { assigned_by_account_id, status } = cmd;
+
     api
       .getMyTasks({ assigned_by_account_id, status })
       .then((response) => {
@@ -92,11 +111,17 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
 
   .action((cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getContacts()
       .then((response) => {
@@ -114,11 +139,17 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
 
   .action((cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRooms()
       .then((response) => {
@@ -157,6 +188,15 @@ program
     "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
   )
   .action((cmd) => {
+    const { api_token } = cmd;
+    if (api_token) {
+      api.apiToken = api_token;
+    }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
     const {
       name,
       description,
@@ -168,10 +208,7 @@ program
       members_readonly_ids,
       icon_preset,
     } = cmd;
-    const { api_token } = cmd;
-    if (api_token) {
-      api.apiToken = api_token;
-    }
+
     api
       .postRoom({
         name,
@@ -200,11 +237,17 @@ program
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRoom(room_id)
       .then((response) => {
@@ -228,11 +271,17 @@ program
     "<group|check|document|meeting|event|project|business|study|security|star|idea|heart|magcup|beer|music|sports|travel> アイコン種類",
   )
   .action((room_id, cmd) => {
-    const { name, description, icon_preset } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { name, description, icon_preset } = cmd;
+
     api
       .putRoom(room_id, { name, description, icon_preset })
       .then((response) => {
@@ -254,11 +303,17 @@ program
     "<leave|delete> <required> 退席するか、削除するか",
   )
   .action((room_id, cmd) => {
-    const { action_type } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { action_type } = cmd;
+
     api
       .deleteRoom(room_id, { action_type })
       .then((response) => {
@@ -277,11 +332,17 @@ program
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRoomMembers(room_id)
       .then((response) => {
@@ -311,11 +372,17 @@ program
     "<string> 閲覧のみ権限のユーザー",
   )
   .action((room_id, cmd) => {
-    const { members_admin_ids, members_member_ids, members_readonly_ids } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { members_admin_ids, members_member_ids, members_readonly_ids } = cmd;
+
     api
       .putRoomMembers(room_id, {
         members_admin_ids,
@@ -340,11 +407,17 @@ program
   .arguments("<room_id>")
   .option("--force <force>", "<0|1> 未取得にかかわらず最新の100件を取得するか")
   .action((room_id, cmd) => {
-    const { force } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { force } = cmd;
+
     api
       .getRoomMessages(room_id, { force })
       .then((response) => {
@@ -367,11 +440,17 @@ program
     "<0|1> 追加したメッセージを自分から見て未読とするか",
   )
   .action((room_id, cmd) => {
-    const { body, self_unread } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { body, self_unread } = cmd;
+
     api
       .postRoomMessage(room_id, { body, self_unread })
       .then((response) => {
@@ -393,11 +472,17 @@ program
     "<string> ここで指定するIDのメッセージまでを既読にする。すでに既読済みの場合はエラー(400)",
   )
   .action((room_id, cmd) => {
-    const { message_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { message_id } = cmd;
+
     api
       .putRoomMessagesRead(room_id, { message_id })
       .then((response) => {
@@ -419,11 +504,17 @@ program
     "<string> <required> ここで指定するIDのメッセージ以降を未読にする",
   )
   .action((room_id, cmd) => {
-    const { message_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { message_id } = cmd;
+
     api
       .putRoomMessagesUnread(room_id, { message_id })
       .then((response) => {
@@ -443,11 +534,17 @@ program
   .arguments("<message_id>")
 
   .action((room_id, message_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRoomMessage(room_id, message_id)
       .then((response) => {
@@ -467,11 +564,17 @@ program
   .arguments("<message_id>")
   .requiredOption("--body <body>", "<string> <required> 更新するメッセージ本文")
   .action((room_id, message_id, cmd) => {
-    const { body } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { body } = cmd;
+
     api
       .putRoomMessage(room_id, message_id, { body })
       .then((response) => {
@@ -491,11 +594,17 @@ program
   .arguments("<message_id>")
 
   .action((room_id, message_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .deleteRoomMessage(room_id, message_id)
       .then((response) => {
@@ -521,11 +630,17 @@ program
   )
   .option("--status <status>", "<open|done> タスクのステータス")
   .action((room_id, cmd) => {
-    const { account_id, assigned_by_account_id, status } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { account_id, assigned_by_account_id, status } = cmd;
+
     api
       .getRoomTasks(room_id, { account_id, assigned_by_account_id, status })
       .then((response) => {
@@ -550,11 +665,17 @@ program
   .option("--limit <limit>", "<number> タスクの期限")
   .option("--limit_type <limit_type>", "<none|date|time> タスク期限の種別")
   .action((room_id, cmd) => {
-    const { body, to_ids, limit, limit_type } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { body, to_ids, limit, limit_type } = cmd;
+
     api
       .postRoomTask(room_id, { body, to_ids, limit, limit_type })
       .then((response) => {
@@ -574,11 +695,17 @@ program
   .arguments("<task_id>")
 
   .action((room_id, task_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRoomTask(room_id, task_id)
       .then((response) => {
@@ -598,11 +725,17 @@ program
   .arguments("<task_id>")
   .requiredOption("--body <body>", "<open|done> <required> タスク完了状態")
   .action((room_id, task_id, cmd) => {
-    const { body } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { body } = cmd;
+
     api
       .putRoomTaskStatus(room_id, task_id, { body })
       .then((response) => {
@@ -626,11 +759,17 @@ program
     "<number> アップロードしたユーザーのアカウントID",
   )
   .action((room_id, cmd) => {
-    const { account_id } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { account_id } = cmd;
+
     api
       .getRoomFiles(room_id, { account_id })
       .then((response) => {
@@ -655,14 +794,21 @@ program
     "--message <message>",
     "<string> ファイルと一緒に投稿するメッセージの本文",
   )
+  .requiredOption("--file_name <file_name>", "<string> <required> ファイル名")
   .action((room_id, cmd) => {
-    const { file, message } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { file, message, file_name } = cmd;
+
     api
-      .postRoomFile(room_id, { file, message })
+      .postRoomFile(room_id, { file, message, file_name })
       .then((response) => {
         printResult(response, "json");
       })
@@ -683,11 +829,17 @@ program
     "<0|1> ダウンロードする為のURLを生成するか",
   )
   .action((room_id, file_id, cmd) => {
-    const { create_download_url } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { create_download_url } = cmd;
+
     api
       .getRoomFile(room_id, file_id, { create_download_url })
       .then((response) => {
@@ -706,11 +858,17 @@ program
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getRoomLink(room_id)
       .then((response) => {
@@ -731,11 +889,17 @@ program
   .option("--need_acceptance <need_acceptance>", "<0|1> 承認要否")
   .option("--description <description>", "<string> リンク説明文")
   .action((room_id, cmd) => {
-    const { code, need_acceptance, description } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { code, need_acceptance, description } = cmd;
+
     api
       .postRoomLink(room_id, { code, need_acceptance, description })
       .then((response) => {
@@ -756,11 +920,17 @@ program
   .option("--need_acceptance <need_acceptance>", "<0|1> 承認要否")
   .option("--description <description>", "<string> リンク説明文")
   .action((room_id, cmd) => {
-    const { code, need_acceptance, description } = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const { code, need_acceptance, description } = cmd;
+
     api
       .putRoomLink(room_id, { code, need_acceptance, description })
       .then((response) => {
@@ -779,11 +949,17 @@ program
   .arguments("<room_id>")
 
   .action((room_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .deleteRoomLink(room_id)
       .then((response) => {
@@ -803,11 +979,17 @@ program
   .option("--api_token <api_token>", "Chatwork API Token")
 
   .action((cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .getIncomingRequests()
       .then((response) => {
@@ -826,11 +1008,17 @@ program
   .arguments("<request_id>")
 
   .action((request_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .putIncomingRequest(request_id)
       .then((response) => {
@@ -849,11 +1037,17 @@ program
   .arguments("<request_id>")
 
   .action((request_id, cmd) => {
-    const {} = cmd;
     const { api_token } = cmd;
     if (api_token) {
       api.apiToken = api_token;
     }
+    if (cmd.file) {
+      // CLIの場合はファイルパスを指定されるのでBufferに変換する
+      cmd.file = readFileSync(cmd.file);
+    }
+
+    const {} = cmd;
+
     api
       .deleteIncomingRequest(request_id)
       .then((response) => {
