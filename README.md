@@ -54,7 +54,7 @@ chatwork-api-client --help
 # chapi --help
 ```
 
-## Docker
+### Docker
 
 ```sh
 docker pull docker.pkg.github.com/aktriver/chatwork-api-client/chatwork-api-client:latest
@@ -118,7 +118,6 @@ cd chatwork-api-client
 git submodule update --init
 
 npm install
-# yarn install
 ```
 
 ### Build
@@ -126,11 +125,9 @@ npm install
 ```sh
 # src/*.ts の生成
 npm run generate
-# yarn generate
 
 # src/*.ts のビルド
 npm run build
-# yarn build
 ```
 
 ### Test
@@ -141,12 +138,10 @@ npm run build
 
 ```sh
 npm run test
-# yarn test
 ```
 
 ### CLI Debug
 
 ```sh
 npm --silent start -- --help
-# yarn --silent start --help
 ```
