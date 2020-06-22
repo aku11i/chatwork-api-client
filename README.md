@@ -2,17 +2,14 @@
 
 ![](https://github.com/aktriver/chatwork-api-client/workflows/Publish%20NPM%20package%20and%20Docker%20container/badge.svg)
 
-Chatwork API v2 client for TypeScript / JavaScript.<br>
-CLI command `chatwork-api-client` is also provided.
+Chatwork API v2 client for TypeScript/JavaScript. It includes `chatwork-api-client` command.
 
 ## Features
 
-- Chatwork API v2 をサポートしています。
-- API メソッドは [公式の RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml) を基に自動生成しています。
-  - 完全な型定義とコメント説明がついています。
-- API 通信に [axios](https://github.com/axios/axios) を使用しています。
-- コマンドラインインターフェースも用意されています。 `chatwork-api-client`
-  - 動作確認 Node.js バージョン： `12 <=`
+- Supports Chatwork API v2.
+- Has perfect type definitions and comments because API methods are automatically generated from the [official RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml).
+- Includes CLI command `chatwork-api-client`.
+  - Works on Node.js 12 or higher.
 
 ## API
 
@@ -30,6 +27,7 @@ import ChatworkApi from "chatwork-api-client";
 // const ChatworkApi = require("chatwork-api-client").default;
 
 const api = new ChatworkApi("YOUR_API_TOKEN");
+// If process.env.CHATWORK_API_TOKEN is set, API Token is automatically read.
 
 (async () => {
   const me = await api.getMe();
@@ -105,7 +103,7 @@ Commands:
 
 ## API Token
 
-環境変数 `CHATWORK_API_TOKEN` に API トークンをセットしておくと、クラス・コマンドの API トークンの指定を省略できます。
+You can set environment variable `CHATWORK_API_TOKEN` to omit specifying the API token.
 
 ## Development
 
@@ -132,9 +130,8 @@ npm run build
 
 ### Test
 
-> 「マイチャット」への投稿テストを行います。
-
-環境変数 `CHATWORK_API_TOKEN` に Chatwork の API トークンをセットします。
+> This test will actually post messages and files to your own room.<br>
+> To complete test successfully, set environment variable `CHATWORK_API_TOKEN`.
 
 ```sh
 npm run test
