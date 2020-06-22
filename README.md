@@ -2,7 +2,7 @@
 
 ![](https://github.com/aktriver/chatwork-api-client/workflows/Publish%20NPM%20package%20and%20Docker%20container/badge.svg)
 
-Chatwork API v2 client for TypeScript/JavaScript. It includes `chatwork-api-client` command.
+Chatwork API v2 client for TypeScript and JavaScript. It includes `chatwork-api-client` command.
 
 ## Features
 
@@ -121,10 +121,10 @@ npm install
 ### Build
 
 ```sh
-# src/*.ts の生成
+# Generates src/*.ts
 npm run generate
 
-# src/*.ts のビルド
+# Builds src/*.ts
 npm run build
 ```
 
