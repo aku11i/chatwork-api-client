@@ -30,7 +30,7 @@ jobs:
 
   publish-docker:
     needs: publish-npm
-    name: Publish to docker.pkg.github.com
+    name: Publish to Docker registries
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
