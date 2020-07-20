@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "commander": "^5.0.0",
+    "commander": "^6.0.0",
     "file-type": "^14.1.4",
     "form-data": "^3.0.0",
     "qs": "^6.9.3"
