@@ -93,6 +93,7 @@ export function getCommand(buildData: BuildData) {
   return `
     program.command("${commandName}")
       .description("${description}")
+      .storeOptionsAsProperties(true)
       .option("--api_token <api_token>", "Chatwork API Token")
       .option("--format <format>", '<table|json> Specify the result format.', "table")
       ${args}

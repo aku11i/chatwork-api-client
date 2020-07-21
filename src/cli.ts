@@ -29,6 +29,7 @@ const api = new ChatworkApi(process.env.CHATWORK_API_TOKEN);
 program
   .command("get-me")
   .description("自分自身の情報を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -62,6 +63,7 @@ program
 program
   .command("get-my-status")
   .description("自分の未読数、未読To数、未完了タスク数を返す")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -97,6 +99,7 @@ program
   .description(
     "自分のタスク一覧を取得する。(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -135,6 +138,7 @@ program
 program
   .command("get-contacts")
   .description("自分のコンタクト一覧を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -168,6 +172,7 @@ program
 program
   .command("get-rooms")
   .description("自分のチャット一覧の取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -201,6 +206,7 @@ program
 program
   .command("post-room")
   .description("グループチャットを新規作成")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -275,6 +281,7 @@ program
 program
   .command("get-room")
   .description("チャットの名前、アイコン、種類(my/direct/group)を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -309,6 +316,7 @@ program
 program
   .command("put-room")
   .description("チャットの名前、アイコンをアップデート")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -348,6 +356,7 @@ program
 program
   .command("delete-room")
   .description("グループチャットを退席/削除する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -385,6 +394,7 @@ program
 program
   .command("get-room-members")
   .description("チャットのメンバー一覧を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -419,6 +429,7 @@ program
 program
   .command("put-room-members")
   .description("チャットのメンバーを一括変更")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -470,6 +481,7 @@ program
   .description(
     "チャットのメッセージ一覧を取得。パラメータ未指定だと前回取得分からの差分のみを返します。(最大100件まで取得)",
   )
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -504,6 +516,7 @@ program
 program
   .command("post-room-message")
   .description("チャットに新しいメッセージを追加")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -542,6 +555,7 @@ program
 program
   .command("put-room-messages-read")
   .description("メッセージを既読にする")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -579,6 +593,7 @@ program
 program
   .command("put-room-messages-unread")
   .description("メッセージを未読にする")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -616,6 +631,7 @@ program
 program
   .command("get-room-message")
   .description("メッセージ情報を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -651,6 +667,7 @@ program
 program
   .command("put-room-message")
   .description("チャットのメッセージを更新する。")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -686,6 +703,7 @@ program
 program
   .command("delete-room-message")
   .description("メッセージを削除")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -723,6 +741,7 @@ program
   .description(
     "チャットのタスク一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -762,6 +781,7 @@ program
 program
   .command("post-room-task")
   .description("チャットに新しいタスクを追加")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -802,6 +822,7 @@ program
 program
   .command("get-room-task")
   .description("タスク情報を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -837,6 +858,7 @@ program
 program
   .command("put-room-task-status")
   .description("タスク完了状態を変更する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -874,6 +896,7 @@ program
   .description(
     "チャットのファイル一覧を取得 (※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -911,6 +934,7 @@ program
 program
   .command("post-room-file")
   .description("チャットに新しいファイルをアップロード")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -953,6 +977,7 @@ program
 program
   .command("get-room-file")
   .description("ファイル情報を取得")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -991,6 +1016,7 @@ program
 program
   .command("get-room-link")
   .description("招待リンクを取得する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1025,6 +1051,7 @@ program
 program
   .command("post-room-link")
   .description("招待リンクを作成する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1061,6 +1088,7 @@ program
 program
   .command("put-room-link")
   .description("招待リンクの情報を変更する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1097,6 +1125,7 @@ program
 program
   .command("delete-room-link")
   .description("招待リンクを削除する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1133,6 +1162,7 @@ program
   .description(
     "自分に対するコンタクト承認依頼一覧を取得する(※100件まで取得可能。今後、より多くのデータを取得する為のページネーションの仕組みを提供予定)",
   )
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1166,6 +1196,7 @@ program
 program
   .command("put-incoming-request")
   .description("自分に対するコンタクト承認依頼を承認する")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
@@ -1200,6 +1231,7 @@ program
 program
   .command("delete-incoming-request")
   .description("自分に対するコンタクト承認依頼をキャンセルする")
+  .storeOptionsAsProperties(true)
   .option("--api_token <api_token>", "Chatwork API Token")
   .option(
     "--format <format>",
