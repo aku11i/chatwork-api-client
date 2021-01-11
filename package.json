@@ -40,7 +40,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.19",
+    "@types/jest": "^26.0.20",
     "@types/js-yaml": "^4.0.0",
     "@types/node": "^12.19.11",
     "@types/prettier": "^2.1.6",
