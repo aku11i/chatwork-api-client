@@ -131,7 +131,7 @@ npm install
 
 ### Build
 
-`src/*.ts` は `script/*.ts` によって生成されます。<br>
+`src/*.ts` は `scripts/*.ts` によって生成されます。<br>
 **`src/*.ts` を直接編集しないでください。**
 
 ```sh
