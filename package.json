@@ -12,8 +12,7 @@
     "chapi": "bin/chatwork-api-client.js"
   },
   "engines": {
-    "node": ">= 12",
-    "npm": ">= 6"
+    "node": ">= 12"
   },
   "files": [
     "bin",
@@ -32,10 +31,10 @@
     "build": "tsc",
     "prettier": "prettier --write src/*.ts scripts/*.ts *.js *.md",
     "clean": "rimraf ./dist",
-    "1_raml2json": "cd scripts && ts-node 1_raml2json.ts",
-    "2_parseJson": "cd scripts && ts-node 2_parseJson.ts",
-    "3_convert": "cd scripts && ts-node 3_convert.ts",
-    "4_output": "cd scripts && ts-node 4_output.ts",
+    "1_raml2json": "cd scripts && ts-node --transpile-only 1_raml2json.ts",
+    "2_parseJson": "cd scripts && ts-node --transpile-only 2_parseJson.ts",
+    "3_convert": "cd scripts && ts-node --transpile-only 3_convert.ts",
+    "4_output": "cd scripts && ts-node --transpile-only 4_output.ts",
     "generate": "npm-run-all 1_raml2json 2_parseJson 3_convert 4_output",
     "test": "jest"
   },
