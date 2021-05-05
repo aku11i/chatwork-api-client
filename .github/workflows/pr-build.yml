@@ -1,4 +1,4 @@
-name: Build when Pull Request created
+name: pr-build
 
 on:
   pull_request:
