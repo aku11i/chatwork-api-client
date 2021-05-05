@@ -3,14 +3,17 @@
 [![build](https://github.com/aktriver/chatwork-api-client/actions/workflows/build.yml/badge.svg)](https://github.com/aktriver/chatwork-api-client/actions/workflows/build.yml)
 [![publish](https://github.com/aktriver/chatwork-api-client/actions/workflows/publish.yml/badge.svg)](https://github.com/aktriver/chatwork-api-client/actions/workflows/publish.yml)
 
-Chatwork API v2 client for TypeScript and JavaScript. `chatwork-api-client` command is included.
+Chatwork API v2 用のクライアントライブラリです。<br>
+CLI も用意されています。
 
 ## Features
 
-- Supports Chatwork API v2.
-- Has perfect type definitions and comments because API methods are automatically generated from the [official RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml).
-- Includes CLI command `chatwork-api-client`.
-  - Works on Node.js 12 or higher.
+- Chatwork API v2 の全てのエンドポイントに対応しています。
+- TypeScript 向けの完全な型定義があります。<br>
+  公式の[RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml) ファイルから生成しています。
+- CLI もあります。 (`chatwork-api-client`).
+- Node.js 12 以上で動作します。
+- ブラウザで動作するかは不明です。
 
 ## API
 
@@ -28,7 +31,7 @@ import ChatworkApi from "chatwork-api-client";
 // const ChatworkApi = require("chatwork-api-client").default;
 
 const api = new ChatworkApi("YOUR_API_TOKEN");
-// If process.env.CHATWORK_API_TOKEN is set, API Token is automatically read.
+// process.env.CHATWORK_API_TOKEN をセットしていればAPIトークンを渡す必要はありません。
 
 (async () => {
   const me = await api.getMe();
@@ -60,10 +63,17 @@ docker pull aktriver/chatwork-api-client:latest
 docker run --rm --env "CHATWORK_API_TOKEN=YOUR_API_TOKEN" aktriver/chatwork-api-client:latest --help
 ```
 
+### Help
+
+```sh
+chatwork-api-client --help
+```
+
 ```sh
 Usage: chatwork-api-client [options] [command]
 
 Options:
+  -V, --version                                         output the version number
   -h, --help                                            display help for command
 
 Commands:
@@ -104,41 +114,44 @@ Commands:
 
 ## API Token
 
-You can set environment variable `CHATWORK_API_TOKEN` to omit specifying the API token.
+環境変数 `CHATWORK_API_TOKEN` をセットすることでソースコード内での API トークンの指定を省略できます。
 
-## Development
+## Contribution
 
 ### Setup
 
 ```sh
-git clone https://github.com/aktriver/chatwork-api-client.git
+git clone --recursive https://github.com/aktriver/chatwork-api-client.git
 cd chatwork-api-client
-
-git submodule update --init
 
 npm install
 ```
 
 ### Build
 
+`src/*.ts` は `script/*.ts` によって生成されます。<br>
+**`src/*.ts` を直接編集しないでください。**
+
 ```sh
-# Generates src/*.ts
+# scripts/*.ts を実行し、 src/*.ts を生成します。
 npm run generate
 
-# Builds src/*.ts
+# 生成された src/*.ts をビルドします。
 npm run build
 ```
 
 ### Test
 
-> This test will actually post messages and files to your own room.<br>
-> To complete test successfully, set environment variable `CHATWORK_API_TOKEN`.
+実際に Chatwork のマイチャットへの投稿を行うことをテストとします。<br>
+環境変数 `CHATWORK_API_TOKEN` をセットしてください。
 
 ```sh
 npm run test
 ```
 
-### CLI Debug
+### CLI
+
+CLI コマンドの実行を確認できます。
 
 ```sh
 npm --silent start -- --help
