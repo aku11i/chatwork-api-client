@@ -13,7 +13,7 @@ CLI も用意されています。
   公式の[RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml) ファイルから生成しています。
 - CLI もあります。 (`chatwork-api-client`).
 - Node.js 12 以上で動作します。
-- ブラウザで動作するかは不明です。
+- ブラウザで動作するかは確認していません。
 
 ## API
 
