@@ -15,14 +15,6 @@ import EndPoints = require("./endPoints.json");
 
 const PrettierConfig = require("../.prettierrc.json");
 
-function log(...args: any[]) {
-  console.log(
-    ...args.map((v) =>
-      prettier.format(JSON.stringify(v), { ...PrettierConfig, parser: "json" }),
-    ),
-  );
-}
-
 export function getPropertyType(type: string) {
   if (type === "integer") return "number";
   if (type === "boolean") return "0|1";

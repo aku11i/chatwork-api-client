@@ -14,21 +14,6 @@ function write(fileName: string, data: any) {
   fs.writeFileSync(filePath, json, { encoding: "utf8" });
 }
 
-const traits = Api.traits.reduce((traits, trait) => {
-  const [key, value] = Object.entries(trait)[0];
-  return [...traits, { key, ...value }];
-}, [] as any);
-
-const queryParameters = traits
-  .filter((trait) => trait["queryParameters"])
-  .reduce(
-    (obj, queryParameter) => ({
-      ...obj,
-      [queryParameter.key]: queryParameter["queryParameters"],
-    }),
-    {},
-  );
-
 function parseJson(text: string) {
   const jsonString = text.replace(/^\|/, "");
   return JSON.parse(jsonString);
@@ -44,18 +29,6 @@ function parseResponsesJson(responses: any) {
   };
 }
 
-const responses = traits
-  .filter((trait) => trait["responses"]?.["200"])
-  .reduce(
-    (obj, responses) => ({
-      ...obj,
-      [responses.key]: {
-        ...parseResponsesJson(responses?.responses),
-      },
-    }),
-    {},
-  );
-
 function getEndpoints(endPoint: any, uri: string) {
   const { GET, POST, PUT, DELETE, ...others } = endPoint;
   const endPoints: any[] = [];
@@ -70,11 +43,6 @@ function getEndpoints(endPoint: any, uri: string) {
   return [...endPoints, ...(children || [])];
 }
 
-const endPoints = Object.entries(Api)
-  .filter(([key]) => key.match(/\//))
-  .map(([key, value]) => getEndpoints(value, key))
-  .flat();
-
 function mergeResponses(target: any, from: any) {
   return Object.assign(target, from);
 }
@@ -82,6 +50,38 @@ function mergeResponses(target: any, from: any) {
 function mergeQueryParameters(target: any, from: any) {
   return Object.assign(target, from);
 }
+
+const traits = Api.traits.reduce((traits, trait) => {
+  const [key, value] = Object.entries(trait)[0];
+  return [...traits, { key, ...value }];
+}, [] as any);
+
+const queryParameters = traits
+  .filter((trait) => trait["queryParameters"])
+  .reduce(
+    (obj, queryParameter) => ({
+      ...obj,
+      [queryParameter.key]: queryParameter["queryParameters"],
+    }),
+    {},
+  );
+
+const responses = traits
+  .filter((trait) => trait["responses"]?.["200"])
+  .reduce(
+    (obj, responses) => ({
+      ...obj,
+      [responses.key]: {
+        ...parseResponsesJson(responses?.responses),
+      },
+    }),
+    {},
+  );
+
+const endPoints = Object.entries(Api)
+  .filter(([key]) => key.match(/\//))
+  .map(([key, value]) => getEndpoints(value, key))
+  .flat();
 
 endPoints.forEach((endPoint) => {
   if (endPoint?.uri) {

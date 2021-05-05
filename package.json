@@ -32,12 +32,19 @@
     "build": "tsc",
     "prettier": "prettier --write src/*.ts scripts/*.ts *.js *.md",
     "clean": "rimraf ./dist",
-    "raml2json": "cd scripts && ts-node raml2json.ts",
-    "parseJson": "cd scripts && ts-node parseJson.ts",
-    "convert": "cd scripts && ts-node convert.ts",
-    "output": "cd scripts && ts-node output.ts",
-    "generate": "npm-run-all raml2json parseJson convert output",
+    "1_raml2json": "cd scripts && ts-node 1_raml2json.ts",
+    "2_parseJson": "cd scripts && ts-node 2_parseJson.ts",
+    "3_convert": "cd scripts && ts-node 3_convert.ts",
+    "4_output": "cd scripts && ts-node 4_output.ts",
+    "generate": "npm-run-all 1_raml2json 2_parseJson 3_convert 4_output",
     "test": "jest"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "commander": "^7.2.0",
+    "file-type": "^16.3.0",
+    "form-data": "^4.0.0",
+    "qs": "^6.10.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.23",
@@ -57,12 +64,5 @@
     "ts-node": "^9.1.1",
     "typescript": "^4.2.4",
     "yaml": "^1.10.2"
-  },
-  "dependencies": {
-    "axios": "^0.21.1",
-    "commander": "^7.2.0",
-    "file-type": "^16.3.0",
-    "form-data": "^4.0.0",
-    "qs": "^6.10.1"
   }
 }
