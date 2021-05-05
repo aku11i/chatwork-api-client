@@ -11,6 +11,7 @@ ADD . .
 
 RUN npm run build
 
+RUN npm prune --production
 
 FROM node:16-alpine
 
@@ -19,6 +20,5 @@ WORKDIR /app
 COPY --from=builder /build .
 
 RUN npm link
-RUN npm prune --production
 
 ENTRYPOINT [ "/usr/local/bin/chatwork-api-client" ]
