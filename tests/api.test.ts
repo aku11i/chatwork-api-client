@@ -3,34 +3,48 @@ import { sleep } from "./util";
 import { join } from "path";
 import { readFileSync } from "fs";
 
-test("API Connection Test (GET,POST,PUT,DELETE,File Upload)", async () => {
+describe("API Connection Test", () => {
   const api = new ChatworkApi();
 
-  const me = await api.getMe();
-  expect(me).toHaveProperty("room_id");
-  const { room_id } = me;
+  let room_id: number;
 
-  const message = await api.postRoomMessage(room_id, {
-    body: "[info][title]chatwork-api-client[/title]test[/info]",
+  test("GET", async () => {
+    const me = await api.getMe();
+    expect(me).toHaveProperty("room_id");
+    room_id = me.room_id;
   });
-  expect(message).toHaveProperty("message_id");
-  const { message_id } = message;
 
-  await sleep();
+  let message_id: string;
 
-  const putResult = await api.putRoomMessage(room_id, message_id, {
-    body: "[info][title]chatwork-api-client[/title]test(edited)[/info]",
+  test("POST", async () => {
+    const message = await api.postRoomMessage(room_id, {
+      body: "[info][title]chatwork-api-client[/title]test[/info]",
+    });
+    expect(message).toHaveProperty("message_id");
+    message_id = message.message_id;
+
+    await sleep();
   });
-  expect(putResult).toHaveProperty("message_id");
 
-  await sleep();
+  test("PUT", async () => {
+    const putResult = await api.putRoomMessage(room_id, message_id, {
+      body: "[info][title]chatwork-api-client[/title]test(edited)[/info]",
+    });
+    expect(putResult).toHaveProperty("message_id");
 
-  const deleteResult = await api.deleteRoomMessage(room_id, message_id);
-  expect(deleteResult).toHaveProperty("message_id");
-
-  const postFileResult = await api.postRoomFile(room_id, {
-    file: readFileSync(join(__dirname, "test.txt")),
-    file_name: "testfile.txt",
+    await sleep();
   });
-  expect(postFileResult).toHaveProperty("file_id");
+
+  test("DELETE", async () => {
+    const deleteResult = await api.deleteRoomMessage(room_id, message_id);
+    expect(deleteResult).toHaveProperty("message_id");
+  });
+
+  test("File Upload", async () => {
+    const postFileResult = await api.postRoomFile(room_id, {
+      file: readFileSync(join(__dirname, "test.txt")),
+      file_name: "testfile.txt",
+    });
+    expect(postFileResult).toHaveProperty("file_id");
+  });
 });
