@@ -1,4 +1,4 @@
-FROM node:lts-alpine as builder
+FROM node:16-alpine as builder
 
 WORKDIR /build
 
@@ -12,7 +12,7 @@ ADD . .
 RUN npm run build
 
 
-FROM node:lts-alpine
+FROM node:16-alpine
 
 WORKDIR /app
 
