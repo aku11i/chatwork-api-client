@@ -111,9 +111,8 @@ endPoints.forEach((endPoint) => {
       type: "string",
       required: true,
     };
-    endPoint.info[
-      "multipart/form-data"
-    ].formParameters.file_name = fileNameParam;
+    endPoint.info["multipart/form-data"].formParameters.file_name =
+      fileNameParam;
   }
   if (!endPoint?.info?.responses) {
     endPoint.info.responses = {};
