@@ -5,7 +5,7 @@
   "author": "Shuhei Akutagawa <readonly@akutagawa.dev>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aktriver/chatwork-api-client.git"
+    "url": "https://github.com/aku11i/chatwork-api-client.git"
   },
   "bin": {
     "chatwork-api-client": "bin/chatwork-api-client.js",

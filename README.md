@@ -1,7 +1,7 @@
 # Chatwork API Client
 
-[![build](https://github.com/aktriver/chatwork-api-client/actions/workflows/build.yml/badge.svg)](https://github.com/aktriver/chatwork-api-client/actions/workflows/build.yml)
-[![publish](https://github.com/aktriver/chatwork-api-client/actions/workflows/publish.yml/badge.svg)](https://github.com/aktriver/chatwork-api-client/actions/workflows/publish.yml)
+[![build](https://github.com/aku11i/chatwork-api-client/actions/workflows/build.yml/badge.svg)](https://github.com/aku11i/chatwork-api-client/actions/workflows/build.yml)
+[![publish](https://github.com/aku11i/chatwork-api-client/actions/workflows/publish.yml/badge.svg)](https://github.com/aku11i/chatwork-api-client/actions/workflows/publish.yml)
 
 Chatwork API v2 用のクライアントライブラリです。<br>
 CLI も用意されています。
@@ -123,7 +123,7 @@ Commands:
 ### Setup
 
 ```sh
-git clone --recursive https://github.com/aktriver/chatwork-api-client.git
+git clone --recursive https://github.com/aku11i/chatwork-api-client.git
 cd chatwork-api-client
 
 npm install
