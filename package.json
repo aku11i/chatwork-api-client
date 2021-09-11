@@ -48,7 +48,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/js-yaml": "^4.0.3",
-    "@types/node": "^16.7.2",
+    "@types/node": "^16.9.1",
     "@types/prettier": "^2.3.2",
     "@types/qs": "^6.9.7",
     "camelcase": "^6.2.0",
