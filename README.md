@@ -6,11 +6,14 @@
 Chatwork API v2 用のクライアントライブラリです。<br>
 CLI も用意されています。
 
+## No longer maintained
+
+作者が Chatwork を使用しなくなったため、基本的にはこれ以上メンテナンスされません。
+
 ## Features
 
 - Chatwork API v2 の全てのエンドポイントに対応しています。
-- TypeScript 向けの完全な型定義があります。<br>
-  公式の[RAML](https://github.com/chatwork/api/blob/master/RAML/api-ja.raml) ファイルから生成しています。
+- TypeScript 向けの完全な型定義があります。
 - CLI もあります。 (`chatwork-api-client`).
 - Node.js 12 以上で動作します。
 - ブラウザで動作するかは確認していません。
@@ -131,14 +134,7 @@ npm install
 
 ### Build
 
-`src/*.ts` は `scripts/*.ts` によって生成されます。<br>
-**`src/*.ts` を直接編集しないでください。**
-
 ```sh
-# scripts/*.ts を実行し、 src/*.ts を生成します。
-npm run generate
-
-# 生成された src/*.ts をビルドします。
 npm run build
 ```
 

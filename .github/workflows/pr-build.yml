@@ -11,14 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          submodules: "true"
       - uses: actions/setup-node@v1
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: npm ci
-      - run: npm run generate
+      - run: npm run prettier:check
       - run: npm run build
-      - name: If git difference occured, exit with error
-        run: git diff --exit-code
